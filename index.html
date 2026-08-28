@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>MQJ TV PRO - Xtream Player</title>
+    <title>MQJ TV PRO - Maven IPTV</title>
     
     <!-- Video.js CSS & FontAwesome -->
     <link href="https://vjs.zencdn.net/8.10.0/video-js.css" rel="stylesheet" />
@@ -321,11 +321,11 @@
         let allChannels = [];
         let currentCategory = 'الكل';
 
-        // بيانات سيرفر Xtream المرفق
+        // بيانات السيرفر الجديد
         const xtreamServer = {
-            url: 'http://sansatplus.net:88',
-            user: 'GvDEv9CPNCnm0gO',
-            pass: 'HTGbJ8jjLAdaAvc'
+            url: 'http://maveniptv.tv:2095',
+            user: 'seifsat',
+            pass: '01065786637s'
         };
 
         const proxy = url => 'https://corsproxy.io/?' + encodeURIComponent(url);
@@ -337,7 +337,6 @@
 
         async function loadXtreamChannels() {
             try {
-                // جلب قائمة قنوات البث المباشر المتاحة في السيرفر عبر الـ API
                 const apiUrl = `${xtreamServer.url}/player_api.php?username=${xtreamServer.user}&password=${xtreamServer.pass}&action=get_live_streams`;
                 const response = await fetch(proxy(apiUrl));
                 const data = await response.json();
@@ -345,23 +344,21 @@
                 if (Array.isArray(data) && data.length > 0) {
                     allChannels = data.map(ch => ({
                         name: ch.name,
-                        // بناء رابط البث المباشر الخاص بكل قناة وفق نظام Xtream
                         url: `${xtreamServer.url}/live/${xtreamServer.user}/${xtreamServer.pass}/${ch.stream_id}.m3u8`,
                         group: ch.category_name || 'عام'
                     }));
 
-                    fileStatus.innerHTML = `<i class="fa-regular fa-circle-check"></i> تم جلب ${allChannels.length} قناة من السيرفر`;
+                    fileStatus.innerHTML = `<i class="fa-regular fa-circle-check"></i> تم جلب ${allChannels.length} قناة من سيرفر Maven`;
                     renderCategories();
                     filterChannels();
                     
-                    // تشغيل القناة الأولى تلقائياً
                     playChannel(allChannels[0].url, allChannels[0].name);
                 } else {
-                    fileStatus.innerHTML = `<i class="fa-solid fa-circle-exclamation"></i> السيرفر لا يحتوي على قنوات أو البيانات غير صحيحة`;
+                    fileStatus.innerHTML = `<i class="fa-solid fa-circle-exclamation"></i> خطأ في البيانات أو الاشتراك منتهي`;
                 }
             } catch (error) {
                 console.error("خطأ في الاتصال:", error);
-                fileStatus.innerHTML = `<i class="fa-solid fa-triangle-exclamation"></i> فشل الاتصال بالسيرفر`;
+                fileStatus.innerHTML = `<i class="fa-solid fa-triangle-exclamation"></i> تعذر الاتصال بالسيرفر`;
             }
         }
 
