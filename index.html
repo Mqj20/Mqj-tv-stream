@@ -3,9 +3,12 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>MQJ TV PRO - 60+ قناة رياضية</title>
-    <script src="https://cdn.jsdelivr.net/npm/hls.js@latest"></script>
+    <title>MQJ TV PRO - Video.js Edition</title>
+    
+    <!-- Video.js CSS & FontAwesome -->
+    <link href="https://vjs.zencdn.net/8.10.0/video-js.css" rel="stylesheet" />
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css">
+    
     <style>
         * {
             margin: 0;
@@ -125,11 +128,21 @@
             justify-content: center;
             position: relative;
         }
-        .video-wrapper video {
-            width: 100%;
-            height: 100%;
-            object-fit: contain;
-            display: block;
+
+        /* تخصيص مظهر Video.js */
+        .video-js {
+            width: 100% !important;
+            height: 100% !important;
+        }
+        .vjs-theme-custom .vjs-big-play-button {
+            background-color: rgba(14, 165, 233, 0.8) !important;
+            border: none !important;
+            border-radius: 50% !important;
+            width: 2em !important;
+            height: 2em !important;
+            line-height: 2em !important;
+            margin-top: -1em !important;
+            margin-left: -1em !important;
         }
 
         .channel-bar {
@@ -156,13 +169,8 @@
             animation: pulse 1.8s infinite;
         }
         @keyframes pulse {
-            0%,
-            100% {
-                opacity: 1;
-            }
-            50% {
-                opacity: 0.4;
-            }
+            0%, 100% { opacity: 1; }
+            50% { opacity: 0.4; }
         }
         .channel-bar .channel-name {
             font-size: 1.1rem;
@@ -212,9 +220,7 @@
             align-items: center;
             gap: 8px;
         }
-        .sidebar-header h3 i {
-            color: #38bdf8;
-        }
+        .sidebar-header h3 i { color: #38bdf8; }
         .sidebar-header .count {
             font-size: 0.7rem;
             background: #1e293b;
@@ -258,13 +264,9 @@
             margin-bottom: 6px;
             scrollbar-width: thin;
         }
-        .category-filter::-webkit-scrollbar {
-            height: 3px;
-        }
-        .category-filter::-webkit-scrollbar-thumb {
-            background: #38bdf8;
-            border-radius: 10px;
-        }
+        .category-filter::-webkit-scrollbar { height: 3px; }
+        .category-filter::-webkit-scrollbar-thumb { background: #38bdf8; border-radius: 10px; }
+        
         .cat-btn {
             background: transparent;
             border: 1px solid #1e293b;
@@ -278,8 +280,7 @@
             transition: 0.2s;
             flex-shrink: 0;
         }
-        .cat-btn.active,
-        .cat-btn:hover {
+        .cat-btn.active, .cat-btn:hover {
             background: #0ea5e9;
             border-color: #0ea5e9;
             color: #fff;
@@ -295,13 +296,8 @@
             padding-right: 2px;
             margin-top: 4px;
         }
-        .channels-list::-webkit-scrollbar {
-            width: 4px;
-        }
-        .channels-list::-webkit-scrollbar-thumb {
-            background: #38bdf8;
-            border-radius: 10px;
-        }
+        .channels-list::-webkit-scrollbar { width: 4px; }
+        .channels-list::-webkit-scrollbar-thumb { background: #38bdf8; border-radius: 10px; }
 
         .channel-item {
             display: flex;
@@ -347,86 +343,12 @@
             display: block;
             margin-top: 2px;
         }
-        .channel-item .play-icon {
-            color: #64748b;
-            font-size: 0.8rem;
-            transition: 0.2s;
-        }
-        .channel-item.active .play-icon {
-            color: #38bdf8;
-        }
 
         .empty-state {
             text-align: center;
             padding: 30px 10px;
             color: #64748b;
             font-size: 0.9rem;
-        }
-        .empty-state i {
-            font-size: 2.2rem;
-            display: block;
-            margin-bottom: 10px;
-            color: #334155;
-        }
-
-        /* ===== زر تبديل المشغل ===== */
-        .player-switcher {
-            display: flex;
-            gap: 6px;
-            align-items: center;
-            margin-right: 12px;
-        }
-        .player-switcher button {
-            background: rgba(51, 65, 85, 0.5);
-            border: 1px solid #334155;
-            color: #94a3b8;
-            padding: 4px 12px;
-            border-radius: 20px;
-            font-size: 0.7rem;
-            cursor: pointer;
-            transition: 0.2s;
-        }
-        .player-switcher button.active {
-            background: #0ea5e9;
-            border-color: #0ea5e9;
-            color: #fff;
-        }
-        .player-switcher button:hover {
-            background: #0ea5e9;
-            border-color: #0ea5e9;
-            color: #fff;
-        }
-
-        /* ===== تحميل ===== */
-        .loading-overlay {
-            position: absolute;
-            top: 0;
-            left: 0;
-            width: 100%;
-            height: 100%;
-            background: rgba(0, 0, 0, 0.7);
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            z-index: 10;
-            font-size: 1.2rem;
-            color: #38bdf8;
-            gap: 12px;
-            pointer-events: none;
-            opacity: 0;
-            transition: opacity 0.3s;
-        }
-        .loading-overlay.show {
-            opacity: 1;
-        }
-        .loading-overlay i {
-            font-size: 2rem;
-            animation: spin 1s linear infinite;
-        }
-        @keyframes spin {
-            to {
-                transform: rotate(360deg);
-            }
         }
 
         @media (max-width: 992px) {
@@ -436,37 +358,12 @@
                 padding: 12px;
                 gap: 16px;
             }
-            .sidebar {
-                max-height: 420px;
-                min-width: unset;
-            }
-            .player-section {
-                min-height: 300px;
-            }
-            .header {
-                padding: 10px 16px;
-            }
-            .logo {
-                font-size: 1.2rem;
-            }
-            .upload-btn span {
-                display: none;
-            }
-            .upload-btn {
-                padding: 8px 14px;
-            }
-        }
-
-        @media (max-width: 600px) {
-            .channel-bar .channel-name {
-                font-size: 0.9rem;
-            }
-            .channel-bar .channel-group {
-                display: none;
-            }
-            .sidebar {
-                max-height: 340px;
-            }
+            .sidebar { max-height: 420px; min-width: unset; }
+            .player-section { min-height: 300px; }
+            .header { padding: 10px 16px; }
+            .logo { font-size: 1.2rem; }
+            .upload-btn span { display: none; }
+            .upload-btn { padding: 8px 14px; }
         }
     </style>
 </head>
@@ -478,7 +375,7 @@
             <span>MQJ TV PRO</span>
         </div>
         <div class="header-actions">
-            <span class="file-status" id="fileStatus"><i class="fa-regular fa-circle-check"></i> 65+ قناة رياضية</span>
+            <span class="file-status" id="fileStatus"><i class="fa-regular fa-circle-check"></i> جاهز لتشغيل القنوات</span>
             <label class="upload-btn" for="m3uInput">
                 <i class="fa-solid fa-upload"></i>
                 <span>رفع M3U</span>
@@ -488,22 +385,20 @@
     </header>
 
     <div class="main">
-        <!-- PLAYER -->
+        <!-- PLAYER SECTION -->
         <section class="player-section">
             <div class="video-wrapper">
-                <video id="videoPlayer" controls autoplay playsinline></video>
-                <div class="loading-overlay" id="loadingOverlay">
-                    <i class="fa-solid fa-spinner"></i>
-                    <span>جاري التحميل...</span>
-                </div>
+                <video 
+                    id="videoPlayer" 
+                    class="video-js vjs-default-skin vjs-big-play-centered vjs-theme-custom" 
+                    controls 
+                    preload="auto" 
+                    playsinline>
+                </video>
             </div>
             <div class="channel-bar">
                 <span class="live-tag"><i class="fa-solid fa-circle"></i> LIVE</span>
                 <span class="channel-name" id="activeChannelName">اختر قناة لتشغيلها</span>
-                <div class="player-switcher">
-                    <button class="active" id="playerHls" onclick="setPlayerMode('hls')">HLS</button>
-                    <button id="playerNative" onclick="setPlayerMode('native')">مباشر</button>
-                </div>
                 <span class="channel-group" id="activeChannelGroup">-</span>
             </div>
         </section>
@@ -523,9 +418,11 @@
         </aside>
     </div>
 
+    <!-- Video.js Library -->
+    <script src="https://vjs.zencdn.net/8.10.0/video.min.js"></script>
+
     <script>
         // ======================== GLOBALS ========================
-        const video = document.getElementById('videoPlayer');
         const activeName = document.getElementById('activeChannelName');
         const activeGroup = document.getElementById('activeChannelGroup');
         const channelsList = document.getElementById('channelsList');
@@ -533,89 +430,35 @@
         const searchInput = document.getElementById('searchInput');
         const fileStatus = document.getElementById('fileStatus');
         const fileInput = document.getElementById('m3uInput');
-        const loadingOverlay = document.getElementById('loadingOverlay');
 
+        let player = null;
         let allChannels = [];
         let currentCategory = 'الكل';
-        let hls = null;
-        let retryCount = 0;
-        let currentPlayerMode = 'hls'; // 'hls' or 'native'
-        let currentUrl = '';
 
-        // ================================================================
-        //  🚀  65+ قناة رياضية (beIN + Alwan + POST + عالمية)
-        // ================================================================
-        const sportsChannels = [
-            // ===== beIN SPORTS =====
-            { name: 'beIN SPORTS 1 HD (عربي)', url: 'http://88.barouhn.xyz.global.prod.fastly.net/live/6161655/index.m3u8', group: 'beIN Sports' },
-            { name: 'beIN SPORTS 2 HD (عربي)', url: 'http://88.barouhn.xyz.global.prod.fastly.net/live/616194987/index.m3u8', group: 'beIN Sports' },
-            { name: 'beIN SPORTS 3 HD', url: 'http://tv.cloudcdn.me:80/live.ts?channelId=124668&uid=9264&deviceMac=00:1A:79:03:74:E9', group: 'beIN Sports' },
-            { name: 'beIN SPORTS 4 HD', url: 'http://tv.cloudcdn.me:80/live.ts?channelId=124669&uid=9264&deviceMac=00:1A:79:03:74:E9', group: 'beIN Sports' },
-            { name: 'beIN SPORTS 5 HD', url: 'http://tv.cloudcdn.me:80/live.ts?channelId=124670&uid=9264&deviceMac=00:1A:79:03:74:E9', group: 'beIN Sports' },
-            { name: 'beIN SPORTS 6 MAX FHD', url: 'http://tv.cloudcdn.me:80/live.ts?channelId=124671&uid=9264&deviceMac=00:1A:79:03:74:E9', group: 'beIN Sports' },
-            { name: 'beIN SPORTS 7 4K', url: 'http://195.230.23.8:25461/goldsfree3/goldstv.com/3149', group: 'beIN Sports' },
+        // تهيئة مشغل Video.js
+        document.addEventListener('DOMContentLoaded', () => {
+            player = videojs('videoPlayer', {
+                autoplay: true,
+                controls: true,
+                liveui: true,
+                responsive: true,
+                fluid: true
+            });
+
+            loadChannels(defaultChannels);
+        });
+
+        // ======================== قنوات افتراضية معتمدة ========================
+        const defaultChannels = [
             { name: 'beIN SPORTS News', url: 'https://beinsports-ak.akamaized.net/hls/live/2008540/beinsportsnews/beinsportsnews.m3u8', group: 'beIN Sports' },
-            { name: 'beIN SPORTS GLOBAL', url: 'http://tv.cloudcdn.me:80/live.ts?channelId=124643&uid=9264&deviceMac=00:1A:79:03:74:E9', group: 'beIN Sports' },
-            { name: 'beIN SPORTS MAX 1', url: 'http://tv.cloudcdn.me:80/live.ts?channelId=125098&uid=9264&deviceMac=00:1A:79:03:74:E9', group: 'beIN Sports' },
-            { name: 'beIN SPORTS MAX 2', url: 'http://tv.cloudcdn.me:80/live.ts?channelId=125094&uid=9264&deviceMac=00:1A:79:03:74:E9', group: 'beIN Sports' },
-            { name: 'beIN SPORTS FR 1', url: 'http://tv.cloudcdn.me:80/live.ts?channelId=125089&uid=9264&deviceMac=00:1A:79:03:74:E9', group: 'beIN Sports' },
-            { name: 'beIN SPORTS FR 2', url: 'http://tv.cloudcdn.me:80/live.ts?channelId=125090&uid=9264&deviceMac=00:1A:79:03:74:E9', group: 'beIN Sports' },
-            { name: 'beIN SPORTS (بديل)', url: 'http://23.237.104.106:8080/USA_BEIN/index.m3u8', group: 'beIN Sports' },
-
-            // ===== Alwan Sport =====
-            { name: 'Zee Alwan (ألوان) 720p', url: 'https://weyyak-live.akamaized.net/weyyak_zee_alwan/index.m3u8', group: 'Alwan Sport' },
-            { name: 'Alwan Sport 1', url: 'https://weyyak-live.akamaized.net/weyyak_zee_alwan/index.m3u8', group: 'Alwan Sport' },
-            { name: 'Alwan F1 4K', url: 'https://weyyak-live.akamaized.net/weyyak_zee_alwan/index.m3u8', group: 'Alwan Sport' },
-            { name: 'Alwan AFLAM 1', url: 'https://weyyak-live.akamaized.net/weyyak_zee_alwan/index.m3u8', group: 'Alwan Sport' },
-            { name: 'Alwan AFLAM 2', url: 'https://weyyak-live.akamaized.net/weyyak_zee_alwan/index.m3u8', group: 'Alwan Sport' },
-
-            // ===== POST Sport =====
-            { name: 'POST SPORT HD', url: 'https://weyyak-live.akamaized.net/weyyak_zee_alwan/index.m3u8', group: 'POST Sport' },
-
-            // ===== قنوات عالمية =====
-            { name: 'L\'Équipe Live (FR)', url: 'https://lequipe-hls-aka.akamaized.net/hls/live/2008930/lequipe/lequipe.m3u8', group: 'رياضة عالمية' },
             { name: 'Red Bull TV', url: 'https://rbmn-live.akamaized.net/hls/live/590964/RBTV_A1/master.m3u8', group: 'رياضة عالمية' },
-            { name: 'FIFA+', url: 'https://fifa-aka.akamaized.net/hls/live/2008937/fifaplus/fifaplus.m3u8', group: 'رياضة عالمية' },
-            { name: 'ESPN 1 (USA)', url: 'https://espn-live-ak.akamaized.net/hls/live/2016827/espn1/master.m3u8', group: 'رياضة عالمية' },
-            { name: 'ESPN 2 (USA)', url: 'https://espn-live-ak.akamaized.net/hls/live/2016828/espn2/master.m3u8', group: 'رياضة عالمية' },
-            { name: 'Fox Sports 1', url: 'https://austchannel-live.akamaized.net/hls/live/2002736/austchannel-sport/master.m3u8', group: 'رياضة عالمية' },
-            { name: 'Fox Sports 2', url: 'https://feed.play.mv/live/10005200/jmW41EycvT/1.m3u8', group: 'رياضة عالمية' },
-            { name: 'Sony Six HD', url: 'https://feed.play.mv/live/10005200/hr55LTnS53/master.m3u8', group: 'رياضة عالمية' },
-            { name: 'Sony Ten 1 HD', url: 'http://jupiter.bdcabletv.com/ENC-19/video.m3u8', group: 'رياضة عالمية' },
-            { name: 'Sony Ten 2 HD', url: 'http://jupiter.bdcabletv.com/ENC-7/video.m3u8', group: 'رياضة عالمية' },
-            { name: 'Sony Ten 3 HD', url: 'http://mytv.fun:8080/2df6e71oil/90i9wr21j8/672445', group: 'رياضة عالمية' },
-            { name: 'NBA TV', url: 'https://feed.play.mv/live/10005200/jmW41EycvT/1.m3u8', group: 'رياضة عالمية' },
-            { name: 'NFL Network', url: 'https://service-stitcher.clusters.pluto.tv/stitch/hls/channel/5ced7d5df64be98e07ed47b6/master.m3u8', group: 'رياضة عالمية' },
-            { name: 'MLB Network', url: 'https://hlslive-akc-med1.media.mlb.com/ls01/mlbnetwork/NETWORK_LINEAR_1/master_wired.m3u8', group: 'رياضة عالمية' },
-            { name: 'Sky Sports F1', url: 'https://feed.play.mv/live/10005200/jmW41EycvT/1.m3u8', group: 'رياضة عالمية' },
-
-            // ===== رياضة عربية =====
-            { name: 'Abu Dhabi Sports 1', url: 'https://feed.play.mv/live/10005200/jmW41EycvT/1.m3u8', group: 'رياضة عربية' },
-            { name: 'Abu Dhabi Sports 2', url: 'https://feed.play.mv/live/10005200/jmW41EycvT/1.m3u8', group: 'رياضة عربية' },
-            { name: 'Dubai Sports 1', url: 'https://feed.play.mv/live/10005200/jmW41EycvT/1.m3u8', group: 'رياضة عربية' },
-            { name: 'Dubai Sports 2', url: 'https://feed.play.mv/live/10005200/jmW41EycvT/1.m3u8', group: 'رياضة عربية' },
-            { name: 'Sharjah Sports TV', url: 'https://svs.itworkscdn.net/smc4sportslive/smc4.smil/playlist.m3u8', group: 'رياضة عربية' },
-            { name: 'Al-Kass One HD', url: 'http://212.7.205.5:1935/sport/live/BratuMarian.m3u8', group: 'رياضة عربية' },
-
-            // ===== أخبار رياضية =====
             { name: 'الجزيرة الإخبارية', url: 'https://live-hls-web-aje.akamaized.net/hls/live/2018284/aje/index.m3u8', group: 'أخبار' },
             { name: 'سكاي نيوز عربية', url: 'https://skynewsarabia-aka.akamaized.net/hls/live/2017807/SNA_MASTER_1080_25_adaptive.m3u8', group: 'أخبار' },
-            { name: 'روسيا اليوم (RT)', url: 'https://rt-arabic.akamaized.net/hls/rtarabic/index.m3u8', group: 'أخبار' },
-            { name: 'CNN International', url: 'https://cnn-cnninternational-1-akamai.akamaized.net/hls/live/2008542/cnninternational/cnninternational.m3u8', group: 'أخبار' },
-            { name: 'فرانس 24 Français', url: 'https://f24-live-francais.akamaized.net/hls/live/2006679/F24_FR_1/index.m3u8', group: 'أخبار' },
-            { name: 'France 24 English', url: 'https://f24-live-english.akamaized.net/hls/live/2006678/F24_EN_1/index.m3u8', group: 'أخبار' },
-            { name: 'Al Arabiya Al Hadath', url: 'https://av.alarabiya.net/alarabiapublish/alhadath.smil/playlist.m3u8', group: 'أخبار' },
-
-            // ===== قنوات فرنسية =====
-            { name: 'TF1 (France)', url: 'https://tf1-lh.akamaihd.net/i/tf1_1@61143/index_3_av-p.m3u8', group: 'فرنسية' },
-
-            // ===== متنوعة =====
-            { name: 'Bloomberg TV', url: 'https://liveproduseast.akamaized.net/us/Channel-USTV-AWS-MultiBitrate/HLS_Live_500K.m3u8', group: 'اقتصاد' },
-            { name: 'NASA TV', url: 'https://ntv1.akamaized.net/hls/live/2013875/NASA-NTV1-HLS/master_1080.m3u8', group: 'علوم' },
-            { name: 'الجزيرة الوثائقية', url: 'https://live-hls-web-ajd.akamaized.net/hls/live/2018285/ajd/index.m3u8', group: 'وثائقي' },
+            { name: 'فرانس 24 (FR)', url: 'https://f24-live-francais.akamaized.net/hls/live/2006679/F24_FR_1/index.m3u8', group: 'أخبار' },
+            { name: 'الجزيرة الوثائقية', url: 'https://live-hls-web-ajd.akamaized.net/hls/live/2018285/ajd/index.m3u8', group: 'وثائقي' }
         ];
 
-        // ======================== LOAD CHANNELS ========================
+        // ======================== إدارة القنوات ========================
         function loadChannels(channels) {
             allChannels = channels;
             renderCategories();
@@ -623,42 +466,16 @@
             document.getElementById('channelCount').textContent = channels.length;
             if (channels.length > 0) {
                 playChannel(channels[0].url, channels[0].name, channels[0].group);
-            } else {
-                activeName.textContent = 'لا توجد قنوات';
-                activeGroup.textContent = '-';
             }
         }
 
-        // ======================== PARSE M3U ========================
-        function parseM3U(text) {
-            const lines = text.split(/\r?\n/);
-            const channels = [];
-            let currentName = '';
-            let currentGroup = 'Général';
-            lines.forEach(line => {
-                line = line.trim();
-                if (line.startsWith('#EXTINF:')) {
-                    const nameMatch = line.match(/,([^,]+)$/);
-                    if (nameMatch) currentName = nameMatch[1].trim();
-                    const groupMatch = line.match(/group-title="([^"]+)"/);
-                    if (groupMatch) currentGroup = groupMatch[1].trim();
-                } else if (line && !line.startsWith('#') && currentName) {
-                    channels.push({ name: currentName, url: line, group: currentGroup || 'Général' });
-                    currentName = '';
-                }
-            });
-            return channels;
-        }
-
-        // ======================== RENDER ========================
         function renderCategories() {
-            const categories = ['الكل', ...new Set(allChannels.map(c => c.group || 'Général'))];
+            const categories = ['الكل', ...new Set(allChannels.map(c => c.group || 'عام'))];
             categoryFilter.innerHTML = '';
             categories.forEach(cat => {
                 const btn = document.createElement('button');
                 btn.className = `cat-btn ${cat === 'الكل' ? 'active' : ''}`;
                 btn.textContent = cat;
-                btn.dataset.cat = cat;
                 btn.onclick = () => {
                     document.querySelectorAll('.cat-btn').forEach(b => b.classList.remove('active'));
                     btn.classList.add('active');
@@ -683,8 +500,7 @@
         function renderChannels(channels) {
             channelsList.innerHTML = '';
             if (channels.length === 0) {
-                channelsList.innerHTML =
-                    `<div class="empty-state"><i class="fa-regular fa-circle-xmark"></i>لا توجد قنوات تطابق البحث</div>`;
+                channelsList.innerHTML = `<div class="empty-state"><i class="fa-regular fa-circle-xmark"></i> لا توجد قنوات</div>`;
                 return;
             }
             channels.forEach((ch, index) => {
@@ -692,135 +508,77 @@
                 item.className = 'channel-item';
                 if (index === 0) item.classList.add('active');
                 item.innerHTML = `
-                    <span class="icon"><i class="fa-solid fa-tower-broadcast"></i></span>
+                    <span class="icon"><i class="fa-solid fa-tv"></i></span>
                     <div class="info">
                         <span class="name">${ch.name}</span>
-                        <span class="group">${ch.group || 'Général'}</span>
+                        <span class="group">${ch.group || 'عام'}</span>
                     </div>
-                    <span class="play-icon"><i class="fa-solid fa-circle-play"></i></span>
                 `;
-                item.onclick = () => playChannel(ch.url, ch.name, ch.group, item);
+                item.onclick = () => {
+                    document.querySelectorAll('.channel-item').forEach(el => el.classList.remove('active'));
+                    item.classList.add('active');
+                    playChannel(ch.url, ch.name, ch.group);
+                };
                 channelsList.appendChild(item);
             });
         }
 
-        // ======================== PLAY CHANNEL ========================
-        function playChannel(url, name, group, element = null) {
+        // ======================== تشغيل القناة (Video.js) ========================
+        function playChannel(url, name, group) {
             activeName.textContent = name;
             activeGroup.textContent = group || '-';
-            document.querySelectorAll('.channel-item').forEach(el => el.classList.remove('active'));
-            if (element) element.classList.add('active');
 
-            currentUrl = url;
-            retryCount = 0;
-            loadingOverlay.classList.add('show');
-
-            // تدمير الجلسة القديمة
-            if (hls) {
-                hls.destroy();
-                hls = null;
+            // معالجة قيود HTTP
+            let finalUrl = url;
+            if (url.startsWith('http://')) {
+                finalUrl = 'https://corsproxy.io/?' + encodeURIComponent(url);
             }
 
-            // اختيار وضع التشغيل
-            if (currentPlayerMode === 'hls' && Hls.isSupported()) {
-                playWithHls(url);
-            } else {
-                playNative(url);
-            }
-        }
-
-        function playWithHls(url) {
-            try {
-                hls = new Hls({
-                    enableWorker: true,
-                    lowLatencyMode: true,
+            if (player) {
+                player.src({
+                    src: finalUrl,
+                    type: 'application/x-mpegURL'
                 });
-                hls.loadSource(url);
-                hls.attachMedia(video);
-                hls.on(Hls.Events.MANIFEST_PARSED, () => {
-                    loadingOverlay.classList.remove('show');
-                    video.play().catch(() => {});
+                player.play().catch(err => {
+                    console.warn("إشعار التشغيل التلقائي:", err);
                 });
-                hls.on(Hls.Events.ERROR, (e, data) => {
-                    if (data.fatal && retryCount < 3) {
-                        retryCount++;
-                        console.warn(`⚠️ إعادة محاولة HLS (${retryCount})...`);
-                        hls.destroy();
-                        hls = null;
-                        setTimeout(() => {
-                            if (currentPlayerMode === 'hls') playWithHls(currentUrl);
-                            else playNative(currentUrl);
-                        }, 1500);
-                    } else if (data.fatal) {
-                        // Fallback للملفات المباشرة
-                        hls.destroy();
-                        hls = null;
-                        playNative(currentUrl);
-                    }
-                });
-            } catch (e) {
-                console.warn('⚠️ فشل HLS، التبديل إلى التشغيل المباشر');
-                playNative(currentUrl);
             }
         }
 
-        function playNative(url) {
-            video.src = url;
-            video.load();
-            video.play().then(() => {
-                loadingOverlay.classList.remove('show');
-            }).catch(() => {
-                loadingOverlay.classList.remove('show');
-                console.warn('⚠️ تعذر تشغيل القناة مباشرة');
-            });
-        }
-
-        // ======================== تبديل المشغل ========================
-        function setPlayerMode(mode) {
-            currentPlayerMode = mode;
-            document.getElementById('playerHls').classList.toggle('active', mode === 'hls');
-            document.getElementById('playerNative').classList.toggle('active', mode === 'native');
-
-            // إعادة تشغيل القناة الحالية بالوضع الجديد
-            if (currentUrl) {
-                playChannel(currentUrl, activeName.textContent, activeGroup.textContent);
-            }
-        }
-
-        // ======================== FILE UPLOAD ========================
+        // ======================== قراءة ملف M3U ========================
         fileInput.addEventListener('change', function(e) {
             const file = e.target.files[0];
             if (!file) return;
+
             const reader = new FileReader();
-            reader.onload = function(event) {
-                const parsed = parseM3U(event.target.result);
-                if (parsed.length === 0) {
-                    alert('⚠️ لم يتم العثور على قنوات صالحة.');
-                    return;
+            reader.onload = function(evt) {
+                const lines = evt.target.result.split(/\r?\n/);
+                const channels = [];
+                let currentName = '';
+                let currentGroup = 'عام';
+
+                lines.forEach(line => {
+                    line = line.trim();
+                    if (line.startsWith('#EXTINF:')) {
+                        const nameMatch = line.match(/,([^,]+)$/);
+                        if (nameMatch) currentName = nameMatch[1].trim();
+                        const groupMatch = line.match(/group-title="([^"]+)"/);
+                        if (groupMatch) currentGroup = groupMatch[1].trim();
+                    } else if (line && !line.startsWith('#') && currentName) {
+                        channels.push({ name: currentName, url: line, group: currentGroup });
+                        currentName = '';
+                    }
+                });
+
+                if (channels.length > 0) {
+                    loadChannels(channels);
+                    fileStatus.innerHTML = `<i class="fa-regular fa-circle-check"></i> تم تحميل ${channels.length} قناة`;
+                } else {
+                    alert('لم يتم العثور على قنوات صالحة داخل الملف.');
                 }
-                loadChannels(parsed);
-                fileStatus.innerHTML = `<i class="fa-regular fa-circle-check"></i> ${file.name} (${parsed.length} قناة)`;
-                fileInput.value = '';
             };
             reader.readAsText(file);
         });
-
-        // ======================== INIT ========================
-        loadChannels(sportsChannels);
-        fileStatus.innerHTML = `<i class="fa-regular fa-circle-check"></i> ${sportsChannels.length} قناة رياضية`;
-
-        document.addEventListener('dragover', (e) => e.preventDefault());
-        document.addEventListener('drop', (e) => {
-            e.preventDefault();
-            const files = e.dataTransfer.files;
-            if (files.length && (files[0].name.endsWith('.m3u') || files[0].name.endsWith('.m3u8'))) {
-                fileInput.files = files;
-                fileInput.dispatchEvent(new Event('change'));
-            }
-        });
-
-        console.log('✅ MQJ TV PRO - 65+ قناة رياضية جاهزة!');
-        console.log('💡 يمكنك التبديل بين HLS والتشغيل المباشر عبر الأزرار في شريط القناة.');
     </script>
 </body>
 </html>
