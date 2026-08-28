@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>MQJ TV PRO - Maven IPTV</title>
+    <title>MQJ TV PRO - Free IPTV</title>
     
     <!-- Video.js CSS & FontAwesome -->
     <link href="https://vjs.zencdn.net/8.10.0/video-js.css" rel="stylesheet" />
@@ -269,17 +269,30 @@
             color: #64748b;
             font-size: 0.9rem;
         }
+
+        @media (max-width: 992px) {
+            .main {
+                flex-direction: column;
+                height: auto;
+                padding: 12px;
+                gap: 16px;
+            }
+            .sidebar { max-height: 420px; min-width: unset; }
+            .player-section { min-height: 300px; }
+            .header { padding: 10px 16px; }
+            .logo { font-size: 1.2rem; }
+        }
     </style>
 </head>
 <body>
 
     <header class="header">
         <div class="logo">
-            <i class="fa-solid fa-bolt"></i>
+            <i class="fa-solid fa-tv"></i>
             <span>MQJ TV PRO</span>
         </div>
         <div>
-            <span class="file-status" id="fileStatus"><i class="fa-solid fa-spinner fa-spin"></i> جاري الاتصال بالسيرفر...</span>
+            <span class="file-status" id="fileStatus"><i class="fa-solid fa-wifi"></i> بث مباشر مجاني</span>
         </div>
     </header>
 
@@ -296,7 +309,7 @@
 
         <aside class="sidebar">
             <div class="sidebar-header">
-                <h3><i class="fa-solid fa-list-ul"></i> القنوات</h3>
+                <h3><i class="fa-solid fa-list-ul"></i> القنوات المتاحة</h3>
                 <span class="count" id="channelCount">0</span>
             </div>
             <div class="search-box">
@@ -315,55 +328,41 @@
         const channelsList = document.getElementById('channelsList');
         const categoryFilter = document.getElementById('categoryFilter');
         const searchInput = document.getElementById('searchInput');
-        const fileStatus = document.getElementById('fileStatus');
 
         let player = null;
-        let allChannels = [];
         let currentCategory = 'الكل';
 
-        // بيانات السيرفر الجديد
-        const xtreamServer = {
-            url: 'http://sansatplus.net:88',
-            user: 'GvDEv9CPNCnm0gO',
-            pass: 'HTGbJ8jjLAdaAvc'
-        };
-
-        const proxy = url => 'https://corsproxy.io/?' + encodeURIComponent(url);
+        // قائمة قنوات مجانية ومفتوحة بروابط ثابتة ومباشرة
+        const freeChannels = [
+            { name: 'الجزيرة الإخبارية', url: 'https://live-hls-web-aje.akamaized.net/hls/live/2018284/aje/index.m3u8', group: 'أخبار' },
+            { name: 'الجزيرة الوثائقية', url: 'https://live-hls-web-ajd.akamaized.net/hls/live/2018285/ajd/index.m3u8', group: 'وثائقي' },
+            { name: 'سكاي نيوز عربية', url: 'https://skynewsarabia-aka.akamaized.net/hls/live/2017807/SNA_MASTER_1080_25_adaptive.m3u8', group: 'أخبار' },
+            { name: 'العربية الحدث', url: 'https://av.alarabiya.net/alarabiapublish/alhadath.smil/playlist.m3u8', group: 'أخبار' },
+            { name: 'RT العربية', url: 'https://rt-arabic.akamaized.net/hls/rtarabic/index.m3u8', group: 'أخبار' },
+            { name: 'فرانس 24 (عربي)', url: 'https://f24-live-arabic.akamaized.net/hls/live/2006680/F24_AR_1/index.m3u8', group: 'أخبار' },
+            { name: 'Red Bull TV', url: 'https://rbmn-live.akamaized.net/hls/live/590964/RBTV_A1/master.m3u8', group: 'رياضة' },
+            { name: 'NASA TV', url: 'https://ntv1.akamaized.net/hls/live/2013875/NASA-NTV1-HLS/master_1080.m3u8', group: 'علوم' },
+            { name: 'Bloomberg TV', url: 'https://liveproduseast.akamaized.net/us/Channel-USTV-AWS-MultiBitrate/HLS_Live_500K.m3u8', group: 'اقتصاد' }
+        ];
 
         document.addEventListener('DOMContentLoaded', () => {
-            player = videojs('videoPlayer', { autoplay: true, controls: true, responsive: true, fluid: true });
-            loadXtreamChannels();
+            player = videojs('videoPlayer', { 
+                autoplay: true, 
+                controls: true, 
+                responsive: true, 
+                fluid: true 
+            });
+
+            renderCategories();
+            filterChannels();
+            
+            if (freeChannels.length > 0) {
+                playChannel(freeChannels[0].url, freeChannels[0].name);
+            }
         });
 
-        async function loadXtreamChannels() {
-            try {
-                const apiUrl = `${xtreamServer.url}/player_api.php?username=${xtreamServer.user}&password=${xtreamServer.pass}&action=get_live_streams`;
-                const response = await fetch(proxy(apiUrl));
-                const data = await response.json();
-
-                if (Array.isArray(data) && data.length > 0) {
-                    allChannels = data.map(ch => ({
-                        name: ch.name,
-                        url: `${xtreamServer.url}/live/${xtreamServer.user}/${xtreamServer.pass}/${ch.stream_id}.m3u8`,
-                        group: ch.category_name || 'عام'
-                    }));
-
-                    fileStatus.innerHTML = `<i class="fa-regular fa-circle-check"></i> تم جلب ${allChannels.length} قناة من سيرفر Maven`;
-                    renderCategories();
-                    filterChannels();
-                    
-                    playChannel(allChannels[0].url, allChannels[0].name);
-                } else {
-                    fileStatus.innerHTML = `<i class="fa-solid fa-circle-exclamation"></i> خطأ في البيانات أو الاشتراك منتهي`;
-                }
-            } catch (error) {
-                console.error("خطأ في الاتصال:", error);
-                fileStatus.innerHTML = `<i class="fa-solid fa-triangle-exclamation"></i> تعذر الاتصال بالسيرفر`;
-            }
-        }
-
         function renderCategories() {
-            const categories = ['الكل', ...new Set(allChannels.map(c => c.group))];
+            const categories = ['الكل', ...new Set(freeChannels.map(c => c.group))];
             categoryFilter.innerHTML = '';
             categories.forEach(cat => {
                 const btn = document.createElement('button');
@@ -381,7 +380,7 @@
 
         function filterChannels() {
             const query = searchInput.value.toLowerCase().trim();
-            const filtered = allChannels.filter(ch => {
+            const filtered = freeChannels.filter(ch => {
                 const matchCat = currentCategory === 'الكل' || ch.group === currentCategory;
                 const matchName = ch.name.toLowerCase().includes(query);
                 return matchCat && matchName;
@@ -413,7 +412,7 @@
         function playChannel(url, name) {
             activeName.textContent = name;
             if (player) {
-                player.src({ src: proxy(url), type: 'application/x-mpegURL' });
+                player.src({ src: url, type: 'application/x-mpegURL' });
                 player.play().catch(e => console.log("تنبيه التشغيل:", e));
             }
         }
