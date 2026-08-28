@@ -1,1 +1,78 @@
 
+<!DOCTYPE html>
+<html lang="ar" dir="rtl">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>منصة بث قنوات الشرق الأوسط</title>
+    <script src="https://cdn.jsdelivr.net/npm/hls.js@latest"></script>
+    <style>
+        * { box-sizing: border-box; margin: 0; padding: 0; font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif; }
+        body { background-color: #0f172a; color: #fff; display: flex; flex-direction: column; min-height: 100vh; }
+        header { background-color: #1e293b; text-align: center; padding: 15px; font-size: 1.4rem; font-weight: bold; color: #38bdf8; border-bottom: 1px solid #334155; }
+        
+        .main-container { display: flex; flex-direction: column; flex: 1; padding: 15px; gap: 15px; }
+        @media (min-width: 768px) { .main-container { flex-direction: row; } }
+
+        .video-section { flex: 3; background: #000; border-radius: 10px; overflow: hidden; display: flex; align-items: center; justify-content: center; min-height: 300px; }
+        video { width: 100%; height: 100%; max-height: 70vh; outline: none; }
+
+        .playlist-section { flex: 1; background-color: #1e293b; border-radius: 10px; padding: 15px; display: flex; flex-direction: column; gap: 10px; max-height: 70vh; overflow-y: auto; }
+        .category-title { font-size: 1rem; color: #38bdf8; margin-top: 10px; border-bottom: 1px solid #334155; padding-bottom: 3px; }
+        .channel-btn { background-color: #334155; color: #fff; border: none; padding: 10px; border-radius: 6px; cursor: pointer; text-align: right; transition: 0.2s; font-size: 0.95rem; }
+        .channel-btn:hover, .channel-btn.active { background-color: #0284c7; }
+    </style>
+</head>
+<body>
+
+    <header>MQJ TV - قنوات الشرق الأوسط</header>
+
+    <div class="main-container">
+        <div class="video-section">
+            <video id="videoPlayer" controls autoplay></video>
+        </div>
+
+        <div class="playlist-section">
+            <div class="category-title">الأخبار</div>
+            <button class="channel-btn" onclick="playChannel('https://live-hls-web-aje.akamaized.net/hls/live/2018284/aje/index.m3u8', this)">الجزيرة الإخبارية</button>
+            <button class="channel-btn" onclick="playChannel('https://bbcworld-lh.akamaihd.net/i/bbcworld_1@119864/master.m3u8', this)">بي بي سي عربي</button>
+            <button class="channel-btn" onclick="playChannel('https://rt-arabic.akamaized.net/hls/rtarabic/index.m3u8', this)">روسيا اليوم</button>
+
+            <div class="category-title">الوثائقيات والترفيه</div>
+            <button class="channel-btn" onclick="playChannel('https://live-hls-web-ajd.akamaized.net/hls/live/2018285/ajd/index.m3u8', this)">الجزيرة الوثائقية</button>
+            <button class="channel-btn" onclick="playChannel('https://dwamdstream102.akamaized.net/hls/live/2015525/dwstream102/index.m3u8', this)">DW عربية</button>
+            
+            <div class="category-title">تجربة وتست</div>
+            <button class="channel-btn" onclick="playChannel('https://test-streams.mux.dev/x36xhtml/x36xhtml.m3u8', this)">قناة اختبار 1</button>
+        </div>
+    </div>
+
+    <script>
+        const video = document.getElementById('videoPlayer');
+        let hls = new Hls();
+
+        function playChannel(url, btn) {
+            document.querySelectorAll('.channel-btn').forEach(b => b.classList.remove('active'));
+            if(btn) btn.classList.add('active');
+
+            if (Hls.isSupported()) {
+                hls.destroy();
+                hls = new Hls();
+                hls.loadSource(url);
+                hls.attachMedia(video);
+                hls.on(Hls.Events.MANIFEST_PARSED, function() {
+                    video.play();
+                });
+            } else if (video.canPlayType('application/vnd.apple.mpegurl')) {
+                video.src = url;
+                video.play();
+            }
+        }
+
+        window.onload = () => {
+            const firstBtn = document.querySelector('.channel-btn');
+            if(firstBtn) firstBtn.click();
+        };
+    </script>
+</body>
+</html>
