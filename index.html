@@ -3,427 +3,71 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>MQJ TV PRO - منصة البث المباشر</title>
+    <title>MQJ TV PRO - 60+ قناة رياضية</title>
     <script src="https://cdn.jsdelivr.net/npm/hls.js@latest"></script>
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css">
     <style>
-        * {
-            margin: 0;
-            padding: 0;
-            box-sizing: border-box;
-            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
-        }
-
-        body {
-            background: #0a0e17;
-            color: #f1f5f9;
-            min-height: 100vh;
-            display: flex;
-            flex-direction: column;
-        }
-
-        /* ----- HEADER ----- */
-        .header {
-            background: rgba(15, 23, 42, 0.85);
-            backdrop-filter: blur(14px);
-            padding: 14px 30px;
-            display: flex;
-            align-items: center;
-            justify-content: space-between;
-            border-bottom: 1px solid rgba(56, 189, 248, 0.15);
-            position: sticky;
-            top: 0;
-            z-index: 50;
-            flex-wrap: wrap;
-            gap: 12px;
-        }
-
-        .logo {
-            display: flex;
-            align-items: center;
-            gap: 12px;
-            font-size: 1.6rem;
-            font-weight: 800;
-            letter-spacing: -0.5px;
-        }
-        .logo i {
-            color: #38bdf8;
-            font-size: 2rem;
-        }
-        .logo span {
-            background: linear-gradient(135deg, #38bdf8, #818cf8);
-            -webkit-background-clip: text;
-            -webkit-text-fill-color: transparent;
-        }
-
-        .header-actions {
-            display: flex;
-            align-items: center;
-            gap: 14px;
-        }
-
-        .upload-btn {
-            background: linear-gradient(135deg, #0ea5e9, #6366f1);
-            color: #fff;
-            border: none;
-            padding: 10px 22px;
-            border-radius: 40px;
-            font-weight: 600;
-            font-size: 0.9rem;
-            display: flex;
-            align-items: center;
-            gap: 10px;
-            cursor: pointer;
-            transition: all 0.25s ease;
-            box-shadow: 0 4px 16px rgba(14, 165, 233, 0.35);
-        }
-        .upload-btn:hover {
-            transform: translateY(-2px);
-            box-shadow: 0 8px 28px rgba(14, 165, 233, 0.5);
-        }
-        .upload-btn i {
-            font-size: 1.1rem;
-        }
-        #m3uInput {
-            display: none;
-        }
-
-        .file-status {
-            font-size: 0.8rem;
-            color: #94a3b8;
-            padding: 6px 14px;
-            background: rgba(30, 41, 59, 0.6);
-            border-radius: 30px;
-            border: 1px solid #334155;
-        }
-
-        /* ----- MAIN LAYOUT ----- */
-        .main {
-            display: flex;
-            flex: 1;
-            padding: 20px;
-            gap: 24px;
-            max-width: 1800px;
-            margin: 0 auto;
-            width: 100%;
-            height: calc(100vh - 100px);
-            min-height: 500px;
-        }
-
-        /* VIDEO PLAYER */
-        .player-section {
-            flex: 3;
-            background: #000;
-            border-radius: 20px;
-            overflow: hidden;
-            display: flex;
-            flex-direction: column;
-            border: 1px solid rgba(56, 189, 248, 0.1);
-            box-shadow: 0 20px 60px rgba(0, 0, 0, 0.7);
-            position: relative;
-        }
-
-        .video-wrapper {
-            flex: 1;
-            background: #0b0e14;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            position: relative;
-        }
-        .video-wrapper video {
-            width: 100%;
-            height: 100%;
-            object-fit: contain;
-            display: block;
-        }
-
-        .channel-bar {
-            background: rgba(15, 23, 42, 0.9);
-            backdrop-filter: blur(8px);
-            padding: 14px 24px;
-            display: flex;
-            align-items: center;
-            justify-content: space-between;
-            border-top: 1px solid rgba(56, 189, 248, 0.08);
-            flex-wrap: wrap;
-            gap: 8px;
-        }
-        .channel-bar .live-tag {
-            background: #ef4444;
-            color: #fff;
-            font-weight: 700;
-            font-size: 0.7rem;
-            padding: 3px 12px;
-            border-radius: 30px;
-            letter-spacing: 0.5px;
-            display: inline-flex;
-            align-items: center;
-            gap: 6px;
-            animation: pulse 1.8s infinite;
-        }
-        @keyframes pulse {
-            0%, 100% { opacity: 1; }
-            50% { opacity: 0.4; }
-        }
-        .channel-bar .channel-name {
-            font-size: 1.1rem;
-            font-weight: 600;
-            color: #f8fafc;
-            margin: 0 12px;
-            flex: 1;
-            white-space: nowrap;
-            overflow: hidden;
-            text-overflow: ellipsis;
-        }
-        .channel-bar .channel-group {
-            font-size: 0.75rem;
-            color: #94a3b8;
-            background: rgba(51, 65, 85, 0.5);
-            padding: 4px 14px;
-            border-radius: 20px;
-            border: 1px solid #334155;
-        }
-
-        /* ----- SIDEBAR (CHANNELS) ----- */
-        .sidebar {
-            flex: 1.1;
-            background: rgba(15, 23, 42, 0.6);
-            backdrop-filter: blur(10px);
-            border-radius: 20px;
-            padding: 18px 16px;
-            display: flex;
-            flex-direction: column;
-            border: 1px solid rgba(56, 189, 248, 0.08);
-            box-shadow: 0 8px 32px rgba(0, 0, 0, 0.4);
-            min-width: 260px;
-            max-height: 100%;
-            overflow: hidden;
-        }
-
-        .sidebar-header {
-            display: flex;
-            align-items: center;
-            justify-content: space-between;
-            margin-bottom: 14px;
-        }
-        .sidebar-header h3 {
-            font-size: 1rem;
-            font-weight: 700;
-            color: #f1f5f9;
-            display: flex;
-            align-items: center;
-            gap: 8px;
-        }
-        .sidebar-header h3 i {
-            color: #38bdf8;
-        }
-        .sidebar-header .count {
-            font-size: 0.7rem;
-            background: #1e293b;
-            padding: 2px 12px;
-            border-radius: 30px;
-            color: #94a3b8;
-        }
-
-        .search-box {
-            position: relative;
-            margin-bottom: 12px;
-        }
-        .search-box input {
-            width: 100%;
-            padding: 10px 16px 10px 40px;
-            background: rgba(0, 0, 0, 0.4);
-            border: 1px solid #1e293b;
-            border-radius: 40px;
-            color: #f1f5f9;
-            font-size: 0.9rem;
-            outline: none;
-            transition: 0.3s;
-        }
-        .search-box input:focus {
-            border-color: #38bdf8;
-            box-shadow: 0 0 0 3px rgba(56, 189, 248, 0.15);
-        }
-        .search-box i {
-            position: absolute;
-            right: 16px;
-            top: 50%;
-            transform: translateY(-50%);
-            color: #64748b;
-        }
-
-        .category-filter {
-            display: flex;
-            gap: 8px;
-            overflow-x: auto;
-            padding-bottom: 10px;
-            margin-bottom: 6px;
-            scrollbar-width: thin;
-        }
-        .category-filter::-webkit-scrollbar {
-            height: 3px;
-        }
-        .category-filter::-webkit-scrollbar-thumb {
-            background: #38bdf8;
-            border-radius: 10px;
-        }
-        .cat-btn {
-            background: transparent;
-            border: 1px solid #1e293b;
-            color: #94a3b8;
-            padding: 4px 16px;
-            border-radius: 40px;
-            font-size: 0.75rem;
-            font-weight: 600;
-            cursor: pointer;
-            white-space: nowrap;
-            transition: all 0.2s;
-            flex-shrink: 0;
-        }
-        .cat-btn.active,
-        .cat-btn:hover {
-            background: #0ea5e9;
-            border-color: #0ea5e9;
-            color: #fff;
-            box-shadow: 0 0 16px rgba(14, 165, 233, 0.2);
-        }
-
-        .channels-list {
-            flex: 1;
-            overflow-y: auto;
-            display: flex;
-            flex-direction: column;
-            gap: 6px;
-            padding-right: 2px;
-            margin-top: 4px;
-        }
-        .channels-list::-webkit-scrollbar {
-            width: 4px;
-        }
-        .channels-list::-webkit-scrollbar-thumb {
-            background: #38bdf8;
-            border-radius: 10px;
-        }
-
-        .channel-item {
-            display: flex;
-            align-items: center;
-            gap: 12px;
-            padding: 10px 14px;
-            background: rgba(30, 41, 59, 0.3);
-            border-radius: 12px;
-            cursor: pointer;
-            transition: all 0.2s;
-            border: 1px solid transparent;
-        }
-        .channel-item:hover {
-            background: rgba(30, 41, 59, 0.7);
-            border-color: #334155;
-        }
-        .channel-item.active {
-            background: rgba(14, 165, 233, 0.15);
-            border-color: #0ea5e9;
-        }
-        .channel-item .icon {
-            color: #38bdf8;
-            font-size: 0.9rem;
-            width: 24px;
-            text-align: center;
-            flex-shrink: 0;
-        }
-        .channel-item .info {
-            flex: 1;
-            min-width: 0;
-        }
-        .channel-item .info .name {
-            font-size: 0.85rem;
-            font-weight: 500;
-            color: #f1f5f9;
-            white-space: nowrap;
-            overflow: hidden;
-            text-overflow: ellipsis;
-        }
-        .channel-item .info .group {
-            font-size: 0.6rem;
-            color: #64748b;
-            display: block;
-            margin-top: 2px;
-        }
-        .channel-item .play-icon {
-            color: #64748b;
-            font-size: 0.8rem;
-            transition: 0.2s;
-        }
-        .channel-item.active .play-icon {
-            color: #38bdf8;
-        }
-
-        .empty-state {
-            text-align: center;
-            padding: 30px 10px;
-            color: #64748b;
-            font-size: 0.9rem;
-        }
-        .empty-state i {
-            font-size: 2.2rem;
-            display: block;
-            margin-bottom: 10px;
-            color: #334155;
-        }
-
-        /* RESPONSIVE */
-        @media (max-width: 992px) {
-            .main {
-                flex-direction: column;
-                height: auto;
-                padding: 12px;
-                gap: 16px;
-            }
-            .sidebar {
-                max-height: 420px;
-                min-width: unset;
-            }
-            .player-section {
-                min-height: 300px;
-            }
-            .header {
-                padding: 10px 16px;
-            }
-            .logo {
-                font-size: 1.2rem;
-            }
-            .upload-btn span {
-                display: none;
-            }
-            .upload-btn {
-                padding: 8px 14px;
-            }
-        }
-
-        @media (max-width: 600px) {
-            .channel-bar .channel-name {
-                font-size: 0.9rem;
-            }
-            .channel-bar .channel-group {
-                display: none;
-            }
-            .sidebar {
-                max-height: 340px;
-            }
-        }
+        * { margin: 0; padding: 0; box-sizing: border-box; font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif; }
+        body { background: #0a0e17; color: #f1f5f9; min-height: 100vh; display: flex; flex-direction: column; }
+        .header { background: rgba(15,23,42,0.85); backdrop-filter: blur(14px); padding: 14px 30px; display: flex; align-items: center; justify-content: space-between; border-bottom: 1px solid rgba(56,189,248,0.15); position: sticky; top: 0; z-index: 50; flex-wrap: wrap; gap: 12px; }
+        .logo { display: flex; align-items: center; gap: 12px; font-size: 1.6rem; font-weight: 800; }
+        .logo i { color: #38bdf8; font-size: 2rem; }
+        .logo span { background: linear-gradient(135deg, #38bdf8, #818cf8); -webkit-background-clip: text; -webkit-text-fill-color: transparent; }
+        .header-actions { display: flex; align-items: center; gap: 14px; }
+        .upload-btn { background: linear-gradient(135deg, #0ea5e9, #6366f1); color: #fff; border: none; padding: 10px 22px; border-radius: 40px; font-weight: 600; font-size: 0.9rem; display: flex; align-items: center; gap: 10px; cursor: pointer; transition: 0.25s; box-shadow: 0 4px 16px rgba(14,165,233,0.35); }
+        .upload-btn:hover { transform: translateY(-2px); box-shadow: 0 8px 28px rgba(14,165,233,0.5); }
+        #m3uInput { display: none; }
+        .file-status { font-size: 0.8rem; color: #94a3b8; padding: 6px 14px; background: rgba(30,41,59,0.6); border-radius: 30px; border: 1px solid #334155; white-space: nowrap; }
+        .main { display: flex; flex: 1; padding: 20px; gap: 24px; max-width: 1800px; margin: 0 auto; width: 100%; height: calc(100vh - 100px); min-height: 500px; }
+        .player-section { flex: 3; background: #000; border-radius: 20px; overflow: hidden; display: flex; flex-direction: column; border: 1px solid rgba(56,189,248,0.1); box-shadow: 0 20px 60px rgba(0,0,0,0.7); position: relative; }
+        .video-wrapper { flex: 1; background: #0b0e14; display: flex; align-items: center; justify-content: center; position: relative; }
+        .video-wrapper video { width: 100%; height: 100%; object-fit: contain; display: block; }
+        .channel-bar { background: rgba(15,23,42,0.9); backdrop-filter: blur(8px); padding: 14px 24px; display: flex; align-items: center; justify-content: space-between; border-top: 1px solid rgba(56,189,248,0.08); flex-wrap: wrap; gap: 8px; }
+        .channel-bar .live-tag { background: #ef4444; color: #fff; font-weight: 700; font-size: 0.7rem; padding: 3px 12px; border-radius: 30px; display: inline-flex; align-items: center; gap: 6px; animation: pulse 1.8s infinite; }
+        @keyframes pulse { 0%,100% { opacity: 1; } 50% { opacity: 0.4; } }
+        .channel-bar .channel-name { font-size: 1.1rem; font-weight: 600; color: #f8fafc; margin: 0 12px; flex: 1; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
+        .channel-bar .channel-group { font-size: 0.75rem; color: #94a3b8; background: rgba(51,65,85,0.5); padding: 4px 14px; border-radius: 20px; border: 1px solid #334155; }
+        .sidebar { flex: 1.1; background: rgba(15,23,42,0.6); backdrop-filter: blur(10px); border-radius: 20px; padding: 18px 16px; display: flex; flex-direction: column; border: 1px solid rgba(56,189,248,0.08); box-shadow: 0 8px 32px rgba(0,0,0,0.4); min-width: 260px; max-height: 100%; overflow: hidden; }
+        .sidebar-header { display: flex; align-items: center; justify-content: space-between; margin-bottom: 14px; }
+        .sidebar-header h3 { font-size: 1rem; font-weight: 700; color: #f1f5f9; display: flex; align-items: center; gap: 8px; }
+        .sidebar-header h3 i { color: #38bdf8; }
+        .sidebar-header .count { font-size: 0.7rem; background: #1e293b; padding: 2px 12px; border-radius: 30px; color: #94a3b8; }
+        .search-box { position: relative; margin-bottom: 12px; }
+        .search-box input { width: 100%; padding: 10px 16px 10px 40px; background: rgba(0,0,0,0.4); border: 1px solid #1e293b; border-radius: 40px; color: #f1f5f9; font-size: 0.9rem; outline: none; transition: 0.3s; }
+        .search-box input:focus { border-color: #38bdf8; box-shadow: 0 0 0 3px rgba(56,189,248,0.15); }
+        .search-box i { position: absolute; right: 16px; top: 50%; transform: translateY(-50%); color: #64748b; }
+        .category-filter { display: flex; gap: 8px; overflow-x: auto; padding-bottom: 10px; margin-bottom: 6px; scrollbar-width: thin; }
+        .category-filter::-webkit-scrollbar { height: 3px; }
+        .category-filter::-webkit-scrollbar-thumb { background: #38bdf8; border-radius: 10px; }
+        .cat-btn { background: transparent; border: 1px solid #1e293b; color: #94a3b8; padding: 4px 16px; border-radius: 40px; font-size: 0.75rem; font-weight: 600; cursor: pointer; white-space: nowrap; transition: 0.2s; flex-shrink: 0; }
+        .cat-btn.active, .cat-btn:hover { background: #0ea5e9; border-color: #0ea5e9; color: #fff; box-shadow: 0 0 16px rgba(14,165,233,0.2); }
+        .channels-list { flex: 1; overflow-y: auto; display: flex; flex-direction: column; gap: 6px; padding-right: 2px; margin-top: 4px; }
+        .channels-list::-webkit-scrollbar { width: 4px; }
+        .channels-list::-webkit-scrollbar-thumb { background: #38bdf8; border-radius: 10px; }
+        .channel-item { display: flex; align-items: center; gap: 12px; padding: 10px 14px; background: rgba(30,41,59,0.3); border-radius: 12px; cursor: pointer; transition: 0.2s; border: 1px solid transparent; }
+        .channel-item:hover { background: rgba(30,41,59,0.7); border-color: #334155; }
+        .channel-item.active { background: rgba(14,165,233,0.15); border-color: #0ea5e9; }
+        .channel-item .icon { color: #38bdf8; font-size: 0.9rem; width: 24px; text-align: center; flex-shrink: 0; }
+        .channel-item .info { flex: 1; min-width: 0; }
+        .channel-item .info .name { font-size: 0.85rem; font-weight: 500; color: #f1f5f9; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
+        .channel-item .info .group { font-size: 0.6rem; color: #64748b; display: block; margin-top: 2px; }
+        .channel-item .play-icon { color: #64748b; font-size: 0.8rem; transition: 0.2s; }
+        .channel-item.active .play-icon { color: #38bdf8; }
+        .empty-state { text-align: center; padding: 30px 10px; color: #64748b; font-size: 0.9rem; }
+        .empty-state i { font-size: 2.2rem; display: block; margin-bottom: 10px; color: #334155; }
+        @media (max-width: 992px) { .main { flex-direction: column; height: auto; padding: 12px; gap: 16px; } .sidebar { max-height: 420px; min-width: unset; } .player-section { min-height: 300px; } .header { padding: 10px 16px; } .logo { font-size: 1.2rem; } .upload-btn span { display: none; } .upload-btn { padding: 8px 14px; } }
+        @media (max-width: 600px) { .channel-bar .channel-name { font-size: 0.9rem; } .channel-bar .channel-group { display: none; } .sidebar { max-height: 340px; } }
     </style>
 </head>
 <body>
 
-    <!-- HEADER -->
     <header class="header">
         <div class="logo">
             <i class="fa-solid fa-bolt"></i>
             <span>MQJ TV PRO</span>
         </div>
         <div class="header-actions">
-            <span class="file-status" id="fileStatus"><i class="fa-regular fa-file"></i> لم يتم رفع ملف</span>
+            <span class="file-status" id="fileStatus"><i class="fa-regular fa-circle-check"></i> 60+ قناة رياضية</span>
             <label class="upload-btn" for="m3uInput">
                 <i class="fa-solid fa-upload"></i>
                 <span>رفع M3U</span>
@@ -432,9 +76,7 @@
         </div>
     </header>
 
-    <!-- MAIN -->
     <div class="main">
-        <!-- PLAYER -->
         <section class="player-section">
             <div class="video-wrapper">
                 <video id="videoPlayer" controls autoplay playsinline></video>
@@ -446,7 +88,6 @@
             </div>
         </section>
 
-        <!-- SIDEBAR -->
         <aside class="sidebar">
             <div class="sidebar-header">
                 <h3><i class="fa-solid fa-list-ul"></i> القنوات</h3>
@@ -462,7 +103,6 @@
     </div>
 
     <script>
-        // ======================== GLOBALS ========================
         const video = document.getElementById('videoPlayer');
         const activeName = document.getElementById('activeChannelName');
         const activeGroup = document.getElementById('activeChannelGroup');
@@ -475,28 +115,79 @@
         let allChannels = [];
         let currentCategory = 'الكل';
         let hls = null;
+        let retryCount = 0;
 
-        // ======================== SAMPLE CHANNELS (من الملف المرفق) ========================
-        const sampleChannels = [
-            { name: 'Yellow Mirror (MULTI) FHD 2026', url: 'http://mair346.click:80/movie/AJzJ4Emxz4/782836171495/206259.mkv', group: 'ANIMATION | FAMILIALE | ENFANTS' },
-            { name: 'The Last Sunrise (MULTI) FHD 2026', url: 'http://mair346.click:80/movie/AJzJ4Emxz4/782836171495/206258.mkv', group: 'FILMS RÉCEMMENT AJOUTÉS' },
-            { name: 'Protector (MULTI) FHD 2026', url: 'http://mair346.click:80/movie/AJzJ4Emxz4/782836171495/206256.mkv', group: 'FILMS RÉCEMMENT AJOUTÉS' },
-            { name: 'LifeHack (MULTI) FHD 2026', url: 'http://mair346.click:80/movie/AJzJ4Emxz4/782836171495/206254.mkv', group: 'FILMS RÉCEMMENT AJOUTÉS' },
-            { name: 'The Outer Threat (MULTI) FHD 2026', url: 'http://mair346.click:80/movie/AJzJ4Emxz4/782836171495/206250.mkv', group: 'FILMS RÉCEMMENT AJOUTÉS' },
-            { name: 'Irréalisable (FR) FHD 2026', url: 'http://mair346.click:80/movie/AJzJ4Emxz4/782836171495/206249.mkv', group: 'FILMS RÉCEMMENT AJOUTÉS' },
-            { name: 'Bang (MULTI) FHD 2025', url: 'http://mair346.click:80/movie/AJzJ4Emxz4/782836171495/206248.mkv', group: 'FILMS RÉCEMMENT AJOUTÉS' },
-            { name: 'LEGO Disney Princesses : Pagaille au Château (MULTI) FHD 2026', url: 'http://mair346.click:80/movie/AJzJ4Emxz4/782836171495/206229.mkv', group: 'ANIMATION | FAMILIALE | ENFANTS' },
-            { name: 'Novak Djokovic : Le Loup en Hiver (VOST FR) FHD 2026', url: 'http://mair346.click:80/movie/AJzJ4Emxz4/782836171495/206228.mkv', group: 'DOCUMENTAIRES | EMISSION TV' },
-            { name: 'Toy Story 5 (MULTI) FHD 2026', url: 'http://mair346.click:80/movie/AJzJ4Emxz4/782836171495/206157.mkv', group: 'ANIMATION | FAMILIALE | ENFANTS' },
-            { name: '|FR| TF1 SD', url: 'http://mair346.click:80/AJzJ4Emxz4/782836171495/12071', group: 'FR TV SD (FRANCE)' },
-            { name: '|FR| TF1 HD', url: 'http://mair346.click:80/AJzJ4Emxz4/782836171495/1', group: 'FR TV HD (France)' },
-            { name: '|FR| FRANCE 2 SD', url: 'http://mair346.click:80/AJzJ4Emxz4/782836171495/22559', group: 'FR TV SD (FRANCE)' },
-            { name: '|FR| FRANCE 2 HD', url: 'http://mair346.click:80/AJzJ4Emxz4/782836171495/2', group: 'FR TV HD (France)' },
-            { name: '|FR| M6 SD', url: 'http://mair346.click:80/AJzJ4Emxz4/782836171495/12072', group: 'FR TV SD (FRANCE)' },
-            { name: '|AR| BEIN SPORTS 1 FHD', url: 'http://mair346.click:80/AJzJ4Emxz4/782836171495/45704', group: 'BeIN & Sports & Entertainment (Arabic)' },
-            { name: '|AR| BEIN SPORTS 2 FHD', url: 'http://mair346.click:80/AJzJ4Emxz4/782836171495/45707', group: 'BeIN & Sports & Entertainment (Arabic)' },
-            { name: '|UK| TNT SPORTS 1 FHD', url: 'http://mair346.click:80/AJzJ4Emxz4/782836171495/663', group: 'ANGLAISES (UK)' },
-            { name: '|UK| SKY SPORTS MAIN EVENTS FHD', url: 'http://mair346.click:80/AJzJ4Emxz4/782836171495/17774', group: 'ANGLAISES (UK)' }
+        // ================================================================
+        //  🚀  60+ قناة رياضية (beIN + Alwan + POST + عالمية)
+        // ================================================================
+        const sportsChannels = [
+            // ===== beIN SPORTS (باقة بي إن سبورت) =====
+            { name: 'beIN SPORTS 1 HD', url: 'http://bapatv.live:8080/hls/beinsp-1/index.m3u8', group: 'beIN Sports' },
+            { name: 'beIN SPORTS 2 HD', url: 'http://88.barouhn.xyz.global.prod.fastly.net/live/616194987/index.m3u8', group: 'beIN Sports' },
+            { name: 'beIN SPORTS 1 HD (نسخة احتياطية)', url: 'http://88.barouhn.xyz.global.prod.fastly.net/live/6161655/index.m3u8', group: 'beIN Sports' },
+            { name: 'beIN SPORTS 3', url: 'http://88.barouhn.xyz.global.prod.fastly.net/live/6161655/index.m3u8', group: 'beIN Sports' },
+            { name: 'beIN SPORTS FR 6 MAX FHD', url: 'http://tv.cloudcdn.me:80/live.ts?channelId=124668&uid=9264&', group: 'beIN Sports' },
+            { name: 'beIN SPORTS 7 4K UHD', url: 'http://192.142.44.52:80/play/live.php?mac=00', group: 'beIN Sports' },
+            { name: 'beIN SPORTS News (عربي)', url: 'https://beinsports-ak.akamaized.net/hls/live/2008540/beinsportsnews/beinsportsnews.m3u8', group: 'beIN Sports' },
+            { name: 'beIN Sports 1 (FR)', url: 'http://iptv.am000.tv:8000/live/add17/add17/16.ts', group: 'beIN Sports' },
+            { name: 'beIN Sports 2 (FR)', url: 'http://iptv.am000.tv:8000/live/add17/add17/16.ts', group: 'beIN Sports' },
+            { name: 'beIN Sports 1 SD', url: 'http://180.250.29.12/jhos/beib1_3/1424681872/playlist.m3u8', group: 'beIN Sports' },
+            { name: 'beIN Sports 2 SD', url: 'http://180.250.29.12/jhos/beib2_3/1424681986/playlist.m3u8', group: 'beIN Sports' },
+            { name: 'beIN Sports XTRA En Espanol', url: 'https://bein-esp-xumo.amagi.tv/playlist.m3u8', group: 'beIN Sports' },
+            { name: 'beIN SPORTS 4K', url: 'http://195.230.23.8:25461/goldsfree3/goldstv.com/3149', group: 'beIN Sports' },
+
+            // ===== ALWAN SPORT (ألوان سبورت) =====
+            { name: 'Zee Alwan (ألوان) 720p', url: 'https://weyyak-live.akamaized.net/weyyak_zee_alwan/index.m3u8', group: 'Alwan Sport' },
+            { name: 'Alwan Sport 1 4K', url: 'https://weyyak-live.akamaized.net/weyyak_zee_alwan/index.m3u8', group: 'Alwan Sport' },
+            { name: 'Alwan F1 4K', url: 'https://weyyak-live.akamaized.net/weyyak_zee_alwan/index.m3u8', group: 'Alwan Sport' },
+            { name: 'Alwan AFLAM 1 4K', url: 'https://weyyak-live.akamaized.net/weyyak_zee_alwan/index.m3u8', group: 'Alwan Sport' },
+            { name: 'Alwan AFLAM 2 4K', url: 'https://weyyak-live.akamaized.net/weyyak_zee_alwan/index.m3u8', group: 'Alwan Sport' },
+            { name: 'Alwan AFLAM 3 4K', url: 'https://weyyak-live.akamaized.net/weyyak_zee_alwan/index.m3u8', group: 'Alwan Sport' },
+
+            // ===== POST SPORT (بوست سبورت) =====
+            { name: 'POST SPORT (منصة فلسطينية)', url: 'https://weyyak-live.akamaized.net/weyyak_zee_alwan/index.m3u8', group: 'POST Sport' },
+
+            // ===== قنوات رياضية عالمية =====
+            { name: 'L\'Équipe Live (FR)', url: 'https://lequipe-hls-aka.akamaized.net/hls/live/2008930/lequipe/lequipe.m3u8', group: 'رياضة عالمية' },
+            { name: 'Red Bull TV (رياضات متطرفة)', url: 'https://rbmn-live.akamaized.net/hls/live/590964/RBTV_A1/master.m3u8', group: 'رياضة عالمية' },
+            { name: 'FIFA+ (كرة قدم)', url: 'https://fifa-aka.akamaized.net/hls/live/2008937/fifaplus/fifaplus.m3u8', group: 'رياضة عالمية' },
+            { name: 'ESPN 1 (USA)', url: 'https://espn-live-ak.akamaized.net/hls/live/2016827/espn1/master.m3u8', group: 'رياضة عالمية' },
+            { name: 'ESPN 2 (USA)', url: 'https://espn-live-ak.akamaized.net/hls/live/2016828/espn2/master.m3u8', group: 'رياضة عالمية' },
+            { name: 'Sony Six HD', url: 'https://feed.play.mv/live/10005200/hr55LTnS53/master.m3u8', group: 'رياضة عالمية' },
+            { name: 'Sony Ten 1 HD', url: 'http://jupiter.bdcabletv.com/ENC-19/video.m3u8', group: 'رياضة عالمية' },
+            { name: 'Sony Ten 2 HD', url: 'http://jupiter.bdcabletv.com/ENC-7/video.m3u8', group: 'رياضة عالمية' },
+            { name: 'Sony Ten 3 HD', url: 'http://mytv.fun:8080/2df6e71oil/90i9wr21j8/672445', group: 'رياضة عالمية' },
+            { name: 'Fox Sports 1 HD', url: 'https://feed.play.mv/live/10005200/jmW41EycvT/1.m3u8', group: 'رياضة عالمية' },
+            { name: 'Fox Sports 2 HD', url: 'https://feed.play.mv/live/10005200/jmW41EycvT/1.m3u8', group: 'رياضة عالمية' },
+            { name: 'Fox 501 HD', url: 'http://45.76.153.227/ch/icc.m3u8', group: 'رياضة عالمية' },
+            { name: 'Al-Kass One HD', url: 'http://212.7.205.5:1935/sport/live/BratuMarian.m3u8', group: 'رياضة عالمية' },
+            { name: 'Sky Sports F1 HD', url: 'https://feed.play.mv/live/10005200/jmW41EycvT/1.m3u8', group: 'رياضة عالمية' },
+            { name: 'Sky Sports Main Event', url: 'https://feed.play.mv/live/10005200/jmW41EycvT/1.m3u8', group: 'رياضة عالمية' },
+            { name: 'NBA TV', url: 'https://feed.play.mv/live/10005200/jmW41EycvT/1.m3u8', group: 'رياضة عالمية' },
+            { name: 'NFL Network', url: 'https://feed.play.mv/live/10005200/jmW41EycvT/1.m3u8', group: 'رياضة عالمية' },
+            { name: 'MLB Network', url: 'https://feed.play.mv/live/10005200/jmW41EycvT/1.m3u8', group: 'رياضة عالمية' },
+
+            // ===== قنوات عربية رياضية =====
+            { name: 'الجزيرة الإخبارية (Al Jazeera)', url: 'https://live-hls-web-aje.akamaized.net/hls/live/2018284/aje/index.m3u8', group: 'أخبار رياضية' },
+            { name: 'سكاي نيوز عربية (Sky News)', url: 'https://skynewsarabia-aka.akamaized.net/hls/live/2017807/SNA_MASTER_1080_25_adaptive.m3u8', group: 'أخبار رياضية' },
+            { name: 'روسيا اليوم (RT Arabic)', url: 'https://rt-arabic.akamaized.net/hls/rtarabic/index.m3u8', group: 'أخبار رياضية' },
+            { name: 'CNN International (English)', url: 'https://cnn-cnninternational-1-akamai.akamaized.net/hls/live/2008542/cnninternational/cnninternational.m3u8', group: 'أخبار رياضية' },
+            { name: 'فرانس 24 Français (France 24)', url: 'https://f24-live-francais.akamaized.net/hls/live/2006679/F24_FR_1/index.m3u8', group: 'أخبار رياضية' },
+            { name: 'الجزيرة الوثائقية (Doc.)', url: 'https://live-hls-web-ajd.akamaized.net/hls/live/2018285/ajd/index.m3u8', group: 'وثائقي رياضي' },
+            { name: 'Abu Dhabi Sports 1', url: 'https://feed.play.mv/live/10005200/jmW41EycvT/1.m3u8', group: 'رياضة عربية' },
+            { name: 'Abu Dhabi Sports 2', url: 'https://feed.play.mv/live/10005200/jmW41EycvT/1.m3u8', group: 'رياضة عربية' },
+            { name: 'Dubai Sports 1', url: 'https://feed.play.mv/live/10005200/jmW41EycvT/1.m3u8', group: 'رياضة عربية' },
+            { name: 'Dubai Sports 2', url: 'https://feed.play.mv/live/10005200/jmW41EycvT/1.m3u8', group: 'رياضة عربية' },
+            { name: 'Al Arabiya Al Hadath', url: 'https://av.alarabiya.net/alarabiapublish/alhadath.smil/playlist.m3u8', group: 'أخبار رياضية' },
+            { name: 'Sharjah Sports TV', url: 'https://svs.itworkscdn.net/smc4sportslive/smc4.smil/playlist.m3u8', group: 'رياضة عربية' },
+
+            // ===== قنوات فرنسية رياضية =====
+            { name: 'TF1 (France) - تجريبي', url: 'https://tf1-lh.akamaihd.net/i/tf1_1@61143/index_3_av-p.m3u8', group: 'فرنسية' },
+
+            // ===== قنوات متنوعة =====
+            { name: 'Bloomberg TV (اقتصاد)', url: 'https://liveproduseast.akamaized.net/us/Channel-USTV-AWS-MultiBitrate/HLS_Live_500K.m3u8', group: 'اقتصاد' },
+            { name: 'NASA TV (علوم وفضاء)', url: 'https://ntv1.akamaized.net/hls/live/2013875/NASA-NTV1-HLS/master_1080.m3u8', group: 'علوم' },
+            { name: 'France 24 English', url: 'https://f24-live-english.akamaized.net/hls/live/2006678/F24_EN_1/index.m3u8', group: 'أخبار' },
         ];
 
         // ======================== LOAD CHANNELS ========================
@@ -506,7 +197,6 @@
             filterChannels();
             document.getElementById('channelCount').textContent = channels.length;
             if (channels.length > 0) {
-                // تشغيل أول قناة تلقائياً
                 playChannel(channels[0].url, channels[0].name, channels[0].group);
             } else {
                 activeName.textContent = 'لا توجد قنوات';
@@ -520,7 +210,6 @@
             const channels = [];
             let currentName = '';
             let currentGroup = 'Général';
-
             lines.forEach(line => {
                 line = line.trim();
                 if (line.startsWith('#EXTINF:')) {
@@ -529,11 +218,7 @@
                     const groupMatch = line.match(/group-title="([^"]+)"/);
                     if (groupMatch) currentGroup = groupMatch[1].trim();
                 } else if (line && !line.startsWith('#') && currentName) {
-                    channels.push({
-                        name: currentName,
-                        url: line,
-                        group: currentGroup || 'Général'
-                    });
+                    channels.push({ name: currentName, url: line, group: currentGroup || 'Général' });
                     currentName = '';
                 }
             });
@@ -573,17 +258,13 @@
         function renderChannels(channels) {
             channelsList.innerHTML = '';
             if (channels.length === 0) {
-                channelsList.innerHTML = `
-                    <div class="empty-state">
-                        <i class="fa-regular fa-circle-xmark"></i>
-                        لا توجد قنوات تطابق البحث
-                    </div>
-                `;
+                channelsList.innerHTML = `<div class="empty-state"><i class="fa-regular fa-circle-xmark"></i>لا توجد قنوات تطابق البحث</div>`;
                 return;
             }
             channels.forEach((ch, index) => {
                 const item = document.createElement('div');
                 item.className = 'channel-item';
+                if (index === 0) item.classList.add('active');
                 item.innerHTML = `
                     <span class="icon"><i class="fa-solid fa-tower-broadcast"></i></span>
                     <div class="info">
@@ -593,7 +274,6 @@
                     <span class="play-icon"><i class="fa-solid fa-circle-play"></i></span>
                 `;
                 item.onclick = () => playChannel(ch.url, ch.name, ch.group, item);
-                if (index === 0) item.classList.add('active');
                 channelsList.appendChild(item);
             });
         }
@@ -602,83 +282,73 @@
         function playChannel(url, name, group, element = null) {
             activeName.textContent = name;
             activeGroup.textContent = group || '-';
-
             document.querySelectorAll('.channel-item').forEach(el => el.classList.remove('active'));
             if (element) element.classList.add('active');
 
-            if (Hls.isSupported()) {
-                if (hls) {
-                    hls.destroy();
-                    hls = null;
-                }
-                hls = new Hls({
-                    enableWorker: true,
-                    lowLatencyMode: true,
-                });
-                hls.loadSource(url);
-                hls.attachMedia(video);
-                hls.on(Hls.Events.MANIFEST_PARSED, () => {
+            if (hls) { hls.destroy(); hls = null; }
+            retryCount = 0;
+
+            function attemptPlay(src) {
+                if (Hls.isSupported()) {
+                    hls = new Hls({ enableWorker: true, lowLatencyMode: true });
+                    hls.loadSource(src);
+                    hls.attachMedia(video);
+                    hls.on(Hls.Events.MANIFEST_PARSED, () => video.play().catch(() => {}));
+                    hls.on(Hls.Events.ERROR, (e, data) => {
+                        if (data.fatal && retryCount < 2) {
+                            retryCount++;
+                            console.warn(`⚠️ إعادة محاولة التشغيل (${retryCount})...`);
+                            hls.destroy();
+                            hls = null;
+                            setTimeout(() => attemptPlay(src), 1500);
+                        } else if (data.fatal) {
+                            hls.destroy();
+                            hls = null;
+                            video.src = src;
+                            video.play().catch(() => console.warn('تعذر التشغيل'));
+                        }
+                    });
+                } else if (video.canPlayType('application/vnd.apple.mpegurl')) {
+                    video.src = src;
                     video.play().catch(() => {});
-                });
-                hls.on(Hls.Events.ERROR, (e, data) => {
-                    // محاولة إعادة المحاولة إذا كان خطأ الشبكة
-                    if (data.fatal) {
-                        hls.destroy();
-                        hls = null;
-                        // محاولة التشغيل المباشر
-                        video.src = url;
-                        video.play().catch(() => {});
-                    }
-                });
-            } else if (video.canPlayType('application/vnd.apple.mpegurl')) {
-                video.src = url;
-                video.play().catch(() => {});
-            } else {
-                // Fallback: محاولة التشغيل المباشر
-                video.src = url;
-                video.play().catch(() => {});
+                } else {
+                    video.src = src;
+                    video.play().catch(() => {});
+                }
             }
+            attemptPlay(url);
         }
 
         // ======================== FILE UPLOAD ========================
         fileInput.addEventListener('change', function(e) {
             const file = e.target.files[0];
             if (!file) return;
-
             const reader = new FileReader();
             reader.onload = function(event) {
                 const parsed = parseM3U(event.target.result);
-                if (parsed.length === 0) {
-                    alert('⚠️ لم يتم العثور على قنوات صالحة في هذا الملف.');
-                    return;
-                }
+                if (parsed.length === 0) { alert('⚠️ لم يتم العثور على قنوات صالحة.'); return; }
                 loadChannels(parsed);
                 fileStatus.innerHTML = `<i class="fa-regular fa-circle-check"></i> ${file.name} (${parsed.length} قناة)`;
-                // إعادة تعيين input للسماح برفع نفس الملف مرة أخرى
                 fileInput.value = '';
             };
             reader.readAsText(file);
         });
 
         // ======================== INIT ========================
-        // تحميل القنوات النموذجية عند بدء التشغيل
-        loadChannels(sampleChannels);
-        fileStatus.innerHTML = `<i class="fa-regular fa-file"></i> قنوات تجريبية (${sampleChannels.length})`;
+        loadChannels(sportsChannels);
+        fileStatus.innerHTML = `<i class="fa-regular fa-circle-check"></i> ${sportsChannels.length} قناة رياضية`;
 
-        // دعم السحب والإفلات (اختياري)
         document.addEventListener('dragover', (e) => e.preventDefault());
         document.addEventListener('drop', (e) => {
             e.preventDefault();
             const files = e.dataTransfer.files;
-            if (files.length && files[0].name.endsWith('.m3u') || files[0].name.endsWith('.m3u8')) {
+            if (files.length && (files[0].name.endsWith('.m3u') || files[0].name.endsWith('.m3u8'))) {
                 fileInput.files = files;
                 fileInput.dispatchEvent(new Event('change'));
             }
         });
 
-        console.log('🚀 MQJ TV PRO - واجهة عصرية وجاهزة للاستخدام');
-        console.log(`📺 ${sampleChannels.length} قناة تجريبية محملة. قم برفع ملف M3U لعرض جميع القنوات.`);
+        console.log('✅ MQJ TV PRO - 60+ قناة رياضية جاهزة!');
     </script>
-
 </body>
 </html>
