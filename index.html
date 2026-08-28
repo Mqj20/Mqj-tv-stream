@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>MQJ TV PRO - Proxy Enabled</title>
+    <title>MQJ TV PRO - Xtream Player</title>
     
     <!-- Video.js CSS & FontAwesome -->
     <link href="https://vjs.zencdn.net/8.10.0/video-js.css" rel="stylesheet" />
@@ -57,38 +57,9 @@
             -webkit-text-fill-color: transparent;
         }
 
-        .header-actions {
-            display: flex;
-            align-items: center;
-            gap: 14px;
-        }
-
-        .upload-btn {
-            background: linear-gradient(135deg, #0ea5e9, #6366f1);
-            color: #fff;
-            border: none;
-            padding: 10px 22px;
-            border-radius: 40px;
-            font-weight: 600;
-            font-size: 0.9rem;
-            display: flex;
-            align-items: center;
-            gap: 10px;
-            cursor: pointer;
-            transition: 0.25s;
-            box-shadow: 0 4px 16px rgba(14, 165, 233, 0.35);
-        }
-        .upload-btn:hover {
-            transform: translateY(-2px);
-            box-shadow: 0 8px 28px rgba(14, 165, 233, 0.5);
-        }
-        #m3uInput {
-            display: none;
-        }
-
         .file-status {
             font-size: 0.8rem;
-            color: #94a3b8;
+            color: #38bdf8;
             padding: 6px 14px;
             background: rgba(30, 41, 59, 0.6);
             border-radius: 30px;
@@ -133,16 +104,6 @@
             width: 100% !important;
             height: 100% !important;
         }
-        .vjs-theme-custom .vjs-big-play-button {
-            background-color: rgba(14, 165, 233, 0.8) !important;
-            border: none !important;
-            border-radius: 50% !important;
-            width: 2em !important;
-            height: 2em !important;
-            line-height: 2em !important;
-            margin-top: -1em !important;
-            margin-left: -1em !important;
-        }
 
         .channel-bar {
             background: rgba(15, 23, 42, 0.9);
@@ -165,11 +126,6 @@
             display: inline-flex;
             align-items: center;
             gap: 6px;
-            animation: pulse 1.8s infinite;
-        }
-        @keyframes pulse {
-            0%, 100% { opacity: 1; }
-            50% { opacity: 0.4; }
         }
         .channel-bar .channel-name {
             font-size: 1.1rem;
@@ -180,14 +136,6 @@
             white-space: nowrap;
             overflow: hidden;
             text-overflow: ellipsis;
-        }
-        .channel-bar .channel-group {
-            font-size: 0.75rem;
-            color: #94a3b8;
-            background: rgba(51, 65, 85, 0.5);
-            padding: 4px 14px;
-            border-radius: 20px;
-            border: 1px solid #334155;
         }
 
         .sidebar {
@@ -241,11 +189,9 @@
             color: #f1f5f9;
             font-size: 0.9rem;
             outline: none;
-            transition: 0.3s;
         }
         .search-box input:focus {
             border-color: #38bdf8;
-            box-shadow: 0 0 0 3px rgba(56, 189, 248, 0.15);
         }
         .search-box i {
             position: absolute;
@@ -263,9 +209,6 @@
             margin-bottom: 6px;
             scrollbar-width: thin;
         }
-        .category-filter::-webkit-scrollbar { height: 3px; }
-        .category-filter::-webkit-scrollbar-thumb { background: #38bdf8; border-radius: 10px; }
-        
         .cat-btn {
             background: transparent;
             border: 1px solid #1e293b;
@@ -283,7 +226,6 @@
             background: #0ea5e9;
             border-color: #0ea5e9;
             color: #fff;
-            box-shadow: 0 0 16px rgba(14, 165, 233, 0.2);
         }
 
         .channels-list {
@@ -295,8 +237,6 @@
             padding-right: 2px;
             margin-top: 4px;
         }
-        .channels-list::-webkit-scrollbar { width: 4px; }
-        .channels-list::-webkit-scrollbar-thumb { background: #38bdf8; border-radius: 10px; }
 
         .channel-item {
             display: flex;
@@ -317,30 +257,10 @@
             background: rgba(14, 165, 233, 0.15);
             border-color: #0ea5e9;
         }
-        .channel-item .icon {
-            color: #38bdf8;
-            font-size: 0.9rem;
-            width: 24px;
-            text-align: center;
-            flex-shrink: 0;
-        }
-        .channel-item .info {
-            flex: 1;
-            min-width: 0;
-        }
         .channel-item .info .name {
             font-size: 0.85rem;
             font-weight: 500;
             color: #f1f5f9;
-            white-space: nowrap;
-            overflow: hidden;
-            text-overflow: ellipsis;
-        }
-        .channel-item .info .group {
-            font-size: 0.6rem;
-            color: #64748b;
-            display: block;
-            margin-top: 2px;
         }
 
         .empty-state {
@@ -348,21 +268,6 @@
             padding: 30px 10px;
             color: #64748b;
             font-size: 0.9rem;
-        }
-
-        @media (max-width: 992px) {
-            .main {
-                flex-direction: column;
-                height: auto;
-                padding: 12px;
-                gap: 16px;
-            }
-            .sidebar { max-height: 420px; min-width: unset; }
-            .player-section { min-height: 300px; }
-            .header { padding: 10px 16px; }
-            .logo { font-size: 1.2rem; }
-            .upload-btn span { display: none; }
-            .upload-btn { padding: 8px 14px; }
         }
     </style>
 </head>
@@ -373,36 +278,22 @@
             <i class="fa-solid fa-bolt"></i>
             <span>MQJ TV PRO</span>
         </div>
-        <div class="header-actions">
-            <span class="file-status" id="fileStatus"><i class="fa-regular fa-circle-check"></i> 65+ قناة رياضية</span>
-            <label class="upload-btn" for="m3uInput">
-                <i class="fa-solid fa-upload"></i>
-                <span>رفع M3U</span>
-            </label>
-            <input type="file" id="m3uInput" accept=".m3u,.m3u8">
+        <div>
+            <span class="file-status" id="fileStatus"><i class="fa-solid fa-spinner fa-spin"></i> جاري الاتصال بالسيرفر...</span>
         </div>
     </header>
 
     <div class="main">
-        <!-- PLAYER -->
         <section class="player-section">
             <div class="video-wrapper">
-                <video 
-                    id="videoPlayer" 
-                    class="video-js vjs-default-skin vjs-big-play-centered vjs-theme-custom" 
-                    controls 
-                    preload="auto" 
-                    playsinline>
-                </video>
+                <video id="videoPlayer" class="video-js vjs-default-skin vjs-big-play-centered" controls preload="auto" playsinline></video>
             </div>
             <div class="channel-bar">
                 <span class="live-tag"><i class="fa-solid fa-circle"></i> LIVE</span>
                 <span class="channel-name" id="activeChannelName">اختر قناة لتشغيلها</span>
-                <span class="channel-group" id="activeChannelGroup">-</span>
             </div>
         </section>
 
-        <!-- SIDEBAR -->
         <aside class="sidebar">
             <div class="sidebar-header">
                 <h3><i class="fa-solid fa-list-ul"></i> القنوات</h3>
@@ -417,142 +308,65 @@
         </aside>
     </div>
 
-    <!-- Video.js Library -->
     <script src="https://vjs.zencdn.net/8.10.0/video.min.js"></script>
 
     <script>
         const activeName = document.getElementById('activeChannelName');
-        const activeGroup = document.getElementById('activeChannelGroup');
         const channelsList = document.getElementById('channelsList');
         const categoryFilter = document.getElementById('categoryFilter');
         const searchInput = document.getElementById('searchInput');
         const fileStatus = document.getElementById('fileStatus');
-        const fileInput = document.getElementById('m3uInput');
 
         let player = null;
         let allChannels = [];
         let currentCategory = 'الكل';
-        let currentOriginalUrl = '';
-        let proxyIndex = 0;
 
-        // قائمة البروكسيات المجانية المدمجة لتمرير الروابط
-        const proxies = [
-            url => 'https://corsproxy.io/?' + encodeURIComponent(url),
-            url => 'https://api.allorigins.win/raw?url=' + encodeURIComponent(url),
-            url => 'https://thingproxy.freeboard.io/fetch/' + url
-        ];
+        // بيانات سيرفر Xtream المرفق
+        const xtreamServer = {
+            url: 'http://sansatplus.net:88',
+            user: 'GvDEv9CPNCnm0gO',
+            pass: 'HTGbJ8jjLAdaAvc'
+        };
 
-        // قائمة الـ 65+ قناة
-        const sportsChannels = [
-            // ===== beIN SPORTS =====
-            { name: 'beIN SPORTS 1 HD (عربي)', url: 'http://88.barouhn.xyz.global.prod.fastly.net/live/6161655/index.m3u8', group: 'beIN Sports' },
-            { name: 'beIN SPORTS 2 HD (عربي)', url: 'http://88.barouhn.xyz.global.prod.fastly.net/live/616194987/index.m3u8', group: 'beIN Sports' },
-            { name: 'beIN SPORTS 3 HD', url: 'http://tv.cloudcdn.me:80/live.ts?channelId=124668&uid=9264&deviceMac=00:1A:79:03:74:E9', group: 'beIN Sports' },
-            { name: 'beIN SPORTS 4 HD', url: 'http://tv.cloudcdn.me:80/live.ts?channelId=124669&uid=9264&deviceMac=00:1A:79:03:74:E9', group: 'beIN Sports' },
-            { name: 'beIN SPORTS 5 HD', url: 'http://tv.cloudcdn.me:80/live.ts?channelId=124670&uid=9264&deviceMac=00:1A:79:03:74:E9', group: 'beIN Sports' },
-            { name: 'beIN SPORTS 6 MAX FHD', url: 'http://tv.cloudcdn.me:80/live.ts?channelId=124671&uid=9264&deviceMac=00:1A:79:03:74:E9', group: 'beIN Sports' },
-            { name: 'beIN SPORTS 7 4K', url: 'http://195.230.23.8:25461/goldsfree3/goldstv.com/3149', group: 'beIN Sports' },
-            { name: 'beIN SPORTS News', url: 'https://beinsports-ak.akamaized.net/hls/live/2008540/beinsportsnews/beinsportsnews.m3u8', group: 'beIN Sports' },
-            { name: 'beIN SPORTS GLOBAL', url: 'http://tv.cloudcdn.me:80/live.ts?channelId=124643&uid=9264&deviceMac=00:1A:79:03:74:E9', group: 'beIN Sports' },
-            { name: 'beIN SPORTS MAX 1', url: 'http://tv.cloudcdn.me:80/live.ts?channelId=125098&uid=9264&deviceMac=00:1A:79:03:74:E9', group: 'beIN Sports' },
-            { name: 'beIN SPORTS MAX 2', url: 'http://tv.cloudcdn.me:80/live.ts?channelId=125094&uid=9264&deviceMac=00:1A:79:03:74:E9', group: 'beIN Sports' },
-            { name: 'beIN SPORTS FR 1', url: 'http://tv.cloudcdn.me:80/live.ts?channelId=125089&uid=9264&deviceMac=00:1A:79:03:74:E9', group: 'beIN Sports' },
-            { name: 'beIN SPORTS FR 2', url: 'http://tv.cloudcdn.me:80/live.ts?channelId=125090&uid=9264&deviceMac=00:1A:79:03:74:E9', group: 'beIN Sports' },
-            { name: 'beIN SPORTS (بديل)', url: 'http://23.237.104.106:8080/USA_BEIN/index.m3u8', group: 'beIN Sports' },
-
-            // ===== Alwan Sport =====
-            { name: 'Zee Alwan (ألوان) 720p', url: 'https://weyyak-live.akamaized.net/weyyak_zee_alwan/index.m3u8', group: 'Alwan Sport' },
-            { name: 'Alwan Sport 1', url: 'https://weyyak-live.akamaized.net/weyyak_zee_alwan/index.m3u8', group: 'Alwan Sport' },
-            { name: 'Alwan F1 4K', url: 'https://weyyak-live.akamaized.net/weyyak_zee_alwan/index.m3u8', group: 'Alwan Sport' },
-            { name: 'Alwan AFLAM 1', url: 'https://weyyak-live.akamaized.net/weyyak_zee_alwan/index.m3u8', group: 'Alwan Sport' },
-            { name: 'Alwan AFLAM 2', url: 'https://weyyak-live.akamaized.net/weyyak_zee_alwan/index.m3u8', group: 'Alwan Sport' },
-
-            // ===== POST Sport =====
-            { name: 'POST SPORT HD', url: 'https://weyyak-live.akamaized.net/weyyak_zee_alwan/index.m3u8', group: 'POST Sport' },
-
-            // ===== قنوات عالمية =====
-            { name: 'L\'Équipe Live (FR)', url: 'https://lequipe-hls-aka.akamaized.net/hls/live/2008930/lequipe/lequipe.m3u8', group: 'رياضة عالمية' },
-            { name: 'Red Bull TV', url: 'https://rbmn-live.akamaized.net/hls/live/590964/RBTV_A1/master.m3u8', group: 'رياضة عالمية' },
-            { name: 'FIFA+', url: 'https://fifa-aka.akamaized.net/hls/live/2008937/fifaplus/fifaplus.m3u8', group: 'رياضة عالمية' },
-            { name: 'ESPN 1 (USA)', url: 'https://espn-live-ak.akamaized.net/hls/live/2016827/espn1/master.m3u8', group: 'رياضة عالمية' },
-            { name: 'ESPN 2 (USA)', url: 'https://espn-live-ak.akamaized.net/hls/live/2016828/espn2/master.m3u8', group: 'رياضة عالمية' },
-            { name: 'Fox Sports 1', url: 'https://austchannel-live.akamaized.net/hls/live/2002736/austchannel-sport/master.m3u8', group: 'رياضة عالمية' },
-            { name: 'Fox Sports 2', url: 'https://feed.play.mv/live/10005200/jmW41EycvT/1.m3u8', group: 'رياضة عالمية' },
-            { name: 'Sony Six HD', url: 'https://feed.play.mv/live/10005200/hr55LTnS53/master.m3u8', group: 'رياضة عالمية' },
-            { name: 'Sony Ten 1 HD', url: 'http://jupiter.bdcabletv.com/ENC-19/video.m3u8', group: 'رياضة عالمية' },
-            { name: 'Sony Ten 2 HD', url: 'http://jupiter.bdcabletv.com/ENC-7/video.m3u8', group: 'رياضة عالمية' },
-            { name: 'Sony Ten 3 HD', url: 'http://mytv.fun:8080/2df6e71oil/90i9wr21j8/672445', group: 'رياضة عالمية' },
-            { name: 'NBA TV', url: 'https://feed.play.mv/live/10005200/jmW41EycvT/1.m3u8', group: 'رياضة عالمية' },
-            { name: 'NFL Network', url: 'https://service-stitcher.clusters.pluto.tv/stitch/hls/channel/5ced7d5df64be98e07ed47b6/master.m3u8', group: 'رياضة عالمية' },
-            { name: 'MLB Network', url: 'https://hlslive-akc-med1.media.mlb.com/ls01/mlbnetwork/NETWORK_LINEAR_1/master_wired.m3u8', group: 'رياضة عالمية' },
-            { name: 'Sky Sports F1', url: 'https://feed.play.mv/live/10005200/jmW41EycvT/1.m3u8', group: 'رياضة عالمية' },
-
-            // ===== رياضة عربية =====
-            { name: 'Abu Dhabi Sports 1', url: 'https://feed.play.mv/live/10005200/jmW41EycvT/1.m3u8', group: 'رياضة عربية' },
-            { name: 'Abu Dhabi Sports 2', url: 'https://feed.play.mv/live/10005200/jmW41EycvT/1.m3u8', group: 'رياضة عربية' },
-            { name: 'Dubai Sports 1', url: 'https://feed.play.mv/live/10005200/jmW41EycvT/1.m3u8', group: 'رياضة عربية' },
-            { name: 'Dubai Sports 2', url: 'https://feed.play.mv/live/10005200/jmW41EycvT/1.m3u8', group: 'رياضة عربية' },
-            { name: 'Sharjah Sports TV', url: 'https://svs.itworkscdn.net/smc4sportslive/smc4.smil/playlist.m3u8', group: 'رياضة عربية' },
-            { name: 'Al-Kass One HD', url: 'http://212.7.205.5:1935/sport/live/BratuMarian.m3u8', group: 'رياضة عربية' },
-
-            // ===== أخبار رياضية =====
-            { name: 'الجزيرة الإخبارية', url: 'https://live-hls-web-aje.akamaized.net/hls/live/2018284/aje/index.m3u8', group: 'أخبار' },
-            { name: 'سكاي نيوز عربية', url: 'https://skynewsarabia-aka.akamaized.net/hls/live/2017807/SNA_MASTER_1080_25_adaptive.m3u8', group: 'أخبار' },
-            { name: 'روسيا اليوم (RT)', url: 'https://rt-arabic.akamaized.net/hls/rtarabic/index.m3u8', group: 'أخبار' },
-            { name: 'CNN International', url: 'https://cnn-cnninternational-1-akamai.akamaized.net/hls/live/2008542/cnninternational/cnninternational.m3u8', group: 'أخبار' },
-            { name: 'فرانس 24 Français', url: 'https://f24-live-francais.akamaized.net/hls/live/2006679/F24_FR_1/index.m3u8', group: 'أخبار' },
-            { name: 'France 24 English', url: 'https://f24-live-english.akamaized.net/hls/live/2006678/F24_EN_1/index.m3u8', group: 'أخبار' },
-            { name: 'Al Arabiya Al Hadath', url: 'https://av.alarabiya.net/alarabiapublish/alhadath.smil/playlist.m3u8', group: 'أخبار' },
-
-            // ===== قنوات فرنسية =====
-            { name: 'TF1 (France)', url: 'https://tf1-lh.akamaihd.net/i/tf1_1@61143/index_3_av-p.m3u8', group: 'فرنسية' },
-
-            // ===== متنوعة =====
-            { name: 'Bloomberg TV', url: 'https://liveproduseast.akamaized.net/us/Channel-USTV-AWS-MultiBitrate/HLS_Live_500K.m3u8', group: 'اقتصاد' },
-            { name: 'NASA TV', url: 'https://ntv1.akamaized.net/hls/live/2013875/NASA-NTV1-HLS/master_1080.m3u8', group: 'علوم' },
-            { name: 'الجزيرة الوثائقية', url: 'https://live-hls-web-ajd.akamaized.net/hls/live/2018285/ajd/index.m3u8', group: 'وثائقي' },
-        ];
+        const proxy = url => 'https://corsproxy.io/?' + encodeURIComponent(url);
 
         document.addEventListener('DOMContentLoaded', () => {
-            player = videojs('videoPlayer', {
-                autoplay: true,
-                controls: true,
-                liveui: true,
-                responsive: true,
-                fluid: true
-            });
-
-            // معالجة الأخطاء التلقائية والتبديل بين البروكسيات
-            player.on('error', () => {
-                if (proxyIndex < proxies.length - 1) {
-                    proxyIndex++;
-                    console.warn(`فشل المشغل، التبديل إلى بروكسي رقم ${proxyIndex + 1}`);
-                    const newUrl = proxies[proxyIndex](currentOriginalUrl);
-                    player.src({ src: newUrl, type: 'application/x-mpegURL' });
-                    player.play();
-                } else if (proxyIndex === proxies.length - 1) {
-                    proxyIndex++;
-                    console.warn('جاري تجربة الرابط المباشر بدون بروكسي كخيار أخير');
-                    player.src({ src: currentOriginalUrl, type: 'application/x-mpegURL' });
-                    player.play();
-                }
-            });
-
-            loadChannels(sportsChannels);
+            player = videojs('videoPlayer', { autoplay: true, controls: true, responsive: true, fluid: true });
+            loadXtreamChannels();
         });
 
-        function loadChannels(channels) {
-            allChannels = channels;
-            renderCategories();
-            filterChannels();
-            document.getElementById('channelCount').textContent = channels.length;
-            if (channels.length > 0) {
-                playChannel(channels[0].url, channels[0].name, channels[0].group);
+        async function loadXtreamChannels() {
+            try {
+                // جلب قائمة قنوات البث المباشر المتاحة في السيرفر عبر الـ API
+                const apiUrl = `${xtreamServer.url}/player_api.php?username=${xtreamServer.user}&password=${xtreamServer.pass}&action=get_live_streams`;
+                const response = await fetch(proxy(apiUrl));
+                const data = await response.json();
+
+                if (Array.isArray(data) && data.length > 0) {
+                    allChannels = data.map(ch => ({
+                        name: ch.name,
+                        // بناء رابط البث المباشر الخاص بكل قناة وفق نظام Xtream
+                        url: `${xtreamServer.url}/live/${xtreamServer.user}/${xtreamServer.pass}/${ch.stream_id}.m3u8`,
+                        group: ch.category_name || 'عام'
+                    }));
+
+                    fileStatus.innerHTML = `<i class="fa-regular fa-circle-check"></i> تم جلب ${allChannels.length} قناة من السيرفر`;
+                    renderCategories();
+                    filterChannels();
+                    
+                    // تشغيل القناة الأولى تلقائياً
+                    playChannel(allChannels[0].url, allChannels[0].name);
+                } else {
+                    fileStatus.innerHTML = `<i class="fa-solid fa-circle-exclamation"></i> السيرفر لا يحتوي على قنوات أو البيانات غير صحيحة`;
+                }
+            } catch (error) {
+                console.error("خطأ في الاتصال:", error);
+                fileStatus.innerHTML = `<i class="fa-solid fa-triangle-exclamation"></i> فشل الاتصال بالسيرفر`;
             }
         }
 
         function renderCategories() {
-            const categories = ['الكل', ...new Set(allChannels.map(c => c.group || 'Général'))];
+            const categories = ['الكل', ...new Set(allChannels.map(c => c.group))];
             categoryFilter.innerHTML = '';
             categories.forEach(cat => {
                 const btn = document.createElement('button');
@@ -582,84 +396,30 @@
         function renderChannels(channels) {
             channelsList.innerHTML = '';
             if (channels.length === 0) {
-                channelsList.innerHTML = `<div class="empty-state"><i class="fa-regular fa-circle-xmark"></i> لا توجد قنوات تطابق البحث</div>`;
+                channelsList.innerHTML = `<div class="empty-state">لا توجد قنوات مطابقة</div>`;
                 return;
             }
             channels.forEach((ch, index) => {
                 const item = document.createElement('div');
                 item.className = 'channel-item';
                 if (index === 0) item.classList.add('active');
-                item.innerHTML = `
-                    <span class="icon"><i class="fa-solid fa-tower-broadcast"></i></span>
-                    <div class="info">
-                        <span class="name">${ch.name}</span>
-                        <span class="group">${ch.group || 'Général'}</span>
-                    </div>
-                `;
+                item.innerHTML = `<div class="info"><span class="name">${ch.name}</span></div>`;
                 item.onclick = () => {
                     document.querySelectorAll('.channel-item').forEach(el => el.classList.remove('active'));
                     item.classList.add('active');
-                    playChannel(ch.url, ch.name, ch.group);
+                    playChannel(ch.url, ch.name);
                 };
                 channelsList.appendChild(item);
             });
         }
 
-        // دالة تشغيل القناة باستخدام البروكسي المدمج
-        function playChannel(url, name, group) {
+        function playChannel(url, name) {
             activeName.textContent = name;
-            activeGroup.textContent = group || '-';
-
-            currentOriginalUrl = url;
-            proxyIndex = 0; // البدء من البروكسي الأول
-
-            // تمرير الرابط عبر البروكسي التلقائي
-            let finalUrl = proxies[proxyIndex](url);
-
             if (player) {
-                player.src({
-                    src: finalUrl,
-                    type: 'application/x-mpegURL'
-                });
-                player.play().catch(err => {
-                    console.warn("تنبيه التشغيل التلقائي:", err);
-                });
+                player.src({ src: proxy(url), type: 'application/x-mpegURL' });
+                player.play().catch(e => console.log("تنبيه التشغيل:", e));
             }
         }
-
-        fileInput.addEventListener('change', function(e) {
-            const file = e.target.files[0];
-            if (!file) return;
-
-            const reader = new FileReader();
-            reader.onload = function(evt) {
-                const lines = evt.target.result.split(/\r?\n/);
-                const channels = [];
-                let currentName = '';
-                let currentGroup = 'Général';
-
-                lines.forEach(line => {
-                    line = line.trim();
-                    if (line.startsWith('#EXTINF:')) {
-                        const nameMatch = line.match(/,([^,]+)$/);
-                        if (nameMatch) currentName = nameMatch[1].trim();
-                        const groupMatch = line.match(/group-title="([^"]+)"/);
-                        if (groupMatch) currentGroup = groupMatch[1].trim();
-                    } else if (line && !line.startsWith('#') && currentName) {
-                        channels.push({ name: currentName, url: line, group: currentGroup });
-                        currentName = '';
-                    }
-                });
-
-                if (channels.length > 0) {
-                    loadChannels(channels);
-                    fileStatus.innerHTML = `<i class="fa-regular fa-circle-check"></i> ${file.name} (${channels.length} قناة)`;
-                } else {
-                    alert('لم يتم العثور على قنوات صالحة داخل الملف.');
-                }
-            };
-            reader.readAsText(file);
-        });
     </script>
 </body>
 </html>
