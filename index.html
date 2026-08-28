@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>MQJ TV PRO - 60+ قناة رياضية</title>
+    <title>MQJ TV PRO - Proxy Enabled</title>
     
     <!-- Video.js CSS & FontAwesome -->
     <link href="https://vjs.zencdn.net/8.10.0/video-js.css" rel="stylesheet" />
@@ -432,8 +432,17 @@
         let player = null;
         let allChannels = [];
         let currentCategory = 'الكل';
+        let currentOriginalUrl = '';
+        let proxyIndex = 0;
 
-        // ======================== قائمة الـ 65+ قناة كاملة ========================
+        // قائمة البروكسيات المجانية المدمجة لتمرير الروابط
+        const proxies = [
+            url => 'https://corsproxy.io/?' + encodeURIComponent(url),
+            url => 'https://api.allorigins.win/raw?url=' + encodeURIComponent(url),
+            url => 'https://thingproxy.freeboard.io/fetch/' + url
+        ];
+
+        // قائمة الـ 65+ قناة
         const sportsChannels = [
             // ===== beIN SPORTS =====
             { name: 'beIN SPORTS 1 HD (عربي)', url: 'http://88.barouhn.xyz.global.prod.fastly.net/live/6161655/index.m3u8', group: 'beIN Sports' },
@@ -513,6 +522,22 @@
                 fluid: true
             });
 
+            // معالجة الأخطاء التلقائية والتبديل بين البروكسيات
+            player.on('error', () => {
+                if (proxyIndex < proxies.length - 1) {
+                    proxyIndex++;
+                    console.warn(`فشل المشغل، التبديل إلى بروكسي رقم ${proxyIndex + 1}`);
+                    const newUrl = proxies[proxyIndex](currentOriginalUrl);
+                    player.src({ src: newUrl, type: 'application/x-mpegURL' });
+                    player.play();
+                } else if (proxyIndex === proxies.length - 1) {
+                    proxyIndex++;
+                    console.warn('جاري تجربة الرابط المباشر بدون بروكسي كخيار أخير');
+                    player.src({ src: currentOriginalUrl, type: 'application/x-mpegURL' });
+                    player.play();
+                }
+            });
+
             loadChannels(sportsChannels);
         });
 
@@ -580,14 +605,16 @@
             });
         }
 
+        // دالة تشغيل القناة باستخدام البروكسي المدمج
         function playChannel(url, name, group) {
             activeName.textContent = name;
             activeGroup.textContent = group || '-';
 
-            let finalUrl = url;
-            if (url.startsWith('http://')) {
-                finalUrl = 'https://corsproxy.io/?' + encodeURIComponent(url);
-            }
+            currentOriginalUrl = url;
+            proxyIndex = 0; // البدء من البروكسي الأول
+
+            // تمرير الرابط عبر البروكسي التلقائي
+            let finalUrl = proxies[proxyIndex](url);
 
             if (player) {
                 player.src({
