@@ -1,78 +1,467 @@
-
 <!DOCTYPE html>
 <html lang="ar" dir="rtl">
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>منصة بث قنوات الشرق الأوسط</title>
+    <title>MQJ TV - منصة البث المباشر الاحترافية</title>
+    <!-- HLS.js Library -->
     <script src="https://cdn.jsdelivr.net/npm/hls.js@latest"></script>
+    <!-- FontAwesome Icons -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
     <style>
-        * { box-sizing: border-box; margin: 0; padding: 0; font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif; }
-        body { background-color: #0f172a; color: #fff; display: flex; flex-direction: column; min-height: 100vh; }
-        header { background-color: #1e293b; text-align: center; padding: 15px; font-size: 1.4rem; font-weight: bold; color: #38bdf8; border-bottom: 1px solid #334155; }
-        
-        .main-container { display: flex; flex-direction: column; flex: 1; padding: 15px; gap: 15px; }
-        @media (min-width: 768px) { .main-container { flex-direction: row; } }
+        :root {
+            --bg-primary: #0b0e14;
+            --bg-secondary: #151c28;
+            --bg-card: #1e293b;
+            --accent-color: #0284c7;
+            --accent-hover: #38bdf8;
+            --text-primary: #f8fafc;
+            --text-secondary: #94a3b8;
+            --border-color: #334155;
+            --danger-color: #ef4444;
+        }
 
-        .video-section { flex: 3; background: #000; border-radius: 10px; overflow: hidden; display: flex; align-items: center; justify-content: center; min-height: 300px; }
-        video { width: 100%; height: 100%; max-height: 70vh; outline: none; }
+        * {
+            box-sizing: border-box;
+            margin: 0;
+            padding: 0;
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            -webkit-tap-highlight-color: transparent;
+        }
 
-        .playlist-section { flex: 1; background-color: #1e293b; border-radius: 10px; padding: 15px; display: flex; flex-direction: column; gap: 10px; max-height: 70vh; overflow-y: auto; }
-        .category-title { font-size: 1rem; color: #38bdf8; margin-top: 10px; border-bottom: 1px solid #334155; padding-bottom: 3px; }
-        .channel-btn { background-color: #334155; color: #fff; border: none; padding: 10px; border-radius: 6px; cursor: pointer; text-align: right; transition: 0.2s; font-size: 0.95rem; }
-        .channel-btn:hover, .channel-btn.active { background-color: #0284c7; }
+        body {
+            background-color: var(--bg-primary);
+            color: var(--text-primary);
+            display: flex;
+            flex-direction: column;
+            min-height: 100vh;
+            overflow-x: hidden;
+        }
+
+        /* Navbar */
+        header {
+            background-color: var(--bg-secondary);
+            padding: 12px 20px;
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            border-bottom: 1px solid var(--border-color);
+            box-shadow: 0 4px 20px rgba(0,0,0,0.5);
+            position: sticky;
+            top: 0;
+            z-index: 100;
+        }
+
+        .logo {
+            display: flex;
+            align-items: center;
+            gap: 10px;
+            font-size: 1.4rem;
+            font-weight: 800;
+            color: var(--accent-hover);
+        }
+
+        .logo i {
+            font-size: 1.6rem;
+            color: #e11d48;
+        }
+
+        .m3u-upload-btn {
+            background: linear-gradient(135deg, #0284c7, #2563eb);
+            color: white;
+            padding: 8px 16px;
+            border-radius: 8px;
+            cursor: pointer;
+            font-size: 0.9rem;
+            font-weight: 600;
+            display: flex;
+            align-items: center;
+            gap: 8px;
+            transition: all 0.3s ease;
+            border: none;
+        }
+
+        .m3u-upload-btn:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 4px 12px rgba(2, 132, 199, 0.4);
+        }
+
+        #m3uFileInput {
+            display: none;
+        }
+
+        /* Layout Container */
+        .main-container {
+            display: flex;
+            flex-direction: column;
+            flex: 1;
+            padding: 15px;
+            gap: 15px;
+            max-width: 1600px;
+            margin: 0 auto;
+            width: 100%;
+        }
+
+        @media (min-width: 992px) {
+            .main-container {
+                flex-direction: row;
+            }
+        }
+
+        /* Video Section */
+        .video-wrapper {
+            flex: 3;
+            background-color: #000;
+            border-radius: 12px;
+            overflow: hidden;
+            display: flex;
+            flex-direction: column;
+            box-shadow: 0 8px 30px rgba(0,0,0,0.7);
+            border: 1px solid var(--border-color);
+        }
+
+        .video-container {
+            position: relative;
+            width: 100%;
+            background: #000;
+            aspect-ratio: 16 / 9;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        }
+
+        video {
+            width: 100%;
+            height: 100%;
+            object-fit: contain;
+        }
+
+        .current-channel-info {
+            padding: 15px 20px;
+            background-color: var(--bg-secondary);
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            border-top: 1px solid var(--border-color);
+        }
+
+        .channel-title-display {
+            font-size: 1.2rem;
+            font-weight: 700;
+            color: var(--text-primary);
+            display: flex;
+            align-items: center;
+            gap: 10px;
+        }
+
+        .live-badge {
+            background-color: var(--danger-color);
+            color: white;
+            padding: 2px 8px;
+            border-radius: 4px;
+            font-size: 0.75rem;
+            font-weight: 800;
+            animation: pulse 1.5s infinite;
+        }
+
+        @keyframes pulse {
+            0% { opacity: 1; }
+            50% { opacity: 0.4; }
+            100% { opacity: 1; }
+        }
+
+        /* Playlist Section */
+        .playlist-wrapper {
+            flex: 1;
+            background-color: var(--bg-secondary);
+            border-radius: 12px;
+            padding: 15px;
+            display: flex;
+            flex-direction: column;
+            gap: 12px;
+            max-height: 80vh;
+            border: 1px solid var(--border-color);
+        }
+
+        .search-box {
+            position: relative;
+        }
+
+        .search-box input {
+            width: 100%;
+            padding: 10px 38px 10px 12px;
+            background-color: var(--bg-primary);
+            border: 1px solid var(--border-color);
+            border-radius: 8px;
+            color: white;
+            font-size: 0.95rem;
+            outline: none;
+            transition: 0.3s;
+        }
+
+        .search-box input:focus {
+            border-color: var(--accent-color);
+            box-shadow: 0 0 8px rgba(2, 132, 199, 0.3);
+        }
+
+        .search-box i {
+            position: absolute;
+            right: 12px;
+            top: 50%;
+            transform: translateY(-50%);
+            color: var(--text-secondary);
+        }
+
+        .category-filter {
+            display: flex;
+            gap: 8px;
+            overflow-x: auto;
+            padding-bottom: 5px;
+        }
+
+        .cat-btn {
+            background-color: var(--bg-card);
+            color: var(--text-secondary);
+            border: 1px solid var(--border-color);
+            padding: 6px 12px;
+            border-radius: 20px;
+            font-size: 0.85rem;
+            cursor: pointer;
+            white-space: nowrap;
+            transition: 0.2s;
+        }
+
+        .cat-btn.active, .cat-btn:hover {
+            background-color: var(--accent-color);
+            color: white;
+            border-color: var(--accent-color);
+        }
+
+        .channels-list {
+            display: flex;
+            flex-direction: column;
+            gap: 8px;
+            overflow-y: auto;
+            flex: 1;
+        }
+
+        .channel-card {
+            background-color: var(--bg-card);
+            border: 1px solid transparent;
+            padding: 12px 14px;
+            border-radius: 8px;
+            cursor: pointer;
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            transition: all 0.2s ease;
+        }
+
+        .channel-card:hover {
+            border-color: var(--accent-color);
+            background-color: #243347;
+        }
+
+        .channel-card.active {
+            background-color: rgba(2, 132, 199, 0.2);
+            border-color: var(--accent-color);
+            color: var(--accent-hover);
+        }
+
+        .channel-name {
+            font-size: 0.95rem;
+            font-weight: 600;
+            display: flex;
+            align-items: center;
+            gap: 10px;
+        }
+
+        .empty-state {
+            text-align: center;
+            padding: 30px 10px;
+            color: var(--text-secondary);
+            font-size: 0.9rem;
+        }
     </style>
 </head>
 <body>
 
-    <header>MQJ TV - قنوات الشرق الأوسط</header>
+    <header>
+        <div class="logo">
+            <i class="fa-solid fa-play-circle"></i>
+            <span>MQJ TV LIVE</span>
+        </div>
+        <label class="m3u-upload-btn" for="m3uFileInput">
+            <i class="fa-solid fa-file-arrow-up"></i>
+            <span>رفع ملف M3U (beinsport.m3u)</span>
+        </label>
+        <input type="file" id="m3uFileInput" accept=".m3u,.m3u8">
+    </header>
 
     <div class="main-container">
-        <div class="video-section">
-            <video id="videoPlayer" controls autoplay></video>
+        <!-- مشغل الفيديو -->
+        <div class="video-wrapper">
+            <div class="video-container">
+                <video id="videoPlayer" controls autoplay></video>
+            </div>
+            <div class="current-channel-info">
+                <div class="channel-title-display">
+                    <span class="live-badge">مباشر</span>
+                    <span id="activeChannelName">اختر قناة لبدء التشغيل</span>
+                </div>
+            </div>
         </div>
 
-        <div class="playlist-section">
-            <div class="category-title">الأخبار</div>
-            <button class="channel-btn" onclick="playChannel('https://live-hls-web-aje.akamaized.net/hls/live/2018284/aje/index.m3u8', this)">الجزيرة الإخبارية</button>
-            <button class="channel-btn" onclick="playChannel('https://bbcworld-lh.akamaihd.net/i/bbcworld_1@119864/master.m3u8', this)">بي بي سي عربي</button>
-            <button class="channel-btn" onclick="playChannel('https://rt-arabic.akamaized.net/hls/rtarabic/index.m3u8', this)">روسيا اليوم</button>
+        <!-- قائمة القنوات -->
+        <div class="playlist-wrapper">
+            <div class="search-box">
+                <i class="fa-solid fa-magnifying-glass"></i>
+                <input type="text" id="searchInput" placeholder="ابحث عن قناة..." oninput="filterChannels()">
+            </div>
 
-            <div class="category-title">الوثائقيات والترفيه</div>
-            <button class="channel-btn" onclick="playChannel('https://live-hls-web-ajd.akamaized.net/hls/live/2018285/ajd/index.m3u8', this)">الجزيرة الوثائقية</button>
-            <button class="channel-btn" onclick="playChannel('https://dwamdstream102.akamaized.net/hls/live/2015525/dwstream102/index.m3u8', this)">DW عربية</button>
-            
-            <div class="category-title">تجربة وتست</div>
-            <button class="channel-btn" onclick="playChannel('https://test-streams.mux.dev/x36xhtml/x36xhtml.m3u8', this)">قناة اختبار 1</button>
+            <div class="category-filter" id="categoryContainer">
+                <button class="cat-btn active" onclick="filterCategory('الكل', this)">الكل</button>
+            </div>
+
+            <div class="channels-list" id="channelsList"></div>
         </div>
     </div>
 
     <script>
         const video = document.getElementById('videoPlayer');
-        let hls = new Hls();
+        const activeChannelName = document.getElementById('activeChannelName');
+        const channelsList = document.getElementById('channelsList');
+        const categoryContainer = document.getElementById('categoryContainer');
+        const m3uFileInput = document.getElementById('m3uFileInput');
 
-        function playChannel(url, btn) {
-            document.querySelectorAll('.channel-btn').forEach(b => b.classList.remove('active'));
-            if(btn) btn.classList.add('active');
+        let hls = new Hls();
+        let allChannels = [];
+        let currentCategory = 'الكل';
+
+        const defaultChannels = [
+            { name: 'beIN SPORTS NEWS', url: 'https://live-hls-web-aje.akamaized.net/hls/live/2018284/aje/index.m3u8', category: 'رياضة' },
+            { name: 'الجزيرة الإخبارية', url: 'https://live-hls-web-aje.akamaized.net/hls/live/2018284/aje/index.m3u8', category: 'أخبار' },
+            { name: 'الجزيرة الوثائقية', url: 'https://live-hls-web-ajd.akamaized.net/hls/live/2018285/ajd/index.m3u8', category: 'وثائقي' },
+            { name: 'بي بي سي عربي', url: 'https://bbcworld-lh.akamaihd.net/i/bbcworld_1@119864/master.m3u8', category: 'أخبار' },
+            { name: 'روسيا اليوم (RT)', url: 'https://rt-arabic.akamaized.net/hls/rtarabic/index.m3u8', category: 'أخبار' }
+        ];
+
+        window.onload = () => { loadChannels(defaultChannels); };
+
+        function loadChannels(channels) {
+            allChannels = channels;
+            renderCategories();
+            renderChannels(allChannels);
+            if (allChannels.length > 0) playChannel(allChannels[0].url, allChannels[0].name);
+        }
+
+        function renderChannels(channels) {
+            channelsList.innerHTML = '';
+            if (channels.length === 0) {
+                channelsList.innerHTML = '<div class="empty-state">لا توجد قنوات مطابقة</div>';
+                return;
+            }
+            channels.forEach((ch) => {
+                const card = document.createElement('div');
+                card.className = 'channel-card';
+                card.onclick = () => playChannel(ch.url, ch.name, card);
+                card.innerHTML = `
+                    <div class="channel-name">
+                        <i class="fa-solid fa-tv" style="color:var(--accent-color)"></i>
+                        <span>${ch.name}</span>
+                    </div>
+                    <i class="fa-solid fa-circle-play" style="color:var(--text-secondary)"></i>
+                `;
+                channelsList.appendChild(card);
+            });
+        }
+
+        function renderCategories() {
+            const categories = ['الكل', ...new Set(allChannels.map(c => c.category || 'عام'))];
+            categoryContainer.innerHTML = '';
+            categories.forEach(cat => {
+                const btn = document.createElement('button');
+                btn.className = `cat-btn ${cat === 'الكل' ? 'active' : ''}`;
+                btn.innerText = cat;
+                btn.onclick = () => filterCategory(cat, btn);
+                categoryContainer.appendChild(btn);
+            });
+        }
+
+        function playChannel(url, name, element = null) {
+            activeChannelName.innerText = name;
+            document.querySelectorAll('.channel-card').forEach(c => c.classList.remove('active'));
+            if (element) element.classList.add('active');
 
             if (Hls.isSupported()) {
                 hls.destroy();
                 hls = new Hls();
                 hls.loadSource(url);
                 hls.attachMedia(video);
-                hls.on(Hls.Events.MANIFEST_PARSED, function() {
-                    video.play();
-                });
+                hls.on(Hls.Events.MANIFEST_PARSED, () => video.play().catch(() => {}));
             } else if (video.canPlayType('application/vnd.apple.mpegurl')) {
                 video.src = url;
-                video.play();
+                video.play().catch(() => {});
             }
         }
 
-        window.onload = () => {
-            const firstBtn = document.querySelector('.channel-btn');
-            if(firstBtn) firstBtn.click();
-        };
+        function filterCategory(category, btn) {
+            currentCategory = category;
+            document.querySelectorAll('.cat-btn').forEach(b => b.classList.remove('active'));
+            btn.classList.add('active');
+            filterChannels();
+        }
+
+        function filterChannels() {
+            const query = document.getElementById('searchInput').value.toLowerCase();
+            const filtered = allChannels.filter(ch => {
+                const matchesCat = (currentCategory === 'الكل' || ch.category === currentCategory);
+                const matchesSearch = ch.name.toLowerCase().includes(query);
+                return matchesCat && matchesSearch;
+            });
+            renderChannels(filtered);
+        }
+
+        m3uFileInput.addEventListener('change', function(e) {
+            const file = e.target.files[0];
+            if (!file) return;
+
+            const reader = new FileReader();
+            reader.onload = function(event) {
+                const parsedChannels = parseM3U(event.target.result);
+                if (parsedChannels.length > 0) {
+                    alert(`تم قراءة ${parsedChannels.length} قناة من ملف ${file.name} بنجاح!`);
+                    loadChannels(parsedChannels);
+                } else {
+                    alert("لم يتم العثور على روابط قنوات داخل الملف.");
+                }
+            };
+            reader.readAsText(file);
+        });
+
+        function parseM3U(content) {
+            const lines = content.split('\n');
+            const parsed = [];
+            let currentName = '';
+            let currentGroup = 'beIN / رياضة';
+
+            lines.forEach(line => {
+                line = line.trim();
+                if (line.startsWith('#EXTINF:')) {
+                    const nameMatch = line.match(/,(.+)$/);
+                    if (nameMatch) currentName = nameMatch[1].trim();
+
+                    const groupMatch = line.match(/group-title="([^"]+)"/);
+                    if (groupMatch) currentGroup = groupMatch[1].trim();
+                } else if (line.length > 0 && !line.startsWith('#')) {
+                    if (currentName) {
+                        parsed.push({ name: currentName, url: line, category: currentGroup });
+                        currentName = '';
+                    }
+                }
+            });
+            return parsed;
+        }
     </script>
 </body>
 </html>
