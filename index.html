@@ -1,699 +1,1522 @@
 <!DOCTYPE html>
 <html lang="ar" dir="rtl">
 <head>
-<meta charset="UTF-8">
-<meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
-<meta name="theme-color" content="#050914">
-<title>MQJ TV PRO - Xtream Player</title>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="theme-color" content="#070b14">
 
-<link rel="preconnect" href="https://fonts.googleapis.com">
-<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-<link href="https://fonts.googleapis.com/css2?family=Cairo:wght@400;500;600;700;800;900&display=swap" rel="stylesheet">
+    <title>Video Upload Center</title>
 
-<link href="https://vjs.zencdn.net/8.10.0/video-js.css" rel="stylesheet">
-<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css">
+    <style>
+        * {
+            box-sizing: border-box;
+            margin: 0;
+            padding: 0;
+        }
 
-<style>
-:root{
-    --bg:#050914;
-    --panel:#0b1222;
-    --panel2:#0f172a;
-    --primary:#00c8ff;
-    --blue:#2563eb;
-    --purple:#6366f1;
-    --text:#f8fafc;
-    --muted:#94a3b8;
-    --border:rgba(148,163,184,.12);
-    --green:#22c55e;
-    --red:#ef4444;
-}
-*{margin:0;padding:0;box-sizing:border-box;font-family:Cairo,Arial,sans-serif}
-body{
-    min-height:100vh;color:var(--text);
-    background:
-      radial-gradient(circle at 8% 5%,rgba(0,200,255,.11),transparent 28%),
-      radial-gradient(circle at 95% 10%,rgba(99,102,241,.12),transparent 30%),
-      linear-gradient(135deg,#03060d,#07101e 55%,#040711);
-}
-.header{
-    height:76px;padding:0 28px;display:flex;align-items:center;justify-content:space-between;
-    position:sticky;top:0;z-index:100;
-    background:rgba(4,9,18,.82);backdrop-filter:blur(22px);
-    border-bottom:1px solid var(--border);
-}
-.logo{display:flex;align-items:center;gap:12px}
-.logo-icon{
-    width:46px;height:46px;border-radius:15px;display:flex;align-items:center;justify-content:center;
-    color:var(--primary);font-size:21px;
-    background:linear-gradient(135deg,rgba(0,200,255,.16),rgba(99,102,241,.18));
-    border:1px solid rgba(0,200,255,.25);box-shadow:0 0 28px rgba(0,200,255,.12)
-}
-.logo-title{
-    font-size:20px;font-weight:900;
-    background:linear-gradient(90deg,#fff,#00c8ff,#818cf8);
-    -webkit-background-clip:text;-webkit-text-fill-color:transparent
-}
-.logo-sub{font-size:8px;letter-spacing:3px;color:#64748b;display:block}
-.status{
-    display:flex;align-items:center;gap:8px;padding:8px 14px;border-radius:25px;
-    background:rgba(34,197,94,.08);border:1px solid rgba(34,197,94,.18);
-    color:#86efac;font-size:10px;font-weight:800
-}
-.status-dot{width:8px;height:8px;border-radius:50%;background:var(--green);box-shadow:0 0 12px var(--green)}
-.main{
-    width:100%;max-width:1800px;margin:auto;padding:22px;
-    display:grid;grid-template-columns:minmax(0,3fr) minmax(300px,1fr);gap:22px;
-    min-height:calc(100vh - 76px)
-}
-.player-card,.sidebar{
-    border:1px solid var(--border);box-shadow:0 25px 80px rgba(0,0,0,.5)
-}
-.player-card{background:#000;border-radius:24px;overflow:hidden;display:flex;flex-direction:column}
-.player-wrap{
-    position:relative;width:100%;aspect-ratio:16/9;min-height:350px;background:#000
-}
-.video-js{width:100%!important;height:100%!important}
-.video-js .vjs-big-play-button{
-    width:70px;height:70px;line-height:66px;border-radius:50%;
-    margin-top:-35px;margin-left:-35px;
-    background:rgba(0,200,255,.14);border:1px solid rgba(0,200,255,.45)
-}
-.loading{
-    position:absolute;inset:0;z-index:20;display:flex;align-items:center;justify-content:center;
-    flex-direction:column;background:radial-gradient(circle,rgba(0,200,255,.08),rgba(0,0,0,.96) 65%);
-    transition:.25s
-}
-.loading.hidden{opacity:0;pointer-events:none}
-.spinner{
-    width:45px;height:45px;border-radius:50%;border:3px solid rgba(255,255,255,.08);
-    border-top-color:var(--primary);border-right-color:var(--purple);
-    animation:spin .8s linear infinite
-}
-@keyframes spin{to{transform:rotate(360deg)}}
-.loading-text{margin-top:13px;color:#cbd5e1;font-size:11px}
-.player-info{
-    min-height:82px;padding:14px 18px;display:flex;align-items:center;justify-content:space-between;gap:12px;
-    background:linear-gradient(180deg,#0d1628,#080e1b);border-top:1px solid var(--border)
-}
-.now{display:flex;align-items:center;gap:12px;min-width:0}
-.live{
-    flex-shrink:0;display:flex;align-items:center;gap:6px;padding:5px 10px;border-radius:20px;
-    background:rgba(239,68,68,.12);border:1px solid rgba(239,68,68,.25);color:#f87171;font-size:9px;font-weight:900
-}
-.live i{font-size:6px}
-.active-name{font-size:15px;font-weight:800;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
-.actions{display:flex;gap:8px}
-.action{
-    width:39px;height:39px;border-radius:12px;background:#121d31;border:1px solid var(--border);
-    color:#cbd5e1;cursor:pointer;transition:.2s
-}
-.action:hover{color:var(--primary);border-color:rgba(0,200,255,.35);background:rgba(0,200,255,.08)}
-.sidebar{
-    min-width:0;background:linear-gradient(145deg,rgba(15,23,42,.94),rgba(7,12,23,.97));
-    border-radius:24px;padding:17px;display:flex;flex-direction:column;overflow:hidden
-}
-.side-head{display:flex;align-items:center;justify-content:space-between;margin-bottom:13px}
-.side-title{font-size:15px;font-weight:900;display:flex;align-items:center;gap:9px}
-.side-title i{color:var(--primary)}
-.count{font-size:9px;color:#67e8f9;padding:5px 10px;border-radius:20px;background:rgba(0,200,255,.08);border:1px solid rgba(0,200,255,.14)}
-.search{position:relative;margin-bottom:10px}
-.search input{
-    width:100%;height:45px;border-radius:14px;outline:none;
-    border:1px solid var(--border);background:#050b18;color:#fff;padding:0 42px 0 14px;font-size:11px
-}
-.search input:focus{border-color:rgba(0,200,255,.4);box-shadow:0 0 0 3px rgba(0,200,255,.05)}
-.search i{position:absolute;right:14px;top:50%;transform:translateY(-50%);color:#64748b}
-.categories{display:flex;gap:7px;overflow-x:auto;padding-bottom:9px;scrollbar-width:none}
-.categories::-webkit-scrollbar{display:none}
-.cat{
-    flex-shrink:0;padding:6px 13px;border-radius:20px;border:1px solid var(--border);
-    background:#111a2c;color:#94a3b8;cursor:pointer;font-size:9px;font-weight:800
-}
-.cat.active,.cat:hover{
-    color:#fff;border-color:transparent;
-    background:linear-gradient(135deg,#0891b2,#4f46e5)
-}
-.channels{flex:1;min-height:0;overflow-y:auto;display:flex;flex-direction:column;gap:7px;padding-left:2px}
-.channels::-webkit-scrollbar{width:5px}
-.channels::-webkit-scrollbar-thumb{background:#1e293b;border-radius:10px}
-.channel{
-    display:flex;align-items:center;gap:10px;padding:10px;border-radius:14px;
-    background:rgba(30,41,59,.28);border:1px solid transparent;cursor:pointer;transition:.2s
-}
-.channel:hover{background:rgba(30,41,59,.65);transform:translateX(-2px)}
-.channel.active{background:linear-gradient(90deg,rgba(0,200,255,.13),rgba(99,102,241,.07));border-color:rgba(0,200,255,.28)}
-.channel-logo{
-    width:40px;height:40px;flex-shrink:0;border-radius:12px;display:flex;align-items:center;justify-content:center;
-    overflow:hidden;background:linear-gradient(135deg,rgba(0,200,255,.12),rgba(99,102,241,.13));border:1px solid var(--border)
-}
-.channel-logo img{width:100%;height:100%;object-fit:contain;padding:5px}
-.channel-logo i{color:#67e8f9}
-.channel-info{min-width:0;flex:1}
-.channel-name{display:block;font-size:11px;font-weight:800;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
-.channel-meta{display:block;margin-top:2px;color:#64748b;font-size:8px}
-.channel-meta .ok{color:#4ade80}
-.empty{text-align:center;color:#475569;font-size:11px;padding:50px 10px}
-.empty i{font-size:28px;display:block;margin-bottom:10px;color:#334155}
-.toast{
-    position:fixed;left:50%;bottom:25px;z-index:999;transform:translate(-50%,120px);
-    min-width:250px;max-width:90%;padding:12px 18px;text-align:center;
-    background:rgba(10,17,31,.96);border:1px solid var(--border);border-radius:14px;
-    color:#e2e8f0;font-size:11px;box-shadow:0 20px 60px rgba(0,0,0,.5);transition:.3s
-}
-.toast.show{transform:translate(-50%,0)}
-@media(max-width:1000px){
-    .main{grid-template-columns:1fr;padding:12px;gap:13px}
-    .sidebar{height:470px}
-    .player-wrap{min-height:220px}
-}
-@media(max-width:600px){
-    .header{height:64px;padding:0 13px}
-    .logo-icon{width:38px;height:38px}
-    .logo-title{font-size:16px}
-    .logo-sub{font-size:7px}
-    .status{padding:6px 9px;font-size:8px}
-    .main{padding:8px}
-    .player-card,.sidebar{border-radius:18px}
-    .player-wrap{min-height:200px}
-    .player-info{min-height:68px;padding:11px}
-    .active-name{font-size:12px}
-    .action{width:35px;height:35px}
-}
-</style>
+        :root {
+            --bg: #070b14;
+            --card: #0d1422;
+            --card2: #111b2d;
+            --border: rgba(255,255,255,.08);
+            --text: #ffffff;
+            --muted: #8f9bb0;
+            --primary: #5b5cff;
+            --primary2: #8b5cf6;
+            --success: #22c55e;
+            --danger: #ef4444;
+        }
+
+        body {
+            min-height: 100vh;
+            background:
+                radial-gradient(circle at top right, rgba(91,92,255,.18), transparent 35%),
+                radial-gradient(circle at bottom left, rgba(139,92,246,.12), transparent 35%),
+                var(--bg);
+            color: var(--text);
+            font-family: Arial, "Tahoma", sans-serif;
+        }
+
+        button,
+        input,
+        textarea {
+            font: inherit;
+        }
+
+        .container {
+            width: min(1100px, calc(100% - 30px));
+            margin: auto;
+        }
+
+        header {
+            padding: 25px 0;
+            border-bottom: 1px solid var(--border);
+            background: rgba(7,11,20,.7);
+            backdrop-filter: blur(15px);
+            position: sticky;
+            top: 0;
+            z-index: 50;
+        }
+
+        .header-inner {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            gap: 15px;
+        }
+
+        .brand {
+            display: flex;
+            align-items: center;
+            gap: 12px;
+        }
+
+        .logo {
+            width: 48px;
+            height: 48px;
+            border-radius: 15px;
+            display: grid;
+            place-items: center;
+            background: linear-gradient(135deg, var(--primary), var(--primary2));
+            font-size: 23px;
+            box-shadow: 0 10px 30px rgba(91,92,255,.3);
+        }
+
+        .brand h1 {
+            font-size: 20px;
+        }
+
+        .brand p {
+            color: var(--muted);
+            font-size: 12px;
+            margin-top: 4px;
+        }
+
+        .status {
+            padding: 9px 13px;
+            border: 1px solid var(--border);
+            border-radius: 30px;
+            background: rgba(255,255,255,.04);
+            color: #b8c2d5;
+            font-size: 12px;
+        }
+
+        .status span {
+            display: inline-block;
+            width: 8px;
+            height: 8px;
+            border-radius: 50%;
+            background: var(--success);
+            margin-left: 6px;
+        }
+
+        main {
+            padding: 40px 0 70px;
+        }
+
+        .hero {
+            text-align: center;
+            margin-bottom: 30px;
+        }
+
+        .hero h2 {
+            font-size: clamp(28px, 6vw, 46px);
+            margin-bottom: 10px;
+        }
+
+        .hero h2 span {
+            background: linear-gradient(90deg, #7c83ff, #b58cff);
+            -webkit-background-clip: text;
+            background-clip: text;
+            color: transparent;
+        }
+
+        .hero p {
+            color: var(--muted);
+            line-height: 1.8;
+            max-width: 650px;
+            margin: auto;
+        }
+
+        .upload-card {
+            background: linear-gradient(145deg, rgba(17,27,45,.95), rgba(10,16,28,.95));
+            border: 1px solid var(--border);
+            border-radius: 24px;
+            padding: 22px;
+            box-shadow: 0 20px 70px rgba(0,0,0,.3);
+        }
+
+        .drop-zone {
+            border: 2px dashed rgba(139,92,246,.45);
+            border-radius: 20px;
+            min-height: 270px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            text-align: center;
+            padding: 25px;
+            cursor: pointer;
+            transition: .25s;
+            background: rgba(91,92,255,.035);
+        }
+
+        .drop-zone:hover,
+        .drop-zone.dragover {
+            border-color: var(--primary);
+            background: rgba(91,92,255,.09);
+            transform: translateY(-2px);
+        }
+
+        .upload-icon {
+            width: 75px;
+            height: 75px;
+            border-radius: 22px;
+            display: grid;
+            place-items: center;
+            margin: 0 auto 18px;
+            background: linear-gradient(135deg, var(--primary), var(--primary2));
+            font-size: 35px;
+            box-shadow: 0 15px 40px rgba(91,92,255,.25);
+        }
+
+        .drop-zone h3 {
+            font-size: 21px;
+            margin-bottom: 8px;
+        }
+
+        .drop-zone p {
+            color: var(--muted);
+            font-size: 14px;
+            line-height: 1.8;
+        }
+
+        .browse {
+            display: inline-block;
+            color: #aeb2ff;
+            margin-top: 8px;
+        }
+
+        #videoInput {
+            display: none;
+        }
+
+        .preview-area {
+            display: none;
+            margin-top: 22px;
+        }
+
+        .preview-area.active {
+            display: block;
+        }
+
+        .preview-video {
+            width: 100%;
+            max-height: 500px;
+            border-radius: 18px;
+            background: #000;
+            display: block;
+        }
+
+        .file-info {
+            margin-top: 12px;
+            padding: 14px;
+            border: 1px solid var(--border);
+            border-radius: 14px;
+            background: rgba(255,255,255,.025);
+        }
+
+        .file-name {
+            font-weight: bold;
+            word-break: break-word;
+        }
+
+        .file-size {
+            color: var(--muted);
+            font-size: 12px;
+            margin-top: 5px;
+        }
+
+        .fields {
+            display: grid;
+            gap: 15px;
+            margin-top: 22px;
+        }
+
+        label {
+            color: #cbd3e3;
+            font-size: 13px;
+            margin-bottom: 7px;
+            display: block;
+        }
+
+        input[type="text"],
+        textarea {
+            width: 100%;
+            border: 1px solid var(--border);
+            background: #080e19;
+            color: white;
+            outline: none;
+            border-radius: 13px;
+            padding: 13px 15px;
+        }
+
+        input[type="text"]:focus,
+        textarea:focus {
+            border-color: rgba(91,92,255,.8);
+        }
+
+        textarea {
+            min-height: 100px;
+            resize: vertical;
+        }
+
+        .actions {
+            display: flex;
+            gap: 10px;
+            margin-top: 20px;
+        }
+
+        .btn {
+            border: 0;
+            border-radius: 13px;
+            padding: 13px 20px;
+            cursor: pointer;
+            transition: .2s;
+            font-weight: bold;
+        }
+
+        .btn-primary {
+            flex: 1;
+            color: white;
+            background: linear-gradient(135deg, var(--primary), var(--primary2));
+            box-shadow: 0 12px 30px rgba(91,92,255,.2);
+        }
+
+        .btn-primary:hover {
+            transform: translateY(-2px);
+        }
+
+        .btn-secondary {
+            background: rgba(255,255,255,.07);
+            color: white;
+            border: 1px solid var(--border);
+        }
+
+        .progress-box {
+            display: none;
+            margin-top: 20px;
+        }
+
+        .progress-box.active {
+            display: block;
+        }
+
+        .progress-top {
+            display: flex;
+            justify-content: space-between;
+            color: var(--muted);
+            font-size: 12px;
+            margin-bottom: 8px;
+        }
+
+        .progress {
+            height: 10px;
+            background: #080d17;
+            border-radius: 20px;
+            overflow: hidden;
+        }
+
+        .progress-bar {
+            height: 100%;
+            width: 0%;
+            background: linear-gradient(90deg, var(--primary), var(--primary2));
+            border-radius: inherit;
+            transition: width .15s;
+        }
+
+        .videos-section {
+            margin-top: 45px;
+        }
+
+        .section-title {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            gap: 15px;
+            margin-bottom: 18px;
+        }
+
+        .section-title h2 {
+            font-size: 22px;
+        }
+
+        .count {
+            color: var(--muted);
+            font-size: 13px;
+        }
+
+        .videos-grid {
+            display: grid;
+            grid-template-columns: repeat(3, 1fr);
+            gap: 18px;
+        }
+
+        .video-card {
+            overflow: hidden;
+            border-radius: 18px;
+            background: var(--card);
+            border: 1px solid var(--border);
+        }
+
+        .video-wrapper {
+            background: #000;
+            aspect-ratio: 16 / 9;
+        }
+
+        .video-wrapper video {
+            width: 100%;
+            height: 100%;
+            display: block;
+            object-fit: cover;
+        }
+
+        .video-content {
+            padding: 14px;
+        }
+
+        .video-title {
+            font-weight: bold;
+            margin-bottom: 7px;
+            white-space: nowrap;
+            overflow: hidden;
+            text-overflow: ellipsis;
+        }
+
+        .video-description {
+            color: var(--muted);
+            font-size: 12px;
+            line-height: 1.6;
+            min-height: 38px;
+        }
+
+        .video-actions {
+            display: flex;
+            gap: 8px;
+            margin-top: 13px;
+        }
+
+        .small-btn {
+            flex: 1;
+            border: 1px solid var(--border);
+            background: rgba(255,255,255,.05);
+            color: white;
+            padding: 9px;
+            border-radius: 10px;
+            cursor: pointer;
+            font-size: 12px;
+        }
+
+        .delete-btn {
+            background: rgba(239,68,68,.08);
+            color: #ff8a8a;
+        }
+
+        .empty {
+            grid-column: 1 / -1;
+            text-align: center;
+            padding: 55px 20px;
+            border: 1px dashed var(--border);
+            border-radius: 18px;
+            color: var(--muted);
+        }
+
+        .empty-icon {
+            font-size: 45px;
+            margin-bottom: 12px;
+        }
+
+        .toast {
+            position: fixed;
+            bottom: 25px;
+            left: 50%;
+            transform: translate(-50%, 100px);
+            background: #151e2d;
+            border: 1px solid var(--border);
+            padding: 13px 20px;
+            border-radius: 13px;
+            z-index: 999;
+            opacity: 0;
+            transition: .3s;
+            box-shadow: 0 15px 40px rgba(0,0,0,.4);
+            max-width: calc(100% - 30px);
+            text-align: center;
+        }
+
+        .toast.show {
+            opacity: 1;
+            transform: translate(-50%, 0);
+        }
+
+        .toast.success {
+            border-color: rgba(34,197,94,.35);
+        }
+
+        .toast.error {
+            border-color: rgba(239,68,68,.35);
+        }
+
+        footer {
+            text-align: center;
+            color: #59657a;
+            font-size: 12px;
+            padding: 25px 0;
+            border-top: 1px solid var(--border);
+        }
+
+        @media (max-width: 800px) {
+            .videos-grid {
+                grid-template-columns: repeat(2, 1fr);
+            }
+        }
+
+        @media (max-width: 600px) {
+            .container {
+                width: min(100% - 20px, 1100px);
+            }
+
+            header {
+                padding: 15px 0;
+            }
+
+            .status {
+                display: none;
+            }
+
+            main {
+                padding-top: 28px;
+            }
+
+            .upload-card {
+                padding: 12px;
+                border-radius: 19px;
+            }
+
+            .drop-zone {
+                min-height: 230px;
+            }
+
+            .videos-grid {
+                grid-template-columns: 1fr;
+            }
+
+            .actions {
+                flex-direction: column;
+            }
+
+            .btn {
+                width: 100%;
+            }
+        }
+    </style>
 </head>
 
 <body>
 
-<header class="header">
-    <div class="logo">
-        <div class="logo-icon"><i class="fa-solid fa-satellite-dish"></i></div>
-        <div>
-            <div class="logo-title">MQJ TV PRO</div>
-            <span class="logo-sub">XTREAM PLAYER</span>
-        </div>
-    </div>
+<header>
+    <div class="container header-inner">
 
-    <div class="status">
-        <span class="status-dot"></span>
-        <span id="statusText">جاري الاتصال</span>
+        <div class="brand">
+            <div class="logo">🎬</div>
+
+            <div>
+                <h1>Video Center</h1>
+                <p>منصة رفع وإدارة الفيديوهات</p>
+            </div>
+        </div>
+
+        <div class="status">
+            <span></span>
+            السيرفر متصل
+        </div>
+
     </div>
 </header>
 
-<main class="main">
+<main>
 
-    <section class="player-card">
-        <div class="player-wrap">
+    <div class="container">
 
-            <div class="loading" id="loading">
-                <div class="spinner"></div>
-                <div class="loading-text" id="loadingText">جاري الاتصال بـ GO TV MAX...</div>
+        <section class="hero">
+            <h2>ارفع <span>فيديوهاتك</span></h2>
+            <p>
+                اختر الفيديو من جهازك، أضف العنوان والوصف، ثم ارفعه مباشرة
+                إلى السيرفر الخاص بك.
+            </p>
+        </section>
+
+
+        <section class="upload-card">
+
+            <div
+                class="drop-zone"
+                id="dropZone"
+            >
+
+                <div>
+
+                    <div class="upload-icon">
+                        ⬆
+                    </div>
+
+                    <h3>
+                        اسحب الفيديو هنا
+                    </h3>
+
+                    <p>
+                        أو اضغط لاختيار فيديو من جهازك
+                    </p>
+
+                    <span class="browse">
+                        اختيار فيديو
+                    </span>
+
+                    <p style="margin-top:10px;font-size:11px;">
+                        MP4 / WebM / MOV
+                    </p>
+
+                </div>
+
+                <input
+                    type="file"
+                    id="videoInput"
+                    accept="video/*"
+                >
+
             </div>
 
-            <video id="videoPlayer"
-                   class="video-js vjs-default-skin vjs-big-play-centered"
-                   controls playsinline preload="auto"></video>
-        </div>
 
-        <div class="player-info">
-            <div class="now">
-                <span class="live"><i class="fa-solid fa-circle"></i> LIVE</span>
-                <span class="active-name" id="activeName">اختر قناة لتشغيلها</span>
+            <div
+                class="preview-area"
+                id="previewArea"
+            >
+
+                <video
+                    id="previewVideo"
+                    class="preview-video"
+                    controls
+                    playsinline
+                ></video>
+
+                <div class="file-info">
+
+                    <div
+                        class="file-name"
+                        id="fileName"
+                    >
+                        —
+                    </div>
+
+                    <div
+                        class="file-size"
+                        id="fileSize"
+                    >
+                        —
+                    </div>
+
+                </div>
+
+
+                <div class="fields">
+
+                    <div>
+                        <label for="videoTitle">
+                            عنوان الفيديو
+                        </label>
+
+                        <input
+                            id="videoTitle"
+                            type="text"
+                            placeholder="اكتب عنوان الفيديو..."
+                        >
+                    </div>
+
+
+                    <div>
+                        <label for="videoDescription">
+                            وصف الفيديو
+                        </label>
+
+                        <textarea
+                            id="videoDescription"
+                            placeholder="اكتب وصفًا للفيديو..."
+                        ></textarea>
+                    </div>
+
+                </div>
+
+
+                <div class="actions">
+
+                    <button
+                        class="btn btn-primary"
+                        id="uploadBtn"
+                    >
+                        📤 رفع الفيديو
+                    </button>
+
+                    <button
+                        class="btn btn-secondary"
+                        id="cancelBtn"
+                    >
+                        إلغاء
+                    </button>
+
+                </div>
+
+
+                <div
+                    class="progress-box"
+                    id="progressBox"
+                >
+
+                    <div class="progress-top">
+
+                        <span id="progressText">
+                            جاري الرفع...
+                        </span>
+
+                        <span id="progressPercent">
+                            0%
+                        </span>
+
+                    </div>
+
+                    <div class="progress">
+
+                        <div
+                            class="progress-bar"
+                            id="progressBar"
+                        ></div>
+
+                    </div>
+
+                </div>
+
             </div>
 
-            <div class="actions">
-                <button class="action" onclick="reloadCurrent()" title="إعادة الاتصال">
-                    <i class="fa-solid fa-rotate"></i>
-                </button>
-                <button class="action" onclick="fullscreenPlayer()" title="ملء الشاشة">
-                    <i class="fa-solid fa-expand"></i>
-                </button>
+        </section>
+
+
+        <section class="videos-section">
+
+            <div class="section-title">
+
+                <h2>
+                    🎞️ الفيديوهات
+                </h2>
+
+                <span
+                    class="count"
+                    id="videoCount"
+                >
+                    0 فيديو
+                </span>
+
             </div>
-        </div>
-    </section>
 
-    <aside class="sidebar">
-        <div class="side-head">
-            <div class="side-title"><i class="fa-solid fa-tv"></i> القنوات المباشرة</div>
-            <div class="count" id="count">0 قناة</div>
-        </div>
 
-        <div class="search">
-            <i class="fa-solid fa-magnifying-glass"></i>
-            <input id="search" type="text" placeholder="ابحث عن قناة..." autocomplete="off">
-        </div>
+            <div
+                class="videos-grid"
+                id="videosGrid"
+            >
 
-        <div class="categories" id="categories"></div>
+                <div class="empty">
 
-        <div class="channels" id="channels">
-            <div class="empty">
-                <i class="fa-solid fa-spinner fa-spin"></i>
-                جاري تحميل القنوات...
+                    <div class="empty-icon">
+                        🎬
+                    </div>
+
+                    <div>
+                        لا توجد فيديوهات مرفوعة حتى الآن
+                    </div>
+
+                </div>
+
             </div>
-        </div>
-    </aside>
+
+        </section>
+
+    </div>
+
 </main>
 
-<div class="toast" id="toast"></div>
 
-<script src="https://vjs.zencdn.net/8.10.0/video.min.js"></script>
-<script src="https://cdn.jsdelivr.net/npm/hls.js@1.5.17/dist/hls.min.js"></script>
+<footer>
+    Video Center © 2026
+</footer>
+
+
+<div
+    class="toast"
+    id="toast"
+></div>
+
 
 <script>
-/*
- * GO TV MAX
- * البيانات التي زودتني بها
- */
-const XTREAM = {
-    host: "https://go-tv.site:443",
-    username: "gotv",
-    password: "12345"
-};
-
-let player = null;
-let hls = null;
-let channels = [];
-let categories = [];
-let currentCategory = "all";
-let currentChannel = null;
-let currentFormatIndex = 0;
-let playToken = 0;
-
-const $ = id => document.getElementById(id);
-
-const loading = $("loading");
-const loadingText = $("loadingText");
-const activeName = $("activeName");
-const channelsBox = $("channels");
-const categoriesBox = $("categories");
-const search = $("search");
-const count = $("count");
-const statusText = $("statusText");
-const toast = $("toast");
-
-function apiUrl(action = "") {
-    let u = XTREAM.host.replace(/\/+$/, "") +
-        "/player_api.php?username=" +
-        encodeURIComponent(XTREAM.username) +
-        "&password=" +
-        encodeURIComponent(XTREAM.password);
-
-    if (action) u += "&action=" + encodeURIComponent(action);
-    return u;
-}
-
-function streamUrls(channel) {
-    const base = XTREAM.host.replace(/\/+$/, "");
-    const user = encodeURIComponent(XTREAM.username);
-    const pass = encodeURIComponent(XTREAM.password);
-    const id = encodeURIComponent(channel.stream_id);
 
     /*
-     * معظم لوحات Xtream توفر .ts و .m3u8.
-     * نبدأ بـ TS لأنه الأكثر شيوعاً للبث المباشر،
-     * ثم نجرب HLS إذا فشل.
+     * ============================================================
+     * إعدادات الموقع
+     * ============================================================
+     *
+     * إذا كان index.html والسيرفر على نفس الدومين:
+     *
+     * /api/upload
+     * /api/videos
+     * /api/videos/:id
+     *
+     * لا تحتاج إلى تغيير شيء هنا.
      */
-    return [
-        {
-            url: `${base}/live/${user}/${pass}/${id}.ts`,
-            type: "video/mp2t",
-            label: "TS"
-        },
-        {
-            url: `${base}/live/${user}/${pass}/${id}.m3u8`,
-            type: "application/x-mpegURL",
-            label: "HLS"
-        }
-    ];
-}
 
-function showLoading(show, text = "جاري التحميل...") {
-    loadingText.textContent = text;
-    loading.classList.toggle("hidden", !show);
-}
+    const API = "/api";
 
-function showToast(message) {
-    toast.textContent = message;
-    toast.classList.add("show");
-    clearTimeout(window.toastTimer);
-    window.toastTimer = setTimeout(() => toast.classList.remove("show"), 3500);
-}
 
-function setStatus(text, ok = true) {
-    statusText.textContent = text;
-    const dot = document.querySelector(".status-dot");
-    dot.style.background = ok ? "#22c55e" : "#ef4444";
-    dot.style.boxShadow = ok ? "0 0 12px #22c55e" : "0 0 12px #ef4444";
-}
+    const videoInput = document.getElementById("videoInput");
+    const dropZone = document.getElementById("dropZone");
 
-document.addEventListener("DOMContentLoaded", async () => {
-    player = videojs("videoPlayer", {
-        controls: true,
-        responsive: true,
-        fluid: true,
-        liveui: true,
-        preload: "auto"
-    });
+    const previewArea = document.getElementById("previewArea");
+    const previewVideo = document.getElementById("previewVideo");
 
-    await connectXtream();
-});
+    const fileName = document.getElementById("fileName");
+    const fileSize = document.getElementById("fileSize");
 
-search.addEventListener("input", filterChannels);
+    const videoTitle = document.getElementById("videoTitle");
+    const videoDescription = document.getElementById("videoDescription");
 
-async function connectXtream() {
-    showLoading(true, "جاري الاتصال بـ GO TV MAX...");
+    const uploadBtn = document.getElementById("uploadBtn");
+    const cancelBtn = document.getElementById("cancelBtn");
 
-    try {
-        const response = await fetch(apiUrl(), { cache: "no-store" });
+    const progressBox = document.getElementById("progressBox");
+    const progressBar = document.getElementById("progressBar");
+    const progressText = document.getElementById("progressText");
+    const progressPercent = document.getElementById("progressPercent");
 
-        if (!response.ok) throw new Error("HTTP " + response.status);
+    const videosGrid = document.getElementById("videosGrid");
+    const videoCount = document.getElementById("videoCount");
 
-        const data = await response.json();
+    const toast = document.getElementById("toast");
 
-        if (!data || !data.user_info) {
-            throw new Error("استجابة Xtream غير صحيحة");
-        }
 
-        if (String(data.user_info.auth) === "0") {
-            throw new Error("بيانات الدخول مرفوضة");
-        }
+    let selectedFile = null;
 
-        setStatus("متصل بـ GO TV MAX", true);
-
-        await loadCategories();
-        await loadChannels();
-
-        showToast("تم الاتصال وتحميل القنوات بنجاح");
-    } catch (err) {
-        console.error(err);
-        setStatus("تعذر الاتصال", false);
-
-        channelsBox.innerHTML = `
-            <div class="empty">
-                <i class="fa-solid fa-triangle-exclamation"></i>
-                تعذر تحميل القنوات
-                <br><br>
-                <small>${escapeHtml(err.message)}</small>
-            </div>`;
-        showToast("تعذر الاتصال بالسيرفر");
-    } finally {
-        showLoading(false);
-    }
-}
-
-async function loadCategories() {
-    const r = await fetch(apiUrl("get_live_categories"), { cache: "no-store" });
-    if (!r.ok) throw new Error("فشل تحميل التصنيفات");
-
-    const data = await r.json();
-    categories = Array.isArray(data) ? data : [];
-    renderCategories();
-}
-
-async function loadChannels() {
-    showLoading(true, "جاري تحميل القنوات...");
-
-    const r = await fetch(apiUrl("get_live_streams"), { cache: "no-store" });
-    if (!r.ok) throw new Error("فشل تحميل القنوات");
-
-    const data = await r.json();
-    channels = Array.isArray(data) ? data : [];
-
-    renderCategories();
-    filterChannels();
-
-    if (channels.length) {
-        setTimeout(() => playChannel(channels[0]), 250);
-    }
-}
-
-function renderCategories() {
-    categoriesBox.innerHTML = "";
-
-    const all = document.createElement("button");
-    all.className = "cat" + (currentCategory === "all" ? " active" : "");
-    all.textContent = "الكل";
-    all.onclick = () => {
-        currentCategory = "all";
-        renderCategories();
-        filterChannels();
-    };
-    categoriesBox.appendChild(all);
-
-    categories.forEach(cat => {
-        const id = String(cat.category_id);
-        const b = document.createElement("button");
-        b.className = "cat" + (currentCategory === id ? " active" : "");
-        b.textContent = cat.category_name || "تصنيف";
-        b.onclick = () => {
-            currentCategory = id;
-            renderCategories();
-            filterChannels();
-        };
-        categoriesBox.appendChild(b);
-    });
-}
-
-function filterChannels() {
-    const q = search.value.trim().toLowerCase();
-
-    const filtered = channels.filter(ch => {
-        const name = String(ch.name || "").toLowerCase();
-        const catOk = currentCategory === "all" ||
-            String(ch.category_id) === currentCategory;
-        return catOk && name.includes(q);
-    });
-
-    count.textContent = filtered.length + " قناة";
-    renderChannels(filtered);
-}
-
-function renderChannels(list) {
-    channelsBox.innerHTML = "";
-
-    if (!list.length) {
-        channelsBox.innerHTML = `
-            <div class="empty">
-                <i class="fa-solid fa-tv"></i>
-                لا توجد قنوات مطابقة
-            </div>`;
-        return;
-    }
-
-    list.forEach(ch => {
-        const item = document.createElement("div");
-        item.className = "channel";
-
-        if (currentChannel &&
-            String(currentChannel.stream_id) === String(ch.stream_id)) {
-            item.classList.add("active");
-        }
-
-        const logo = document.createElement("div");
-        logo.className = "channel-logo";
-
-        if (ch.stream_icon) {
-            const img = document.createElement("img");
-            img.src = ch.stream_icon;
-            img.alt = "";
-            img.onerror = () => {
-                logo.innerHTML = '<i class="fa-solid fa-tv"></i>';
-            };
-            logo.appendChild(img);
-        } else {
-            logo.innerHTML = '<i class="fa-solid fa-tv"></i>';
-        }
-
-        const info = document.createElement("div");
-        info.className = "channel-info";
-
-        const name = document.createElement("span");
-        name.className = "channel-name";
-        name.textContent = ch.name || "قناة";
-
-        const meta = document.createElement("span");
-        meta.className = "channel-meta";
-        meta.innerHTML = '<span class="ok">● مباشر</span>';
-
-        info.append(name, meta);
-        item.append(logo, info);
-
-        item.onclick = () => {
-            document.querySelectorAll(".channel").forEach(x => x.classList.remove("active"));
-            item.classList.add("active");
-            playChannel(ch);
-        };
-
-        channelsBox.appendChild(item);
-    });
-}
-
-function destroyHls() {
-    if (hls) {
-        try { hls.destroy(); } catch(e) {}
-        hls = null;
-    }
-}
-
-function playChannel(channel) {
-    if (!channel || !player) return;
-
-    currentChannel = channel;
-    currentFormatIndex = 0;
-    const token = ++playToken;
-
-    activeName.textContent = channel.name || "قناة";
-    showLoading(true, "جاري تشغيل " + (channel.name || "القناة") + "...");
-
-    destroyHls();
-    player.pause();
-
-    const formats = streamUrls(channel);
-    tryFormat(formats, 0, token);
-}
-
-function tryFormat(formats, index, token) {
-    if (token !== playToken) return;
-
-    if (index >= formats.length) {
-        showLoading(false);
-        setStatus("البث غير متاح", false);
-        showToast("تعذر تشغيل القناة من هذا المتصفح");
-        return;
-    }
-
-    currentFormatIndex = index;
-    const source = formats[index];
 
     /*
-     * HLS.js مطلوب لملفات m3u8 في أغلب متصفحات Android/Chrome.
+     * ============================================================
+     * اختيار الفيديو
+     * ============================================================
      */
-    if (source.type === "application/x-mpegURL") {
-        if (window.Hls && Hls.isSupported()) {
-            destroyHls();
 
-            hls = new Hls({
-                enableWorker: true,
-                lowLatencyMode: true,
-                backBufferLength: 30,
-                maxBufferLength: 20,
-                liveSyncDurationCount: 3
-            });
+    dropZone.addEventListener("click", function () {
+        videoInput.click();
+    });
 
-            hls.on(Hls.Events.MEDIA_ATTACHED, () => {
-                if (token !== playToken) return;
-                hls.loadSource(source.url);
-            });
 
-            hls.on(Hls.Events.MANIFEST_PARSED, () => {
-                if (token !== playToken) return;
-                showLoading(false);
-                setStatus("البث يعمل", true);
-                player.play().catch(() => {});
-            });
+    videoInput.addEventListener("change", function () {
 
-            hls.on(Hls.Events.ERROR, (_, data) => {
-                if (token !== playToken || !data.fatal) return;
-
-                destroyHls();
-
-                if (index + 1 < formats.length) {
-                    showLoading(true, "تجربة صيغة بث أخرى...");
-                    setTimeout(() => tryFormat(formats, index + 1, token), 250);
-                } else {
-                    showLoading(false);
-                    setStatus("تعذر تشغيل البث", false);
-                    showToast("السيرفر رفض تشغيل البث أو البث غير متاح");
-                }
-            });
-
-            hls.attachMedia(player.tech().el());
+        if (!this.files || !this.files.length) {
             return;
         }
+
+        selectVideo(this.files[0]);
+
+    });
+
+
+    /*
+     * ============================================================
+     * Drag & Drop
+     * ============================================================
+     */
+
+    ["dragenter", "dragover"].forEach(eventName => {
+
+        dropZone.addEventListener(eventName, function (e) {
+
+            e.preventDefault();
+            e.stopPropagation();
+
+            dropZone.classList.add("dragover");
+
+        });
+
+    });
+
+
+    ["dragleave", "drop"].forEach(eventName => {
+
+        dropZone.addEventListener(eventName, function (e) {
+
+            e.preventDefault();
+            e.stopPropagation();
+
+            dropZone.classList.remove("dragover");
+
+        });
+
+    });
+
+
+    dropZone.addEventListener("drop", function (e) {
+
+        const files = e.dataTransfer.files;
+
+        if (!files || !files.length) {
+            return;
+        }
+
+        const file = files[0];
+
+        if (!file.type.startsWith("video/")) {
+
+            showToast(
+                "الملف الذي اخترته ليس فيديو",
+                "error"
+            );
+
+            return;
+        }
+
+        selectVideo(file);
+
+    });
+
+
+    /*
+     * ============================================================
+     * عرض الفيديو قبل الرفع
+     * ============================================================
+     */
+
+    function selectVideo(file) {
+
+        selectedFile = file;
+
+        fileName.textContent = file.name;
+
+        fileSize.textContent = formatBytes(file.size);
+
+        const url = URL.createObjectURL(file);
+
+        previewVideo.src = url;
+
+        previewArea.classList.add("active");
+
+        videoTitle.value =
+            file.name.replace(/\.[^/.]+$/, "");
+
+        videoDescription.value = "";
+
+        window.scrollTo({
+            top: previewArea.offsetTop - 100,
+            behavior: "smooth"
+        });
+
+    }
+
+
+    /*
+     * ============================================================
+     * إلغاء اختيار الفيديو
+     * ============================================================
+     */
+
+    cancelBtn.addEventListener("click", resetUpload);
+
+
+    function resetUpload() {
+
+        selectedFile = null;
+
+        videoInput.value = "";
+
+        previewVideo.pause();
+
+        previewVideo.removeAttribute("src");
+
+        previewVideo.load();
+
+        previewArea.classList.remove("active");
+
+        progressBox.classList.remove("active");
+
+        progressBar.style.width = "0%";
+
+        progressPercent.textContent = "0%";
+
+        progressText.textContent = "جاري الرفع...";
+
+        videoTitle.value = "";
+
+        videoDescription.value = "";
+
+    }
+
+
+    /*
+     * ============================================================
+     * رفع الفيديو
+     * ============================================================
+     */
+
+    uploadBtn.addEventListener("click", uploadVideo);
+
+
+    function uploadVideo() {
+
+        if (!selectedFile) {
+
+            showToast(
+                "اختر فيديو أولاً",
+                "error"
+            );
+
+            return;
+        }
+
+
+        if (!videoTitle.value.trim()) {
+
+            showToast(
+                "اكتب عنوان الفيديو",
+                "error"
+            );
+
+            videoTitle.focus();
+
+            return;
+        }
+
+
+        const formData = new FormData();
+
+        formData.append(
+            "video",
+            selectedFile
+        );
+
+        formData.append(
+            "title",
+            videoTitle.value.trim()
+        );
+
+        formData.append(
+            "description",
+            videoDescription.value.trim()
+        );
+
+
+        const xhr = new XMLHttpRequest();
+
+
+        xhr.open(
+            "POST",
+            API + "/upload",
+            true
+        );
+
 
         /*
-         * Safari / iOS وبعض المتصفحات التي تدعم HLS أصلياً.
+         * نسبة الرفع
          */
-        if (player.tech().el().canPlayType("application/vnd.apple.mpegurl")) {
-            setVideoJsSource(source, formats, index, token);
+
+        xhr.upload.addEventListener(
+            "progress",
+            function (event) {
+
+                if (!event.lengthComputable) {
+                    return;
+                }
+
+                const percent =
+                    Math.round(
+                        (event.loaded / event.total) * 100
+                    );
+
+                progressBox.classList.add("active");
+
+                progressBar.style.width =
+                    percent + "%";
+
+                progressPercent.textContent =
+                    percent + "%";
+
+                if (percent >= 100) {
+
+                    progressText.textContent =
+                        "جاري معالجة الفيديو...";
+
+                } else {
+
+                    progressText.textContent =
+                        "جاري رفع الفيديو...";
+
+                }
+
+            }
+        );
+
+
+        xhr.onload = function () {
+
+            uploadBtn.disabled = false;
+
+            uploadBtn.textContent =
+                "📤 رفع الفيديو";
+
+
+            if (
+                xhr.status >= 200 &&
+                xhr.status < 300
+            ) {
+
+                progressBar.style.width = "100%";
+
+                progressPercent.textContent = "100%";
+
+                progressText.textContent =
+                    "تم رفع الفيديو بنجاح ✓";
+
+
+                showToast(
+                    "تم رفع الفيديو بنجاح",
+                    "success"
+                );
+
+
+                setTimeout(function () {
+
+                    resetUpload();
+
+                    loadVideos();
+
+                }, 1000);
+
+
+            } else {
+
+                let message =
+                    "حدث خطأ أثناء رفع الفيديو";
+
+
+                try {
+
+                    const response =
+                        JSON.parse(xhr.responseText);
+
+                    if (response.message) {
+                        message = response.message;
+                    }
+
+                } catch (e) {}
+
+
+                showToast(
+                    message,
+                    "error"
+                );
+
+            }
+
+        };
+
+
+        xhr.onerror = function () {
+
+            uploadBtn.disabled = false;
+
+            uploadBtn.textContent =
+                "📤 رفع الفيديو";
+
+            showToast(
+                "تعذر الاتصال بالسيرفر",
+                "error"
+            );
+
+        };
+
+
+        xhr.onabort = function () {
+
+            uploadBtn.disabled = false;
+
+            uploadBtn.textContent =
+                "📤 رفع الفيديو";
+
+        };
+
+
+        uploadBtn.disabled = true;
+
+        uploadBtn.textContent =
+            "⏳ جاري الرفع...";
+
+
+        progressBox.classList.add("active");
+
+
+        xhr.send(formData);
+
+    }
+
+
+    /*
+     * ============================================================
+     * تحميل الفيديوهات الموجودة على السيرفر
+     * ============================================================
+     */
+
+    async function loadVideos() {
+
+        try {
+
+            const response =
+                await fetch(
+                    API + "/videos"
+                );
+
+
+            if (!response.ok) {
+                throw new Error();
+            }
+
+
+            const data =
+                await response.json();
+
+
+            renderVideos(data);
+
+        } catch (error) {
+
+            console.log(
+                "تعذر تحميل الفيديوهات:",
+                error
+            );
+
+            renderVideos([]);
+
+        }
+
+    }
+
+
+    /*
+     * ============================================================
+     * عرض الفيديوهات
+     * ============================================================
+     */
+
+    function renderVideos(videos) {
+
+        videosGrid.innerHTML = "";
+
+
+        if (!Array.isArray(videos) || videos.length === 0) {
+
+            videosGrid.innerHTML = `
+
+                <div class="empty">
+
+                    <div class="empty-icon">
+                        🎬
+                    </div>
+
+                    <div>
+                        لا توجد فيديوهات مرفوعة حتى الآن
+                    </div>
+
+                </div>
+
+            `;
+
+            videoCount.textContent =
+                "0 فيديو";
+
+            return;
+
+        }
+
+
+        videoCount.textContent =
+            videos.length + " فيديو";
+
+
+        videos.forEach(video => {
+
+            const card =
+                document.createElement("article");
+
+            card.className =
+                "video-card";
+
+
+            const wrapper =
+                document.createElement("div");
+
+            wrapper.className =
+                "video-wrapper";
+
+
+            const player =
+                document.createElement("video");
+
+            player.controls = true;
+
+            player.playsInline = true;
+
+            player.preload = "metadata";
+
+            player.src =
+                video.url;
+
+
+            wrapper.appendChild(player);
+
+
+            const content =
+                document.createElement("div");
+
+            content.className =
+                "video-content";
+
+
+            const title =
+                document.createElement("div");
+
+            title.className =
+                "video-title";
+
+            title.textContent =
+                video.title || "بدون عنوان";
+
+
+            const description =
+                document.createElement("div");
+
+            description.className =
+                "video-description";
+
+            description.textContent =
+                video.description || "";
+
+
+            const actions =
+                document.createElement("div");
+
+            actions.className =
+                "video-actions";
+
+
+            const openBtn =
+                document.createElement("button");
+
+            openBtn.className =
+                "small-btn";
+
+            openBtn.textContent =
+                "🔗 فتح";
+
+
+            openBtn.onclick = function () {
+
+                window.open(
+                    video.url,
+                    "_blank"
+                );
+
+            };
+
+
+            const deleteBtn =
+                document.createElement("button");
+
+            deleteBtn.className =
+                "small-btn delete-btn";
+
+            deleteBtn.textContent =
+                "🗑 حذف";
+
+
+            deleteBtn.onclick = function () {
+
+                deleteVideo(video.id);
+
+            };
+
+
+            actions.appendChild(openBtn);
+
+            actions.appendChild(deleteBtn);
+
+
+            content.appendChild(title);
+
+            content.appendChild(description);
+
+            content.appendChild(actions);
+
+
+            card.appendChild(wrapper);
+
+            card.appendChild(content);
+
+
+            videosGrid.appendChild(card);
+
+        });
+
+    }
+
+
+    /*
+     * ============================================================
+     * حذف فيديو
+     * ============================================================
+     */
+
+    async function deleteVideo(id) {
+
+        const confirmed =
+            confirm(
+                "هل أنت متأكد من حذف هذا الفيديو؟"
+            );
+
+
+        if (!confirmed) {
             return;
         }
 
-        if (index + 1 < formats.length) {
-            tryFormat(formats, index + 1, token);
-            return;
+
+        try {
+
+            const response =
+                await fetch(
+                    API + "/videos/" +
+                    encodeURIComponent(id),
+                    {
+                        method: "DELETE"
+                    }
+                );
+
+
+            if (!response.ok) {
+                throw new Error();
+            }
+
+
+            showToast(
+                "تم حذف الفيديو",
+                "success"
+            );
+
+
+            loadVideos();
+
+
+        } catch (error) {
+
+            showToast(
+                "تعذر حذف الفيديو",
+                "error"
+            );
+
         }
+
     }
 
-    setVideoJsSource(source, formats, index, token);
-}
 
-function setVideoJsSource(source, formats, index, token) {
-    player.off("loadedmetadata");
-    player.off("canplay");
-    player.off("error");
+    /*
+     * ============================================================
+     * تنسيق حجم الملف
+     * ============================================================
+     */
 
-    player.src({
-        src: source.url,
-        type: source.type
-    });
+    function formatBytes(bytes) {
 
-    const onReady = () => {
-        if (token !== playToken) return;
-        showLoading(false);
-        setStatus("البث يعمل", true);
-        player.play().catch(() => {});
-    };
-
-    const onError = () => {
-        if (token !== playToken) return;
-
-        player.off("loadedmetadata", onReady);
-        player.off("canplay", onReady);
-        player.off("error", onError);
-
-        if (index + 1 < formats.length) {
-            showLoading(true, "تجربة صيغة بث أخرى...");
-            setTimeout(() => tryFormat(formats, index + 1, token), 250);
-        } else {
-            showLoading(false);
-            setStatus("تعذر تشغيل البث", false);
-            showToast("No compatible source: تحقق من صيغة البث أو CORS");
+        if (!bytes) {
+            return "0 B";
         }
-    };
 
-    player.one("loadedmetadata", onReady);
-    player.one("canplay", onReady);
-    player.one("error", onError);
 
-    player.load();
-}
+        const units = [
+            "B",
+            "KB",
+            "MB",
+            "GB",
+            "TB"
+        ];
 
-function reloadCurrent() {
-    if (!currentChannel) {
-        showToast("اختر قناة أولاً");
-        return;
+
+        const index =
+            Math.floor(
+                Math.log(bytes) /
+                Math.log(1024)
+            );
+
+
+        return (
+            (bytes /
+                Math.pow(1024, index)
+            ).toFixed(index === 0 ? 0 : 2)
+            + " "
+            + units[index]
+        );
+
     }
-    playChannel(currentChannel);
-}
 
-function fullscreenPlayer() {
-    if (!player) return;
 
-    if (player.isFullscreen()) {
-        player.exitFullscreen();
-    } else {
-        player.requestFullscreen();
+    /*
+     * ============================================================
+     * رسائل التنبيه
+     * ============================================================
+     */
+
+    let toastTimer;
+
+
+    function showToast(message, type = "") {
+
+        clearTimeout(toastTimer);
+
+
+        toast.textContent =
+            message;
+
+
+        toast.className =
+            "toast show " + type;
+
+
+        toastTimer =
+            setTimeout(function () {
+
+                toast.className =
+                    "toast";
+
+            }, 3500);
+
     }
-}
 
-function escapeHtml(value) {
-    return String(value)
-        .replace(/&/g,"&amp;")
-        .replace(/</g,"&lt;")
-        .replace(/>/g,"&gt;")
-        .replace(/"/g,"&quot;")
-        .replace(/'/g,"&#039;");
-}
+
+    /*
+     * ============================================================
+     * تشغيل الموقع
+     * ============================================================
+     */
+
+    loadVideos();
+
 </script>
+
 </body>
-</html>
+    </html>
