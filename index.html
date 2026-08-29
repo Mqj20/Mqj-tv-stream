@@ -2,25 +2,21 @@
 <html lang="ar" dir="rtl">
 <head>
 <meta charset="UTF-8">
-<meta name="viewport"
-      content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+<meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
 
 <title>MQJ TV PRO | Xtream Player</title>
 
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 
-<link href="https://fonts.googleapis.com/css2?family=Cairo:wght@400;500;600;700;800;900&display=swap"
-      rel="stylesheet">
+<link href="https://fonts.googleapis.com/css2?family=Cairo:wght@400;500;600;700;800;900&display=swap" rel="stylesheet">
+<link href="https://vjs.zencdn.net/8.10.0/video-js.css" rel="stylesheet">
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css">
 
-<link href="https://vjs.zencdn.net/8.10.0/video-js.css"
-      rel="stylesheet">
-
-<link rel="stylesheet"
-      href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css">
+<!-- مكتبة HLS لدعم البث المباشر على جميع المتصفحات -->
+<script src="https://cdn.jsdelivr.net/npm/hls.js@latest"></script>
 
 <style>
-
 :root{
     --bg:#05070c;
     --bg2:#080d16;
@@ -47,8 +43,7 @@
     font-family:'Cairo',sans-serif;
 }
 
-html,
-body{
+html, body{
     width:100%;
     min-height:100%;
 }
@@ -62,23 +57,15 @@ body{
     min-height:100vh;
 }
 
-/* =========================
-   HEADER
-========================= */
-
 .header{
     height:76px;
     display:flex;
     align-items:center;
     justify-content:space-between;
-
     padding:0 28px;
-
     background:rgba(5,10,18,.78);
     backdrop-filter:blur(22px);
-
     border-bottom:1px solid var(--border);
-
     position:sticky;
     top:0;
     z-index:100;
@@ -93,22 +80,13 @@ body{
 .logo-icon{
     width:45px;
     height:45px;
-
     display:flex;
     align-items:center;
     justify-content:center;
-
     border-radius:14px;
-
-    background:
-        linear-gradient(135deg,
-        rgba(0,200,255,.22),
-        rgba(99,102,241,.22));
-
+    background:linear-gradient(135deg,rgba(0,200,255,.22),rgba(99,102,241,.22));
     border:1px solid rgba(0,200,255,.28);
-
-    box-shadow:
-        0 0 30px rgba(0,200,255,.13);
+    box-shadow:0 0 30px rgba(0,200,255,.13);
 }
 
 .logo-icon i{
@@ -125,10 +103,7 @@ body{
 .logo-title{
     font-size:20px;
     font-weight:900;
-
-    background:
-        linear-gradient(90deg,#fff,#00c8ff,#818cf8);
-
+    background:linear-gradient(90deg,#fff,#00c8ff,#818cf8);
     -webkit-background-clip:text;
     -webkit-text-fill-color:transparent;
 }
@@ -144,16 +119,11 @@ body{
     display:flex;
     align-items:center;
     gap:9px;
-
     padding:8px 15px;
-
     border-radius:30px;
-
     background:rgba(34,197,94,.08);
     border:1px solid rgba(34,197,94,.16);
-
     color:#86efac;
-
     font-size:11px;
     font-weight:700;
 }
@@ -161,66 +131,39 @@ body{
 .connection-dot{
     width:8px;
     height:8px;
-
     border-radius:50%;
     background:var(--success);
-
     box-shadow:0 0 12px var(--success);
 }
-
-/* =========================
-   MAIN
-========================= */
 
 .main{
     width:100%;
     max-width:1800px;
-
     margin:auto;
-
     padding:22px;
-
     display:grid;
-
     grid-template-columns:minmax(0,3fr) minmax(300px,1fr);
-
     gap:22px;
-
     min-height:calc(100vh - 76px);
 }
 
-/* =========================
-   PLAYER
-========================= */
-
 .player-card{
     min-width:0;
-
     background:#020407;
-
     border:1px solid rgba(148,163,184,.10);
-
     border-radius:24px;
-
     overflow:hidden;
-
     box-shadow:var(--shadow);
-
     display:flex;
     flex-direction:column;
 }
 
 .player-container{
     position:relative;
-
     width:100%;
-
     aspect-ratio:16/9;
-
     min-height:350px;
-
     background:#000;
-
     display:flex;
     align-items:center;
     justify-content:center;
@@ -234,54 +177,32 @@ body{
 .video-js .vjs-big-play-button{
     width:72px;
     height:72px;
-
     line-height:68px;
-
     border-radius:50%;
-
     background:rgba(0,200,255,.14);
-
     border:1px solid rgba(0,200,255,.45);
-
     backdrop-filter:blur(10px);
-
     color:#fff;
-
     margin-top:-36px;
     margin-left:-36px;
-
     font-size:30px;
-}
-
-.video-js:hover .vjs-big-play-button{
-    background:rgba(0,200,255,.25);
 }
 
 .player-info{
     min-height:82px;
-
     padding:15px 20px;
-
     display:flex;
     align-items:center;
     justify-content:space-between;
-
     gap:15px;
-
-    background:
-        linear-gradient(180deg,
-        rgba(15,23,42,.95),
-        rgba(7,12,22,.98));
-
+    background:linear-gradient(180deg,rgba(15,23,42,.95),rgba(7,12,22,.98));
     border-top:1px solid var(--border);
 }
 
 .now-playing{
     min-width:0;
-
     display:flex;
     align-items:center;
-
     gap:13px;
 }
 
@@ -289,38 +210,27 @@ body{
     display:flex;
     align-items:center;
     gap:6px;
-
     background:rgba(239,68,68,.13);
-
     color:#f87171;
-
     border:1px solid rgba(239,68,68,.25);
-
     padding:5px 10px;
-
     border-radius:20px;
-
     font-size:10px;
     font-weight:800;
-
     white-space:nowrap;
 }
 
 .live-dot{
     width:6px;
     height:6px;
-
     border-radius:50%;
-
     background:#ef4444;
-
     box-shadow:0 0 10px #ef4444;
 }
 
 .current-channel{
     font-size:16px;
     font-weight:800;
-
     overflow:hidden;
     text-overflow:ellipsis;
     white-space:nowrap;
@@ -334,50 +244,29 @@ body{
 .action-btn{
     width:38px;
     height:38px;
-
     border-radius:11px;
-
     border:1px solid var(--border);
-
     background:rgba(30,41,59,.55);
-
     color:#cbd5e1;
-
     cursor:pointer;
-
     transition:.2s;
 }
 
 .action-btn:hover{
     background:rgba(0,200,255,.12);
     color:var(--primary);
-
     border-color:rgba(0,200,255,.3);
 }
 
-/* =========================
-   SIDEBAR
-========================= */
-
 .sidebar{
     min-width:0;
-
-    background:
-        linear-gradient(145deg,
-        rgba(15,23,42,.90),
-        rgba(7,12,22,.94));
-
+    background:linear-gradient(145deg,rgba(15,23,42,.90),rgba(7,12,22,.94));
     border:1px solid var(--border);
-
     border-radius:24px;
-
     box-shadow:var(--shadow);
-
     padding:17px;
-
     display:flex;
     flex-direction:column;
-
     overflow:hidden;
 }
 
@@ -385,7 +274,6 @@ body{
     display:flex;
     align-items:center;
     justify-content:space-between;
-
     margin-bottom:14px;
 }
 
@@ -393,30 +281,20 @@ body{
     display:flex;
     align-items:center;
     gap:9px;
-
     font-size:15px;
     font-weight:800;
 }
 
-.sidebar-title i{
-    color:var(--primary);
-}
+.sidebar-title i{ color:var(--primary); }
 
 .channel-total{
     padding:5px 10px;
-
     background:rgba(0,200,255,.08);
-
     color:#67e8f9;
-
     border:1px solid rgba(0,200,255,.13);
-
     border-radius:20px;
-
     font-size:10px;
 }
-
-/* SEARCH */
 
 .search{
     position:relative;
@@ -425,209 +303,120 @@ body{
 
 .search input{
     width:100%;
-
     height:44px;
-
     border-radius:13px;
-
     outline:none;
-
     border:1px solid var(--border);
-
     background:rgba(2,6,23,.65);
-
     color:#fff;
-
     padding:0 43px 0 15px;
-
     font-size:12px;
-
     transition:.2s;
 }
 
 .search input:focus{
     border-color:rgba(0,200,255,.45);
-
     box-shadow:0 0 0 3px rgba(0,200,255,.05);
 }
 
 .search i{
     position:absolute;
-
     right:15px;
-
     top:50%;
-
     transform:translateY(-50%);
-
     color:#64748b;
-
     font-size:13px;
 }
 
-/* CATEGORIES */
-
 .categories{
     display:flex;
-
     gap:7px;
-
     overflow-x:auto;
-
     padding-bottom:8px;
-
     margin-bottom:8px;
-
     scrollbar-width:none;
 }
 
-.categories::-webkit-scrollbar{
-    display:none;
-}
+.categories::-webkit-scrollbar{ display:none; }
 
 .category{
     flex-shrink:0;
-
     border:1px solid var(--border);
-
     background:rgba(30,41,59,.45);
-
     color:#94a3b8;
-
     padding:6px 13px;
-
     border-radius:20px;
-
     cursor:pointer;
-
     font-size:10px;
-
     font-weight:700;
-
     transition:.2s;
 }
 
-.category:hover,
-.category.active{
+.category:hover, .category.active{
     color:#fff;
-
-    background:
-        linear-gradient(135deg,
-        #0891b2,
-        #4f46e5);
-
+    background:linear-gradient(135deg,#0891b2,#4f46e5);
     border-color:transparent;
-
-    box-shadow:
-        0 5px 18px rgba(0,200,255,.12);
+    box-shadow:0 5px 18px rgba(0,200,255,.12);
 }
-
-/* CHANNELS */
 
 .channels{
     flex:1;
-
     min-height:0;
-
     overflow-y:auto;
-
     display:flex;
-
     flex-direction:column;
-
     gap:7px;
-
     padding-left:2px;
 }
 
-.channels::-webkit-scrollbar{
-    width:5px;
-}
-
-.channels::-webkit-scrollbar-track{
-    background:transparent;
-}
-
-.channels::-webkit-scrollbar-thumb{
-    background:#1e293b;
-    border-radius:10px;
-}
+.channels::-webkit-scrollbar{ width:5px; }
+.channels::-webkit-scrollbar-track{ background:transparent; }
+.channels::-webkit-scrollbar-thumb{ background:#1e293b; border-radius:10px; }
 
 .channel{
     position:relative;
-
     display:flex;
-
     align-items:center;
-
     gap:11px;
-
     padding:10px;
-
     border-radius:14px;
-
     background:rgba(30,41,59,.30);
-
     border:1px solid transparent;
-
     cursor:pointer;
-
     transition:.2s;
 }
 
 .channel:hover{
     background:rgba(30,41,59,.70);
-
     border-color:rgba(148,163,184,.13);
-
     transform:translateX(-2px);
 }
 
 .channel.active{
-    background:
-        linear-gradient(90deg,
-        rgba(0,200,255,.12),
-        rgba(99,102,241,.08));
-
+    background:linear-gradient(90deg,rgba(0,200,255,.12),rgba(99,102,241,.08));
     border-color:rgba(0,200,255,.28);
 }
 
 .channel-icon{
     width:39px;
     height:39px;
-
     flex-shrink:0;
-
     border-radius:11px;
-
     display:flex;
     align-items:center;
     justify-content:center;
-
-    background:
-        linear-gradient(135deg,
-        rgba(0,200,255,.13),
-        rgba(99,102,241,.13));
-
+    background:linear-gradient(135deg,rgba(0,200,255,.13),rgba(99,102,241,.13));
     border:1px solid rgba(148,163,184,.10);
-
     color:#67e8f9;
 }
 
-.channel-info{
-    min-width:0;
-    flex:1;
-}
+.channel-info{ min-width:0; flex:1; }
 
 .channel-name{
     display:block;
-
     font-size:11px;
-
     color:#e2e8f0;
-
     font-weight:700;
-
     overflow:hidden;
     text-overflow:ellipsis;
     white-space:nowrap;
@@ -635,1279 +424,414 @@ body{
 
 .channel-group{
     display:block;
-
     margin-top:2px;
-
     color:#64748b;
-
     font-size:8px;
 }
 
-.channel-live{
-    font-size:8px;
-
-    color:#4ade80;
-}
-
-/* EMPTY */
+.channel-live{ font-size:8px; color:#4ade80; }
 
 .empty{
     padding:50px 15px;
-
     text-align:center;
-
     color:#475569;
-
     font-size:12px;
 }
 
 .empty i{
     display:block;
-
     font-size:30px;
-
     margin-bottom:10px;
-
     color:#334155;
 }
 
-/* LOADING */
-
 .loading{
     position:absolute;
-
     inset:0;
-
     z-index:20;
-
     display:flex;
-
     flex-direction:column;
-
     align-items:center;
     justify-content:center;
-
-    background:
-        radial-gradient(circle,
-        rgba(0,200,255,.09),
-        rgba(0,0,0,.95) 65%);
-
+    background:radial-gradient(circle,rgba(0,200,255,.09),rgba(0,0,0,.95) 65%);
     transition:.3s;
 }
 
-.loading.hidden{
-    opacity:0;
-    pointer-events:none;
-}
+.loading.hidden{ opacity:0; pointer-events:none; }
 
 .spinner{
     width:45px;
     height:45px;
-
     border:3px solid rgba(255,255,255,.08);
-
     border-top-color:var(--primary);
-
     border-right-color:#6366f1;
-
     border-radius:50%;
-
     animation:spin .8s linear infinite;
 }
 
-.loading-text{
-    margin-top:14px;
+.loading-text{ margin-top:14px; color:#94a3b8; font-size:11px; }
 
-    color:#94a3b8;
-
-    font-size:11px;
-}
-
-@keyframes spin{
-    to{
-        transform:rotate(360deg);
-    }
-}
-
-/* TOAST */
+@keyframes spin{ to{ transform:rotate(360deg); } }
 
 .toast{
     position:fixed;
-
     left:50%;
-
     bottom:25px;
-
     transform:translateX(-50%) translateY(100px);
-
     z-index:999;
-
     min-width:250px;
-
     max-width:90%;
-
     padding:12px 18px;
-
     border-radius:13px;
-
     background:rgba(15,23,42,.95);
-
     backdrop-filter:blur(15px);
-
     border:1px solid var(--border);
-
     box-shadow:0 15px 50px rgba(0,0,0,.5);
-
     color:#e2e8f0;
-
     font-size:11px;
-
     text-align:center;
-
     transition:.3s;
 }
 
-.toast.show{
-    transform:translateX(-50%) translateY(0);
-}
-
-/* MOBILE */
+.toast.show{ transform:translateX(-50%) translateY(0); }
 
 @media(max-width:1000px){
-
-    .main{
-        grid-template-columns:1fr;
-
-        padding:12px;
-
-        gap:13px;
-    }
-
-    .sidebar{
-        height:470px;
-    }
-
-    .player-container{
-        aspect-ratio:16/9;
-        min-height:220px;
-    }
-
+    .main{ grid-template-columns:1fr; padding:12px; gap:13px; }
+    .sidebar{ height:470px; }
+    .player-container{ aspect-ratio:16/9; min-height:220px; }
 }
 
 @media(max-width:600px){
-
-    .header{
-        height:64px;
-
-        padding:0 13px;
-    }
-
-    .logo-icon{
-        width:38px;
-        height:38px;
-    }
-
-    .logo-title{
-        font-size:16px;
-    }
-
-    .logo-sub{
-        font-size:7px;
-    }
-
-    .connection{
-        padding:6px 9px;
-        font-size:8px;
-    }
-
-    .connection-dot{
-        width:6px;
-        height:6px;
-    }
-
-    .main{
-        padding:8px;
-    }
-
-    .player-card{
-        border-radius:17px;
-    }
-
-    .sidebar{
-        border-radius:17px;
-        padding:12px;
-    }
-
-    .player-container{
-        min-height:200px;
-    }
-
-    .player-info{
-        padding:12px;
-        min-height:65px;
-    }
-
-    .current-channel{
-        font-size:12px;
-    }
-
-    .live-badge{
-        padding:4px 7px;
-        font-size:8px;
-    }
-
-    .action-btn{
-        width:34px;
-        height:34px;
-    }
+    .header{ height:64px; padding:0 13px; }
+    .logo-icon{ width:38px; height:38px; }
+    .logo-title{ font-size:16px; }
+    .logo-sub{ font-size:7px; }
+    .connection{ padding:6px 9px; font-size:8px; }
+    .connection-dot{ width:6px; height:6px; }
+    .main{ padding:8px; }
+    .player-card{ border-radius:17px; }
+    .sidebar{ border-radius:17px; padding:12px; }
+    .player-container{ min-height:200px; }
+    .player-info{ padding:12px; min-height:65px; }
+    .current-channel{ font-size:12px; }
+    .live-badge{ padding:4px 7px; font-size:8px; }
+    .action-btn{ width:34px; height:34px; }
 }
-
 </style>
 </head>
 
 <body>
 
-<!-- =========================
-     HEADER
-========================= -->
-
 <header class="header">
-
     <div class="logo">
-
-        <div class="logo-icon">
-            <i class="fa-solid fa-satellite-dish"></i>
-        </div>
-
+        <div class="logo-icon"><i class="fa-solid fa-satellite-dish"></i></div>
         <div class="logo-text">
-
-            <span class="logo-title">
-                MQJ TV PRO
-            </span>
-
-            <span class="logo-sub">
-                XTREAM PLAYER
-            </span>
-
+            <span class="logo-title">MQJ TV PRO</span>
+            <span class="logo-sub">XTREAM PLAYER</span>
         </div>
-
     </div>
-
     <div class="connection">
-
         <span class="connection-dot"></span>
-
-        <span id="connectionText">
-            جاري الاتصال
-        </span>
-
+        <span id="connectionText">جاري الاتصال</span>
     </div>
-
 </header>
 
-
-<!-- =========================
-     MAIN
-========================= -->
-
 <main class="main">
-
-    <!-- PLAYER -->
-
     <section class="player-card">
-
         <div class="player-container">
-
             <div class="loading" id="loading">
-
                 <div class="spinner"></div>
-
-                <div class="loading-text" id="loadingText">
-                    جاري الاتصال بالسيرفر...
-                </div>
-
+                <div class="loading-text" id="loadingText">جاري الاتصال بالسيرفر...</div>
             </div>
-
-            <video
-                id="videoPlayer"
-                class="video-js vjs-default-skin vjs-big-play-centered"
-                controls
-                playsinline
-                preload="auto">
-            </video>
-
+            <video id="videoPlayer" class="video-js vjs-default-skin vjs-big-play-centered" controls playsinline preload="auto"></video>
         </div>
-
-
         <div class="player-info">
-
             <div class="now-playing">
-
-                <span class="live-badge">
-                    <span class="live-dot"></span>
-                    LIVE
-                </span>
-
-                <span
-                    class="current-channel"
-                    id="activeChannelName">
-                    اختر قناة
-                </span>
-
+                <span class="live-badge"><span class="live-dot"></span> LIVE</span>
+                <span class="current-channel" id="activeChannelName">اختر قناة</span>
             </div>
-
-
             <div class="player-actions">
-
-                <button
-                    class="action-btn"
-                    onclick="reloadCurrent()"
-                    title="إعادة التحميل">
-
-                    <i class="fa-solid fa-rotate"></i>
-
-                </button>
-
-                <button
-                    class="action-btn"
-                    onclick="fullscreenPlayer()"
-                    title="ملء الشاشة">
-
-                    <i class="fa-solid fa-expand"></i>
-
-                </button>
-
+                <button class="action-btn" onclick="reloadCurrent()" title="إعادة التحميل"><i class="fa-solid fa-rotate"></i></button>
+                <button class="action-btn" onclick="fullscreenPlayer()" title="ملء الشاشة"><i class="fa-solid fa-expand"></i></button>
             </div>
-
         </div>
-
     </section>
 
-
-    <!-- SIDEBAR -->
-
     <aside class="sidebar">
-
         <div class="sidebar-top">
-
-            <div class="sidebar-title">
-
-                <i class="fa-solid fa-tv"></i>
-
-                القنوات المباشرة
-
-            </div>
-
-            <div
-                class="channel-total"
-                id="channelCount">
-
-                0 قناة
-
-            </div>
-
+            <div class="sidebar-title"><i class="fa-solid fa-tv"></i> القنوات المباشرة</div>
+            <div class="channel-total" id="channelCount">0 قناة</div>
         </div>
-
-
         <div class="search">
-
             <i class="fa-solid fa-magnifying-glass"></i>
-
-            <input
-                id="searchInput"
-                type="text"
-                placeholder="ابحث عن قناة..."
-                autocomplete="off">
-
+            <input id="searchInput" type="text" placeholder="ابحث عن قناة..." autocomplete="off">
         </div>
-
-
-        <div
-            class="categories"
-            id="categories">
-
+        <div class="categories" id="categories"></div>
+        <div class="channels" id="channels">
+            <div class="empty"><i class="fa-solid fa-spinner fa-spin"></i> جاري تحميل القنوات...</div>
         </div>
-
-
-        <div
-            class="channels"
-            id="channels">
-
-            <div class="empty">
-
-                <i class="fa-solid fa-spinner fa-spin"></i>
-
-                جاري تحميل القنوات...
-
-            </div>
-
-        </div>
-
     </aside>
-
 </main>
 
-
-<div
-    class="toast"
-    id="toast">
-</div>
-
+<div class="toast" id="toast"></div>
 
 <script src="https://vjs.zencdn.net/8.10.0/video.min.js"></script>
 
 <script>
-
-/* =========================================
-   XTREAM SETTINGS
-========================================= */
-
 const XTREAM = {
-
     host: "https://go-tv.site:443",
-
     username: "gotv",
-
     password: "12345"
-
 };
 
-
-/* =========================================
-   GLOBAL VARIABLES
-========================================= */
-
 let player = null;
-
+let hlsEngine = null;
 let channels = [];
-
 let categories = [];
-
 let currentCategory = "all";
-
 let currentChannel = null;
 
-
-/* =========================================
-   DOM
-========================================= */
-
-const channelsElement =
-    document.getElementById("channels");
-
-const categoriesElement =
-    document.getElementById("categories");
-
-const searchInput =
-    document.getElementById("searchInput");
-
-const channelCount =
-    document.getElementById("channelCount");
-
-const activeChannelName =
-    document.getElementById("activeChannelName");
-
-const loading =
-    document.getElementById("loading");
-
-const loadingText =
-    document.getElementById("loadingText");
-
-const connectionText =
-    document.getElementById("connectionText");
-
-const toast =
-    document.getElementById("toast");
-
-
-/* =========================================
-   INIT
-========================================= */
+const channelsElement = document.getElementById("channels");
+const categoriesElement = document.getElementById("categories");
+const searchInput = document.getElementById("searchInput");
+const channelCount = document.getElementById("channelCount");
+const activeChannelName = document.getElementById("activeChannelName");
+const loading = document.getElementById("loading");
+const loadingText = document.getElementById("loadingText");
+const connectionText = document.getElementById("connectionText");
+const toast = document.getElementById("toast");
 
 document.addEventListener("DOMContentLoaded", async () => {
-
     player = videojs("videoPlayer", {
-
-        autoplay:false,
-
-        controls:true,
-
-        responsive:true,
-
-        fluid:true,
-
-        liveui:true,
-
-        preload:"auto"
-
+        autoplay: false,
+        controls: true,
+        responsive: true,
+        fluid: true,
+        liveui: true
     });
 
-
-    searchInput.addEventListener(
-        "input",
-        filterChannels
-    );
-
-
+    searchInput.addEventListener("input", filterChannels);
     await connectXtream();
-
 });
 
-
-/* =========================================
-   XTREAM API
-========================================= */
-
 function apiUrl(action = ""){
-
-    let url =
-        XTREAM.host +
-        "/player_api.php" +
-        "?username=" +
-        encodeURIComponent(XTREAM.username) +
-        "&password=" +
-        encodeURIComponent(XTREAM.password);
-
-    if(action){
-
-        url += "&action=" +
-               encodeURIComponent(action);
-
-    }
-
+    let url = `${XTREAM.host}/player_api.php?username=${encodeURIComponent(XTREAM.username)}&password=${encodeURIComponent(XTREAM.password)}`;
+    if(action) url += `&action=${encodeURIComponent(action)}`;
     return url;
 }
 
-
-/* =========================================
-   CONNECT
-========================================= */
-
 async function connectXtream(){
-
-    showLoading(
-        true,
-        "جاري الاتصال بـ GO TV MAX..."
-    );
-
+    showLoading(true, "جاري الاتصال بـ GO TV MAX...");
     try{
+        const response = await fetch(apiUrl());
+        if(!response.ok) throw new Error("HTTP " + response.status);
+        const data = await response.json();
 
-        const response =
-            await fetch(apiUrl());
+        if(!data || !data.user_info) throw new Error("بيانات Xtream غير صالحة");
+        if(data.user_info.auth === 0) throw new Error("بيانات الدخول غير صحيحة");
 
-        if(!response.ok){
-
-            throw new Error(
-                "HTTP " + response.status
-            );
-
-        }
-
-        const data =
-            await response.json();
-
-
-        if(
-            !data ||
-            !data.user_info
-        ){
-
-            throw new Error(
-                "بيانات Xtream غير صالحة"
-            );
-
-        }
-
-
-        if(
-            data.user_info.auth === 0
-        ){
-
-            throw new Error(
-                "اسم المستخدم أو كلمة المرور غير صحيحة"
-            );
-
-        }
-
-
-        connectionText.textContent =
-            "متصل بـ GO TV MAX";
-
-
-        showToast(
-            "تم الاتصال بالسيرفر بنجاح"
-        );
-
+        connectionText.textContent = "متصل بـ GO TV MAX";
+        showToast("تم الاتصال بالسيرفر بنجاح");
 
         await loadCategories();
-
         await loadChannels();
-
-
     }catch(error){
-
         console.error(error);
-
-        connectionText.textContent =
-            "تعذر الاتصال";
-
-        showToast(
-            "تعذر الاتصال بالسيرفر: " +
-            error.message
-        );
-
-
+        connectionText.textContent = "تعذر الاتصال";
+        showToast("تعذر الاتصال بالسيرفر: " + error.message);
         channelsElement.innerHTML = `
-
             <div class="empty">
-
                 <i class="fa-solid fa-triangle-exclamation"></i>
-
-                تعذر تحميل القنوات
-
-                <br><br>
-
-                <small>
-                    تحقق من اتصال الإنترنت أو إعدادات السيرفر
-                </small>
-
+                تعذر تحميل القنوات<br><br>
+                <small>تحقق من اتصال الإنترنت أو إعدادات السيرفر</small>
             </div>
-
         `;
-
     }finally{
-
         showLoading(false);
-
     }
-
 }
-
-
-/* =========================================
-   LOAD CATEGORIES
-========================================= */
 
 async function loadCategories(){
-
-    const response =
-        await fetch(
-            apiUrl("get_live_categories")
-        );
-
-    if(!response.ok){
-
-        throw new Error(
-            "فشل تحميل التصنيفات"
-        );
-
-    }
-
-    const data =
-        await response.json();
-
-    categories =
-        Array.isArray(data)
-        ? data
-        : [];
-
-    renderCategories();
-
+    try {
+        const response = await fetch(apiUrl("get_live_categories"));
+        if(!response.ok) return;
+        const data = await response.json();
+        categories = Array.isArray(data) ? data : [];
+        renderCategories();
+    } catch(e) {}
 }
-
-
-/* =========================================
-   LOAD CHANNELS
-========================================= */
 
 async function loadChannels(){
+    showLoading(true, "جاري تحميل القنوات...");
+    const response = await fetch(apiUrl("get_live_streams"));
+    if(!response.ok) throw new Error("فشل تحميل القنوات");
+    const data = await response.json();
 
-    showLoading(
-        true,
-        "جاري تحميل القنوات..."
-    );
-
-    const response =
-        await fetch(
-            apiUrl("get_live_streams")
-        );
-
-    if(!response.ok){
-
-        throw new Error(
-            "فشل تحميل القنوات"
-        );
-
-    }
-
-    const data =
-        await response.json();
-
-
-    channels =
-        Array.isArray(data)
-        ? data
-        : [];
-
-
-    channelCount.textContent =
-        channels.length + " قناة";
-
-
+    channels = Array.isArray(data) ? data : [];
+    channelCount.textContent = channels.length + " قناة";
     renderCategories();
-
     filterChannels();
 
-
     if(channels.length > 0){
-
-        setTimeout(() => {
-
-            playChannel(
-                channels[0]
-            );
-
-        },300);
-
+        setTimeout(() => playChannel(channels[0]), 300);
     }
-
 }
-
-
-/* =========================================
-   RENDER CATEGORIES
-========================================= */
 
 function renderCategories(){
-
     categoriesElement.innerHTML = "";
-
-
-    const allButton =
-        document.createElement("button");
-
-    allButton.className =
-        "category " +
-        (currentCategory === "all"
-            ? "active"
-            : "");
-
-    allButton.textContent =
-        "الكل";
-
-
+    const allButton = document.createElement("button");
+    allButton.className = "category " + (currentCategory === "all" ? "active" : "");
+    allButton.textContent = "الكل";
     allButton.onclick = () => {
-
         currentCategory = "all";
-
-        document
-            .querySelectorAll(".category")
-            .forEach(btn =>
-                btn.classList.remove("active")
-            );
-
+        document.querySelectorAll(".category").forEach(btn => btn.classList.remove("active"));
         allButton.classList.add("active");
-
         filterChannels();
-
     };
-
-
-    categoriesElement.appendChild(
-        allButton
-    );
-
+    categoriesElement.appendChild(allButton);
 
     categories.forEach(category => {
-
-        const button =
-            document.createElement("button");
-
-        button.className =
-            "category " +
-            (
-                currentCategory ==
-                String(category.category_id)
-                    ? "active"
-                    : ""
-            );
-
-        button.textContent =
-            category.category_name;
-
-
+        const button = document.createElement("button");
+        button.className = "category " + (currentCategory == String(category.category_id) ? "active" : "");
+        button.textContent = category.category_name;
         button.onclick = () => {
-
-            currentCategory =
-                String(category.category_id);
-
-
-            document
-                .querySelectorAll(".category")
-                .forEach(btn =>
-                    btn.classList.remove("active")
-                );
-
-
-            button.classList.add(
-                "active"
-            );
-
-
+            currentCategory = String(category.category_id);
+            document.querySelectorAll(".category").forEach(btn => btn.classList.remove("active"));
+            button.classList.add("active");
             filterChannels();
-
         };
-
-
-        categoriesElement.appendChild(
-            button
-        );
-
+        categoriesElement.appendChild(button);
     });
-
 }
-
-
-/* =========================================
-   FILTER
-========================================= */
 
 function filterChannels(){
-
-    const query =
-        searchInput.value
-            .trim()
-            .toLowerCase();
-
-
-    const filtered =
-        channels.filter(channel => {
-
-            const name =
-                String(
-                    channel.name || ""
-                ).toLowerCase();
-
-
-            const categoryMatch =
-                currentCategory === "all" ||
-                String(
-                    channel.category_id
-                ) === currentCategory;
-
-
-            const searchMatch =
-                name.includes(query);
-
-
-            return (
-                categoryMatch &&
-                searchMatch
-            );
-
-        });
-
-
+    const query = searchInput.value.trim().toLowerCase();
+    const filtered = channels.filter(channel => {
+        const name = String(channel.name || "").toLowerCase();
+        const categoryMatch = currentCategory === "all" || String(channel.category_id) === currentCategory;
+        const searchMatch = name.includes(query);
+        return categoryMatch && searchMatch;
+    });
     renderChannels(filtered);
-
-
-    channelCount.textContent =
-        filtered.length + " قناة";
-
+    channelCount.textContent = filtered.length + " قناة";
 }
-
-
-/* =========================================
-   RENDER CHANNELS
-========================================= */
 
 function renderChannels(list){
-
     channelsElement.innerHTML = "";
-
-
     if(!list.length){
-
-        channelsElement.innerHTML = `
-
-            <div class="empty">
-
-                <i class="fa-solid fa-tv"></i>
-
-                لا توجد قنوات مطابقة
-
-            </div>
-
-        `;
-
+        channelsElement.innerHTML = `<div class="empty"><i class="fa-solid fa-tv"></i> لا توجد قنوات مطابقة</div>`;
         return;
-
     }
-
 
     list.forEach(channel => {
-
-        const item =
-            document.createElement("div");
-
-
-        item.className =
-            "channel";
-
-
-        if(
-            currentChannel &&
-            String(currentChannel.stream_id) ===
-            String(channel.stream_id)
-        ){
-
-            item.classList.add(
-                "active"
-            );
-
+        const item = document.createElement("div");
+        item.className = "channel";
+        if(currentChannel && String(currentChannel.stream_id) === String(channel.stream_id)){
+            item.classList.add("active");
         }
 
-
-        const icon =
-            document.createElement("div");
-
-        icon.className =
-            "channel-icon";
-
-
-        icon.innerHTML =
-            channel.stream_icon
-            ? `<img
-                 src="${escapeHtml(channel.stream_icon)}"
-                 style="
-                    width:28px;
-                    height:28px;
-                    object-fit:contain;
-                    border-radius:7px;
-                 "
-                 onerror="
-                    this.style.display='none';
-                    this.parentElement.innerHTML='<i class=&quot;fa-solid fa-tv&quot;></i>';
-                 "
-               >`
+        const icon = document.createElement("div");
+        icon.className = "channel-icon";
+        icon.innerHTML = channel.stream_icon
+            ? `<img src="${escapeHtml(channel.stream_icon)}" style="width:28px;height:28px;object-fit:contain;border-radius:7px;" onerror="this.parentElement.innerHTML='<i class=\'fa-solid fa-tv\'></i>'">`
             : `<i class="fa-solid fa-tv"></i>`;
 
-
-        const info =
-            document.createElement("div");
-
-        info.className =
-            "channel-info";
-
-
-        const name =
-            document.createElement("span");
-
-        name.className =
-            "channel-name";
-
-        name.textContent =
-            channel.name ||
-            "قناة بدون اسم";
-
-
-        const group =
-            document.createElement("span");
-
-        group.className =
-            "channel-group";
-
-        group.innerHTML =
-            `<span class="channel-live">
-                ● مباشر
-             </span>`;
-
-
-        info.appendChild(name);
-
-        info.appendChild(group);
-
+        const info = document.createElement("div");
+        info.className = "channel-info";
+        info.innerHTML = `<span class="channel-name">${escapeHtml(channel.name || "قناة")}</span><span class="channel-group"><span class="channel-live">● مباشر</span></span>`;
 
         item.appendChild(icon);
-
         item.appendChild(info);
 
-
         item.onclick = () => {
-
-            document
-                .querySelectorAll(".channel")
-                .forEach(el =>
-                    el.classList.remove("active")
-                );
-
-
-            item.classList.add(
-                "active"
-            );
-
-
+            document.querySelectorAll(".channel").forEach(el => el.classList.remove("active"));
+            item.classList.add("active");
             playChannel(channel);
-
         };
 
-
-        channelsElement.appendChild(
-            item
-        );
-
+        channelsElement.appendChild(item);
     });
-
 }
 
+function playChannel(channel) {
+    if (!channel) return;
+    currentChannel = channel;
+    activeChannelName.textContent = channel.name || "قناة";
+    showLoading(true, "جاري تشغيل " + (channel.name || "القناة") + "...");
 
-/* =========================================
-   PLAY CHANNEL
-========================================= */
+    const streamUrlM3u8 = `${XTREAM.host}/live/${encodeURIComponent(XTREAM.username)}/${encodeURIComponent(XTREAM.password)}/${channel.stream_id}.m3u8`;
+    const streamUrlTs = `${XTREAM.host}/live/${encodeURIComponent(XTREAM.username)}/${encodeURIComponent(XTREAM.password)}/${channel.stream_id}.ts`;
 
-function playChannel(channel){
+    const videoElement = document.querySelector("#videoPlayer_html5_api") || document.getElementById("videoPlayer");
 
-    if(!channel){
-
-        return;
-
+    if (hlsEngine) {
+        hlsEngine.destroy();
     }
 
-
-    currentChannel =
-        channel;
-
-
-    activeChannelName.textContent =
-        channel.name ||
-        "قناة";
-
-
-    showLoading(
-        true,
-        "جاري تشغيل " +
-        (channel.name || "القناة") +
-        "..."
-    );
-
-
-    /*
-       Xtream standard live stream URL
-
-       /live/username/password/stream_id.m3u8
-    */
-
-    const streamUrl =
-        XTREAM.host +
-        "/live/" +
-        encodeURIComponent(
-            XTREAM.username
-        ) +
-        "/" +
-        encodeURIComponent(
-            XTREAM.password
-        ) +
-        "/" +
-        channel.stream_id +
-        ".m3u8";
-
-
-    try{
-
-        player.pause();
-
-
-        player.src({
-
-            src:streamUrl,
-
-            type:"application/x-mpegURL"
-
+    if (Hls.isSupported()) {
+        hlsEngine = new Hls({ enableWorker: true, lowLatencyMode: true });
+        hlsEngine.loadSource(streamUrlM3u8);
+        hlsEngine.attachMedia(videoElement);
+        
+        hlsEngine.on(Hls.Events.MANIFEST_PARSED, function () {
+            showLoading(false);
+            player.play().catch(() => {});
         });
 
-
-        player.one(
-            "loadedmetadata",
-            () => {
-
-                showLoading(false);
-
-                player.play()
-                    .catch(() => {});
-
+        hlsEngine.on(Hls.Events.ERROR, function (event, data) {
+            if (data.fatal) {
+                // محاولة أخرى بالامتداد .ts في حال فشل m3u8
+                hlsEngine.destroy();
+                player.src({ src: streamUrlTs, type: "video/mp2t" });
+                player.play().then(() => showLoading(false)).catch(() => {
+                    showLoading(false);
+                    showToast("تعذر تشغيل هذه القناة حالياً");
+                });
             }
-        );
-
-
-        player.one(
-            "error",
-            () => {
-
-                showLoading(false);
-
-                showToast(
-                    "تعذر تشغيل القناة"
-                );
-
-            }
-        );
-
-
-        player.load();
-
-
-        setTimeout(() => {
-
-            showLoading(false);
-
-            player.play()
-                .catch(() => {});
-
-        },2500);
-
-
-    }catch(error){
-
-        console.error(error);
-
+        });
+    } else if (videoElement.canPlayType('application/vnd.apple.mpegurl')) {
+        player.src({ src: streamUrlM3u8, type: "application/x-mpegURL" });
+        player.play().then(() => showLoading(false)).catch(() => showLoading(false));
+    } else {
         showLoading(false);
-
-        showToast(
-            "حدث خطأ أثناء تشغيل القناة"
-        );
-
+        showToast("المتصفح لا يدعم هذا النوع من البث");
     }
-
 }
-
-
-/* =========================================
-   RELOAD
-========================================= */
 
 function reloadCurrent(){
-
-    if(!currentChannel){
-
-        showToast(
-            "لم يتم اختيار قناة"
-        );
-
-        return;
-
-    }
-
-
-    playChannel(
-        currentChannel
-    );
-
+    if(!currentChannel){ showToast("لم يتم اختيار قناة"); return; }
+    playChannel(currentChannel);
 }
-
-
-/* =========================================
-   FULLSCREEN
-========================================= */
 
 function fullscreenPlayer(){
-
     if(player){
-
-        if(
-            player.isFullscreen()
-        ){
-
-            player.exitFullscreen();
-
-        }else{
-
-            player.requestFullscreen();
-
-        }
-
+        if(player.isFullscreen()){ player.exitFullscreen(); }
+        else { player.requestFullscreen(); }
     }
-
 }
 
-
-/* =========================================
-   LOADING
-========================================= */
-
-function showLoading(
-    state,
-    text = "جاري التحميل..."
-){
-
-    loadingText.textContent =
-        text;
-
-
-    if(state){
-
-        loading.classList.remove(
-            "hidden"
-        );
-
-    }else{
-
-        loading.classList.add(
-            "hidden"
-        );
-
-    }
-
+function showLoading(state, text = "جاري التحميل..."){
+    loadingText.textContent = text;
+    if(state) loading.classList.remove("hidden");
+    else loading.classList.add("hidden");
 }
-
-
-/* =========================================
-   TOAST
-========================================= */
 
 let toastTimer;
-
 function showToast(message){
-
-    toast.textContent =
-        message;
-
-    toast.classList.add(
-        "show"
-    );
-
-
-    clearTimeout(
-        toastTimer
-    );
-
-
-    toastTimer =
-        setTimeout(() => {
-
-            toast.classList.remove(
-                "show"
-            );
-
-        },3500);
-
+    toast.textContent = message;
+    toast.classList.add("show");
+    clearTimeout(toastTimer);
+    toastTimer = setTimeout(() => toast.classList.remove("show"), 3500);
 }
 
-
-/* =========================================
-   ESCAPE HTML
-========================================= */
-
 function escapeHtml(value){
-
     return String(value)
         .replace(/&/g,"&amp;")
         .replace(/</g,"&lt;")
         .replace(/>/g,"&gt;")
         .replace(/"/g,"&quot;")
         .replace(/'/g,"&#039;");
-
 }
-
 </script>
 
 </body>
