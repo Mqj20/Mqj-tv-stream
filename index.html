@@ -2,169 +2,230 @@
 <html lang="ar" dir="rtl">
 <head>
 <meta charset="UTF-8">
-<meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
-<meta name="theme-color" content="#07101c">
+<meta name="viewport" content="width=device-width,initial-scale=1,maximum-scale=1,user-scalable=no,viewport-fit=cover">
+<meta name="theme-color" content="#050a12">
 <meta name="apple-mobile-web-app-capable" content="yes">
-<title>MQJ Football</title>
+<meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
+<title>MQJ Football — Live Scores</title>
 <style>
-:root{--bg:#050a12;--panel:#0b1422;--panel2:#101c2c;--text:#e9f0f8;--muted:#8c9bad;--blue:#087cff;--cyan:#00e5ff;--green:#12d98b;--red:#ff4267;--yellow:#ffc857;--border:rgba(255,255,255,.075)}
+:root{--bg:#050a12;--card:#0b1422;--card2:#101c2c;--txt:#eef5ff;--muted:#8392a6;--blue:#087cff;--cyan:#00e5ff;--green:#15dc91;--red:#ff4267;--gold:#ffd15c;--line:rgba(255,255,255,.075)}
 *{box-sizing:border-box;margin:0;padding:0;-webkit-tap-highlight-color:transparent}
-html,body{background:var(--bg);color:var(--text);font-family:Arial,Tahoma,sans-serif}
-body{min-height:100vh;background:radial-gradient(circle at 50% -10%,rgba(0,128,255,.16),transparent 35%),linear-gradient(180deg,#050a12,#07101b);overflow-x:hidden}
-button{font:inherit}
-.header{height:74px;position:sticky;top:0;z-index:100;border-bottom:1px solid var(--border);background:rgba(5,10,18,.9);backdrop-filter:blur(20px)}
-.header-inner{width:min(1500px,94%);height:100%;margin:auto;display:flex;align-items:center;justify-content:space-between;gap:20px}
-.logo{display:flex;align-items:center;gap:10px;font-size:24px;font-weight:900;white-space:nowrap}.logo-icon{width:40px;height:40px;display:grid;place-items:center;border-radius:13px;background:linear-gradient(135deg,var(--blue),var(--cyan));box-shadow:0 8px 25px rgba(0,150,255,.25)}.logo span{color:var(--cyan)}
-.top-nav{display:flex;gap:5px;overflow:auto}.top-nav button,.icon-btn,.side-item,.league-star,.star-match,.bottom-item{border:0;background:transparent;color:var(--muted);cursor:pointer}.top-nav button{padding:11px 15px;border-radius:12px;font-size:14px;font-weight:700;white-space:nowrap}.top-nav button.active,.top-nav button:hover{color:#fff;background:rgba(255,255,255,.07)}
-.top-actions{display:flex;gap:8px}.icon-btn{width:42px;height:42px;border:1px solid var(--border);border-radius:13px;background:rgba(255,255,255,.035);color:#fff;font-size:18px}
-.app{width:min(1500px,94%);margin:auto;padding:25px 0 90px;display:grid;grid-template-columns:245px minmax(0,1fr) 285px;gap:20px}
-.sidebar{position:sticky;top:95px;height:max-content;background:rgba(10,19,32,.75);border:1px solid var(--border);border-radius:26px;padding:15px}.sidebar-title{color:#647286;font-size:11px;font-weight:900;margin:10px}.side-item{width:100%;display:flex;align-items:center;gap:11px;padding:13px 12px;border-radius:13px;text-align:right;font-size:14px;font-weight:700}.side-item:hover,.side-item.active{background:linear-gradient(90deg,rgba(0,126,255,.18),rgba(0,126,255,.04));color:#fff}.side-icon{width:27px;text-align:center;font-size:17px}.league-mini{display:flex;align-items:center;gap:10px;padding:10px;border-radius:12px;color:var(--muted);cursor:pointer}.league-mini:hover{background:rgba(255,255,255,.05);color:#fff}.league-logo{width:30px;height:30px;display:grid;place-items:center;border-radius:9px;background:#17263a}
-.hero{min-height:190px;position:relative;overflow:hidden;border:1px solid rgba(0,190,255,.12);border-radius:25px;padding:28px;display:flex;align-items:center;background:radial-gradient(circle at 80% 50%,rgba(0,208,255,.18),transparent 35%),radial-gradient(circle at 20% 0%,rgba(0,91,255,.18),transparent 45%),#091524;box-shadow:0 20px 60px rgba(0,0,0,.35)}.hero:after{content:"⚽";position:absolute;left:5%;bottom:-60px;font-size:220px;opacity:.035}.hero-content{position:relative;z-index:2}.hero-badge{display:inline-flex;align-items:center;gap:7px;color:#b9f5ff;background:rgba(0,204,255,.09);border:1px solid rgba(0,204,255,.16);padding:7px 11px;border-radius:30px;font-size:11px;margin-bottom:13px}.live-dot{width:7px;height:7px;border-radius:50%;background:var(--red);box-shadow:0 0 12px var(--red)}.hero h1{font-size:clamp(30px,4vw,50px);line-height:1.05;margin-bottom:10px}.hero p{color:var(--muted);font-size:14px;max-width:620px;line-height:1.8}
-.date-nav,.filters{display:flex;gap:8px;overflow:auto;scrollbar-width:none}.date-nav{margin:20px 0}.date-nav::-webkit-scrollbar,.filters::-webkit-scrollbar{display:none}.date{min-width:90px;border:1px solid var(--border);background:rgba(255,255,255,.025);color:var(--muted);border-radius:15px;padding:11px 12px;text-align:center;cursor:pointer}.date.active{color:#fff;background:linear-gradient(135deg,#087cff,#0060d4);border-color:transparent}.date-day{font-size:11px;margin-bottom:4px}.date-number{font-size:18px;font-weight:900}
-.section-head{display:flex;align-items:center;justify-content:space-between;margin:25px 0 12px}.section-head h2{font-size:20px}.section-head span{color:var(--muted);font-size:12px}.filter{flex:none;border:1px solid var(--border);background:rgba(255,255,255,.035);color:var(--muted);border-radius:30px;padding:9px 15px;cursor:pointer;font-size:12px;font-weight:700}.filter.active{color:#fff;background:rgba(0,130,255,.18);border-color:rgba(0,160,255,.3)}
-.league{overflow:hidden;border:1px solid var(--border);border-radius:18px;background:rgba(10,19,31,.85);margin-bottom:13px}.league-head{min-height:50px;display:flex;align-items:center;justify-content:space-between;padding:10px 15px;background:rgba(255,255,255,.025);border-bottom:1px solid var(--border)}.league-name{display:flex;align-items:center;gap:9px;font-size:13px;font-weight:900}.league-ball{width:30px;height:30px;display:grid;place-items:center;border-radius:9px;background:#182b42}.league-country{color:var(--muted);font-size:11px}.league-star,.star-match{font-size:18px}.league-star.active,.star-match.active{color:var(--yellow)}
-.match{display:grid;grid-template-columns:75px minmax(0,1fr) 45px;align-items:center;min-height:92px;padding:13px 15px;border-bottom:1px solid var(--border);cursor:pointer;outline:none}.match:last-child{border-bottom:0}.match:hover,.match:focus{background:rgba(0,130,255,.06)}.match.live{background:linear-gradient(90deg,rgba(0,220,145,.045),transparent)}.match-time{text-align:center;font-size:12px;color:var(--muted);line-height:1.5}.match-time strong{display:block;color:#fff;font-size:13px}.live-label{display:inline-flex;align-items:center;gap:5px;color:var(--green);font-size:10px;font-weight:900}.live-label i{width:5px;height:5px;background:var(--green);border-radius:50%;box-shadow:0 0 8px var(--green)}.teams{display:flex;flex-direction:column;gap:9px}.team{display:flex;align-items:center;gap:9px;min-width:0}.team-logo{width:31px;height:31px;flex:none;display:grid;place-items:center;border-radius:9px;background:linear-gradient(135deg,#182a40,#0d1725);font-size:17px}.team-name{overflow:hidden;white-space:nowrap;text-overflow:ellipsis;font-size:13px;font-weight:700}.score{text-align:center;font-size:17px;font-weight:950;line-height:1.8}
-.right-panel{position:sticky;top:95px;height:max-content}.panel{background:rgba(10,19,31,.78);border:1px solid var(--border);border-radius:26px;padding:16px;margin-bottom:15px;box-shadow:0 20px 60px rgba(0,0,0,.2)}.panel-title{display:flex;justify-content:space-between;align-items:center;margin-bottom:15px}.panel-title h3{font-size:15px}.panel-title span{color:var(--muted);font-size:11px}.team-follow{display:flex;align-items:center;gap:11px;padding:10px;border-radius:13px}.team-follow:hover{background:rgba(255,255,255,.05)}.team-follow-logo{width:38px;height:38px;display:grid;place-items:center;border-radius:11px;background:#15263b;font-size:20px}.team-follow-info{flex:1;min-width:0}.team-follow-name{font-size:12px;font-weight:800}.team-follow-meta{color:var(--muted);font-size:10px;margin-top:3px}.plus{color:var(--cyan)}.news{display:flex;gap:10px;padding:10px 0;border-bottom:1px solid var(--border)}.news:last-child{border:0}.news-img{width:72px;height:55px;flex:none;border-radius:10px;display:grid;place-items:center;background:linear-gradient(135deg,#172c44,#0b1726);font-size:22px}.news-text h4{font-size:11px;line-height:1.55;margin-bottom:5px}.news-text span{color:#647286;font-size:9px}
-.bottom-nav{display:none;position:fixed;left:0;right:0;bottom:0;z-index:200;padding:8px 8px calc(8px + env(safe-area-inset-bottom));background:rgba(5,10,18,.94);border-top:1px solid var(--border);backdrop-filter:blur(20px)}.bottom-nav-inner{display:grid;grid-template-columns:repeat(5,1fr)}.bottom-item{padding:7px 3px;border-radius:12px;font-size:10px;font-weight:700}.bottom-item div{font-size:18px;margin-bottom:3px}.bottom-item.active{color:var(--cyan);background:rgba(0,180,255,.07)}
-.modal,.search-overlay{position:fixed;inset:0;z-index:500;display:none;background:rgba(0,0,0,.72);backdrop-filter:blur(12px)}.modal.show,.search-overlay.show{display:flex}.modal{align-items:center;justify-content:center;padding:20px}.modal-box{width:min(850px,100%);max-height:90vh;overflow:auto;background:linear-gradient(145deg,#101d2e,#07101c);border:1px solid var(--border);border-radius:28px;box-shadow:0 40px 120px rgba(0,0,0,.6);padding:25px}.modal-top{display:flex;justify-content:space-between;align-items:center;margin-bottom:20px}.close{width:38px;height:38px;border:0;background:rgba(255,255,255,.06);color:#fff;border-radius:11px;cursor:pointer;font-size:18px}.match-detail{text-align:center}.detail-league{color:var(--muted);font-size:12px;margin-bottom:20px}.detail-teams{display:grid;grid-template-columns:1fr 140px 1fr;align-items:center;gap:20px}.detail-team{display:flex;flex-direction:column;align-items:center;gap:10px}.detail-logo{width:75px;height:75px;display:grid;place-items:center;border-radius:22px;background:#14263b;font-size:40px}.detail-team strong{font-size:15px}.detail-score{font-size:42px;font-weight:950}.detail-status{color:var(--green);font-size:11px;margin-top:7px}.stats{display:grid;grid-template-columns:1fr 1fr;gap:10px}.stat{background:rgba(255,255,255,.035);border:1px solid var(--border);border-radius:15px;padding:14px}.stat-name{color:var(--muted);font-size:10px;text-align:center;margin-bottom:10px}.stat-values{display:grid;grid-template-columns:1fr 1fr 1fr;text-align:center;align-items:center}.stat-values strong{font-size:15px}.stat-values span{color:#647286;font-size:10px}
-.search-overlay{align-items:flex-start;padding:100px 20px}.search-box{width:min(700px,100%);margin:auto}.search-input{width:100%;height:60px;border:1px solid rgba(0,190,255,.3);outline:none;border-radius:17px;background:#0e1a2a;color:#fff;padding:0 20px;font-size:17px}.search-results{margin-top:12px;background:#0c1624;border:1px solid var(--border);border-radius:17px;overflow:hidden}.search-result{padding:15px;border-bottom:1px solid var(--border);cursor:pointer}.search-result:hover{background:rgba(0,140,255,.08)}
-@media(min-width:1600px){.app{width:min(1750px,90%);grid-template-columns:300px minmax(0,1fr) 340px;gap:30px}.header-inner{width:min(1750px,90%)}.header{height:82px}.hero{min-height:240px;padding:40px}.hero h1{font-size:55px}.match{min-height:110px;padding:17px 20px}.team-name{font-size:16px}.score{font-size:21px}.side-item{font-size:16px;padding:15px}}
-@media(max-width:1100px){.app{grid-template-columns:190px minmax(0,1fr)}.right-panel{display:none}}
-@media(max-width:700px){.header{height:64px}.header-inner{width:94%}.top-nav{display:none}.logo{font-size:20px}.logo-icon{width:36px;height:36px}.app{display:block;width:94%;padding:14px 0 90px}.sidebar{display:none}.hero{min-height:170px;border-radius:21px;padding:23px 20px}.hero h1{font-size:31px}.hero p{font-size:12px}.date{min-width:78px}.match{grid-template-columns:58px minmax(0,1fr) 35px;min-height:82px;padding:10px 9px}.team-logo{width:28px;height:28px}.team-name{font-size:12px}.score{font-size:15px}.match-time{font-size:10px}.match-time strong{font-size:11px}.bottom-nav{display:block}.modal{padding:8px;align-items:flex-end}.modal-box{max-height:94vh;border-radius:25px 25px 0 0;padding:20px}.detail-teams{grid-template-columns:1fr 90px 1fr;gap:8px}.detail-logo{width:58px;height:58px;font-size:30px}.detail-team strong{font-size:12px}.detail-score{font-size:30px}.stats{grid-template-columns:1fr}}
-@media(max-width:390px){.hero h1{font-size:27px}.match{grid-template-columns:50px minmax(0,1fr) 31px}.team-name{font-size:11px}}
-@media(min-width:1200px){button:focus-visible,.match:focus-visible,.side-item:focus-visible,.date:focus-visible,.filter:focus-visible{outline:3px solid rgba(0,210,255,.75);outline-offset:3px}}
+html,body{min-height:100%;background:var(--bg);color:var(--txt);font-family:Arial,Tahoma,sans-serif}
+body{background:radial-gradient(circle at 50% -20%,rgba(0,139,255,.20),transparent 38%),linear-gradient(180deg,#050a12,#07111d 70%,#050a12);overflow-x:hidden}
+button,input{font:inherit}button{cursor:pointer}
+.header{height:72px;position:sticky;top:0;z-index:100;background:rgba(5,10,18,.86);border-bottom:1px solid var(--line);backdrop-filter:blur(22px)}
+.header-in{width:min(1500px,94%);height:100%;margin:auto;display:flex;align-items:center;justify-content:space-between;gap:15px}
+.logo{display:flex;align-items:center;gap:10px;font-weight:900;font-size:23px;white-space:nowrap}.logo i{font-style:normal;width:41px;height:41px;border-radius:14px;display:grid;place-items:center;background:linear-gradient(135deg,#087cff,#00e5ff);box-shadow:0 10px 30px rgba(0,150,255,.25)}.logo b{color:var(--cyan)}
+.nav{display:flex;gap:4px}.nav button{border:0;background:transparent;color:var(--muted);padding:10px 14px;border-radius:12px;font-weight:700}.nav button.active,.nav button:hover{color:#fff;background:rgba(255,255,255,.07)}
+.actions{display:flex;gap:7px}.icon{width:41px;height:41px;border:1px solid var(--line);border-radius:13px;background:rgba(255,255,255,.04);color:#fff}
+.layout{width:min(1500px,94%);margin:auto;padding:24px 0 90px;display:grid;grid-template-columns:240px minmax(0,1fr) 280px;gap:20px}
+.side,.right-card,.league{background:rgba(10,19,31,.78);border:1px solid var(--line);border-radius:22px}
+.side{padding:13px;height:max-content;position:sticky;top:94px}.side-title{font-size:10px;color:#617087;font-weight:900;padding:9px}.side button{width:100%;border:0;background:transparent;color:var(--muted);padding:12px;border-radius:12px;text-align:right;font-weight:700}.side button:hover,.side button.active{background:rgba(0,126,255,.10);color:#fff}.side small{display:block;color:#617087;padding:18px 9px 7px;font-weight:900}.comp{display:flex!important;align-items:center;gap:9px}.comp span{width:29px;height:29px;border-radius:9px;display:grid;place-items:center;background:#16263a}
+.hero{min-height:205px;border:1px solid rgba(0,190,255,.13);border-radius:25px;padding:30px;display:flex;align-items:center;position:relative;overflow:hidden;background:radial-gradient(circle at 80% 50%,rgba(0,229,255,.16),transparent 33%),radial-gradient(circle at 10% 0,rgba(0,100,255,.20),transparent 45%),#091523;box-shadow:0 25px 80px rgba(0,0,0,.3)}.hero:after{content:"⚽";position:absolute;left:3%;bottom:-80px;font-size:250px;opacity:.035}.hero-content{position:relative;z-index:2}.live-badge{display:inline-flex;gap:7px;align-items:center;border:1px solid rgba(0,229,255,.18);background:rgba(0,229,255,.07);padding:7px 11px;border-radius:30px;color:#baf7ff;font-size:11px;margin-bottom:13px}.dot{width:7px;height:7px;background:var(--red);border-radius:50%;box-shadow:0 0 13px var(--red)}.hero h1{font-size:clamp(30px,4vw,52px);line-height:1.05;margin-bottom:10px}.hero p{color:var(--muted);font-size:13px;line-height:1.8;max-width:650px}
+.toolbar{display:flex;gap:8px;overflow:auto;margin:18px 0 12px;scrollbar-width:none}.toolbar::-webkit-scrollbar{display:none}.date,.filter{flex:none;border:1px solid var(--line);background:rgba(255,255,255,.035);color:var(--muted);border-radius:14px;padding:10px 14px}.date{text-align:center;min-width:82px}.date strong{display:block;color:#fff;font-size:17px;margin-top:3px}.date.active,.filter.active{background:linear-gradient(135deg,#087cff,#0064d8);border-color:transparent;color:#fff}.filter{border-radius:25px;font-size:12px;font-weight:700}
+.section-head{display:flex;align-items:center;justify-content:space-between;margin:22px 0 11px}.section-head h2{font-size:19px}.section-head span{font-size:11px;color:var(--muted)}
+.league{overflow:hidden;margin-bottom:13px}.league-head{min-height:53px;padding:10px 14px;display:flex;align-items:center;justify-content:space-between;background:rgba(255,255,255,.025);border-bottom:1px solid var(--line)}.league-title{display:flex;align-items:center;gap:9px;font-size:13px;font-weight:900}.league-title i{font-style:normal;width:31px;height:31px;display:grid;place-items:center;border-radius:10px;background:#17273b}.country{font-size:10px;color:var(--muted);font-weight:400;margin-top:2px}.star{border:0;background:transparent;color:#607087;font-size:20px}.star.on{color:var(--gold)}
+.match{display:grid;grid-template-columns:76px minmax(0,1fr) 45px;align-items:center;min-height:92px;padding:11px 14px;border-bottom:1px solid var(--line);outline:0;cursor:pointer}.match:last-child{border-bottom:0}.match:hover,.match:focus{background:rgba(0,130,255,.055)}.match.live{background:linear-gradient(90deg,rgba(21,220,145,.055),transparent)}.time{text-align:center;color:var(--muted);font-size:10px;line-height:1.6}.time strong{display:block;color:#fff;font-size:12px}.live-label{color:var(--green);font-weight:900}.teams{display:flex;flex-direction:column;gap:9px}.team{display:flex;align-items:center;gap:9px;min-width:0}.badge{width:31px;height:31px;flex:none;border-radius:9px;display:grid;place-items:center;background:linear-gradient(135deg,#182b42,#0d1725);font-size:16px}.team-name{font-size:13px;font-weight:700;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}.scores{text-align:center;font-size:17px;font-weight:950;line-height:1.8}.status{font-size:10px;color:var(--green);margin-top:1px}.empty{padding:45px 20px;text-align:center;color:var(--muted);line-height:2}.empty strong{display:block;color:#fff;margin-bottom:5px}.loading{padding:30px;text-align:center;color:var(--muted)}.spinner{width:28px;height:28px;border:3px solid rgba(255,255,255,.1);border-top-color:var(--cyan);border-radius:50%;animation:spin .8s linear infinite;margin:0 auto 10px}@keyframes spin{to{transform:rotate(360deg)}}
+.right{position:sticky;top:94px;height:max-content}.right-card{padding:15px;margin-bottom:14px}.right-title{display:flex;justify-content:space-between;margin-bottom:12px}.right-title h3{font-size:14px}.right-title span{font-size:10px;color:var(--muted)}.follow{display:flex;align-items:center;gap:10px;padding:9px;border-radius:12px}.follow:hover{background:rgba(255,255,255,.05)}.follow-logo{width:38px;height:38px;border-radius:11px;background:#17283d;display:grid;place-items:center}.follow-info{flex:1}.follow-info b{display:block;font-size:12px}.follow-info small{color:var(--muted);font-size:9px}.news{display:flex;gap:9px;padding:9px 0;border-bottom:1px solid var(--line)}.news:last-child{border:0}.news-img{width:67px;height:52px;border-radius:10px;background:#14253a;display:grid;place-items:center;font-size:21px}.news h4{font-size:10px;line-height:1.6}.news small{color:#617087;font-size:8px}
+.setup{display:none;position:fixed;inset:0;z-index:600;background:rgba(0,0,0,.75);backdrop-filter:blur(10px);align-items:center;justify-content:center;padding:18px}.setup.show{display:flex}.box{width:min(550px,100%);background:#0b1624;border:1px solid var(--line);border-radius:25px;padding:23px;box-shadow:0 30px 100px #000}.box h2{margin-bottom:8px}.box p{color:var(--muted);font-size:12px;line-height:1.8;margin-bottom:15px}.input{width:100%;height:50px;border:1px solid var(--line);border-radius:13px;background:#07111d;color:#fff;padding:0 14px;outline:none;direction:ltr}.btns{display:flex;gap:8px;margin-top:12px}.primary,.secondary{flex:1;border:0;border-radius:13px;height:46px;font-weight:900}.primary{background:linear-gradient(135deg,#087cff,#00b9ff);color:#fff}.secondary{background:rgba(255,255,255,.06);color:#fff}.note{font-size:10px!important;color:#66768b!important;margin-top:12px;margin-bottom:0!important}
+.modal{display:none;position:fixed;inset:0;z-index:500;background:rgba(0,0,0,.72);backdrop-filter:blur(12px);align-items:center;justify-content:center;padding:15px}.modal.show{display:flex}.modal-box{width:min(820px,100%);max-height:90vh;overflow:auto;background:linear-gradient(145deg,#101e30,#07101b);border:1px solid var(--line);border-radius:27px;padding:23px}.modal-top{display:flex;justify-content:space-between;align-items:center;margin-bottom:20px}.close{width:38px;height:38px;border:0;border-radius:11px;background:rgba(255,255,255,.06);color:#fff;font-size:19px}.detail-league{text-align:center;color:var(--muted);font-size:11px}.detail-teams{display:grid;grid-template-columns:1fr 140px 1fr;align-items:center;gap:15px;text-align:center;margin:22px 0}.detail-team{display:flex;flex-direction:column;align-items:center;gap:10px}.detail-logo{width:73px;height:73px;border-radius:21px;background:#15283f;display:grid;place-items:center;font-size:37px}.detail-score{font-size:40px;font-weight:950}.detail-status{color:var(--green);font-size:10px;margin-top:5px}.stat-grid{display:grid;grid-template-columns:repeat(2,1fr);gap:9px}.stat{padding:13px;border:1px solid var(--line);border-radius:14px;background:rgba(255,255,255,.03)}.stat p{text-align:center;color:var(--muted);font-size:9px;margin-bottom:9px}.stat div{display:flex;justify-content:space-between;font-weight:900;font-size:13px}
+.search{display:none;position:fixed;inset:0;z-index:550;background:rgba(0,0,0,.75);padding:90px 18px}.search.show{display:block}.search-box{width:min(700px,100%);margin:auto}.search-input{width:100%;height:58px;border:1px solid rgba(0,200,255,.25);border-radius:16px;background:#0d1a2b;color:#fff;padding:0 18px;font-size:16px;outline:0}.results{background:#0b1624;border:1px solid var(--line);border-radius:16px;margin-top:10px;overflow:hidden}.result{padding:14px;border-bottom:1px solid var(--line);cursor:pointer}.result:hover{background:rgba(0,130,255,.08)}
+.bottom{display:none;position:fixed;left:0;right:0;bottom:0;z-index:200;padding:7px 7px calc(7px + env(safe-area-inset-bottom));background:rgba(5,10,18,.94);border-top:1px solid var(--line);backdrop-filter:blur(20px)}.bottom div{display:grid;grid-template-columns:repeat(5,1fr)}.bottom button{border:0;background:transparent;color:var(--muted);font-size:10px;padding:6px}.bottom button b{display:block;font-size:18px;margin-bottom:3px}.bottom button.active{color:var(--cyan)}
+.toast{position:fixed;z-index:1000;bottom:25px;left:50%;transform:translateX(-50%) translateY(20px);opacity:0;background:#102033;border:1px solid var(--line);padding:11px 16px;border-radius:13px;color:#fff;font-size:11px;transition:.25s}.toast.show{opacity:1;transform:translateX(-50%) translateY(0)}
+@media(max-width:1100px){.layout{grid-template-columns:190px minmax(0,1fr)}.right{display:none}}
+@media(max-width:700px){.header{height:64px}.header-in,.layout{width:94%}.nav{display:none}.layout{display:block;padding-top:14px}.side{display:none}.hero{min-height:170px;border-radius:21px;padding:22px 19px}.hero h1{font-size:31px}.hero p{font-size:11px}.match{grid-template-columns:57px minmax(0,1fr) 37px;min-height:82px;padding:9px}.team-name{font-size:11px}.badge{width:28px;height:28px}.bottom{display:block}.modal{align-items:flex-end;padding:7px}.modal-box{border-radius:24px 24px 0 0;max-height:94vh}.detail-teams{grid-template-columns:1fr 90px 1fr}.detail-logo{width:58px;height:58px;font-size:28px}.detail-score{font-size:30px}}
+@media(min-width:1600px){.layout,.header-in{width:min(1750px,90%)}.layout{grid-template-columns:300px minmax(0,1fr) 340px}.match{min-height:105px}.team-name{font-size:15px}}
 </style>
 </head>
 <body>
-<header class="header"><div class="header-inner">
-<div class="logo"><div class="logo-icon">⚽</div><div>MQJ <span>Football</span></div></div>
-<nav class="top-nav"><button class="active">المباريات</button><button>الأخبار</button><button>البطولات</button><button>الانتقالات</button></nav>
-<div class="top-actions"><button class="icon-btn" onclick="openSearch()">🔎</button><button class="icon-btn" onclick="toggleTheme()">◐</button></div>
+<header class="header"><div class="header-in">
+<div class="logo"><i>⚽</i>MQJ <b>Football</b></div>
+<nav class="nav"><button class="active">المباريات</button><button>الأخبار</button><button>البطولات</button><button>الترتيب</button></nav>
+<div class="actions"><button class="icon" onclick="openSearch()">🔎</button><button class="icon" onclick="openSettings()">⚙</button></div>
 </div></header>
 
-<div class="app">
-<aside class="sidebar">
-<div class="sidebar-title">القائمة</div>
-<button class="side-item active"><span class="side-icon">🏠</span>الرئيسية</button>
-<button class="side-item"><span class="side-icon">🔴</span>مباشر</button>
-<button class="side-item"><span class="side-icon">⭐</span>المفضلة</button>
-<button class="side-item"><span class="side-icon">🏆</span>البطولات</button>
-<button class="side-item" onclick="openSearch()"><span class="side-icon">🔎</span>البحث</button>
-<div class="sidebar-title">البطولات</div>
-<div class="league-mini"><div class="league-logo">🇪🇸</div>الدوري الإسباني</div>
-<div class="league-mini"><div class="league-logo">🏴</div>الدوري الإنجليزي</div>
-<div class="league-mini"><div class="league-logo">🇮🇹</div>الدوري الإيطالي</div>
-<div class="league-mini"><div class="league-logo">🇩🇪</div>الدوري الألماني</div>
-<div class="league-mini"><div class="league-logo">🏆</div>دوري الأبطال</div>
-<div class="league-mini"><div class="league-logo">🇮🇶</div>الدوري العراقي</div>
+<div class="layout">
+<aside class="side">
+<div class="side-title">الرئيسية</div>
+<button class="active">🏠 الرئيسية</button><button onclick="showLive()">🔴 مباشر</button><button>⭐ المفضلة</button><button>🏆 البطولات</button>
+<small>البطولات</small>
+<button class="comp"><span>🇪🇸</span> الدوري الإسباني</button>
+<button class="comp"><span>🏴</span> الدوري الإنجليزي</button>
+<button class="comp"><span>🇮🇹</span> الدوري الإيطالي</button>
+<button class="comp"><span>🇩🇪</span> الدوري الألماني</button>
+<button class="comp"><span>🏆</span> دوري الأبطال</button>
+<button class="comp"><span>🇮🇶</span> الدوري العراقي</button>
 </aside>
 
-<main class="main">
+<main>
 <section class="hero"><div class="hero-content">
-<div class="hero-badge"><span class="live-dot"></span>متابعة كرة القدم مباشرة</div>
-<h1>كل المباريات<br>في مكان واحد</h1>
-<p>تابع النتائج والمباريات المباشرة والبطولات والفرق المفضلة لديك من الهاتف أو الشاشة الكبيرة.</p>
+<div class="live-badge"><span class="dot"></span><span id="liveCountText">النتائج المباشرة</span></div>
+<h1>كرة القدم<br>لحظة بلحظة</h1>
+<p>نتائج حية، دقائق المباريات، البطولات والمباريات القادمة — بتصميم سريع ومناسب للهاتف والشاشات وApple TV.</p>
 </div></section>
 
-<div class="date-nav">
-<div class="date"><div class="date-day">أمس</div><div class="date-number">29</div></div>
-<div class="date active"><div class="date-day">اليوم</div><div class="date-number">30</div></div>
-<div class="date"><div class="date-day">غداً</div><div class="date-number">31</div></div>
-<div class="date"><div class="date-day">الثلاثاء</div><div class="date-number">1</div></div>
-<div class="date"><div class="date-day">الأربعاء</div><div class="date-number">2</div></div>
+<div class="toolbar" id="dates">
+<button class="date active" onclick="loadToday()"><span>اليوم</span><strong id="todayNum">—</strong></button>
+<button class="date" onclick="loadOffset(-1)"><span>أمس</span><strong>السابق</strong></button>
+<button class="date" onclick="loadOffset(1)"><span>غداً</span><strong>القادم</strong></button>
 </div>
+<div class="toolbar"><button class="filter active" onclick="setFilter('all',this)">الكل</button><button class="filter" onclick="setFilter('live',this)">🔴 مباشر</button><button class="filter" onclick="setFilter('finished',this)">منتهية</button><button class="filter" onclick="setFilter('upcoming',this)">قادمة</button></div>
 
-<div class="section-head"><h2>مباريات اليوم</h2><span>الأحد 30 أغسطس</span></div>
-<div class="filters"><button class="filter active">الكل</button><button class="filter">🔴 مباشر</button><button class="filter">⭐ المفضلة</button><button class="filter">🏆 البطولات الكبرى</button><button class="filter">🇮🇶 العراق</button></div>
-
-<section class="league">
-<div class="league-head"><div class="league-name"><div class="league-ball">🇪🇸</div><div>الدوري الإسباني<div class="league-country">LaLiga</div></div></div><button class="league-star" onclick="toggleStar(this)">☆</button></div>
-<div class="match live" tabindex="0" onclick="openMatch('برشلونة','ريال مدريد','2','1','الدوري الإسباني','78')">
-<div class="match-time"><span class="live-label"><i></i>مباشر</span><strong>78'</strong></div>
-<div class="teams"><div class="team"><div class="team-logo">🔵🔴</div><span class="team-name">برشلونة</span></div><div class="team"><div class="team-logo">⚪</div><span class="team-name">ريال مدريد</span></div></div>
-<div class="score"><div>2</div><div>1</div></div></div>
-<div class="match" tabindex="0" onclick="openMatch('أتلتيكو مدريد','إشبيلية','—','—','الدوري الإسباني','21:30')">
-<div class="match-time"><strong>21:30</strong>اليوم</div>
-<div class="teams"><div class="team"><div class="team-logo">🔴⚪</div><span class="team-name">أتلتيكو مدريد</span></div><div class="team"><div class="team-logo">🔴</div><span class="team-name">إشبيلية</span></div></div><div class="score">—</div></div>
-</section>
-
-<section class="league">
-<div class="league-head"><div class="league-name"><div class="league-ball">🏴</div><div>الدوري الإنجليزي<div class="league-country">Premier League</div></div></div><button class="league-star" onclick="toggleStar(this)">☆</button></div>
-<div class="match live" tabindex="0" onclick="openMatch('ليفربول','مانشستر سيتي','1','1','الدوري الإنجليزي','65')">
-<div class="match-time"><span class="live-label"><i></i>مباشر</span><strong>65'</strong></div>
-<div class="teams"><div class="team"><div class="team-logo">🔴</div><span class="team-name">ليفربول</span></div><div class="team"><div class="team-logo">🔵</div><span class="team-name">مانشستر سيتي</span></div></div><div class="score"><div>1</div><div>1</div></div></div>
-<div class="match" tabindex="0" onclick="openMatch('أرسنال','تشيلسي','—','—','الدوري الإنجليزي','18:00')">
-<div class="match-time"><strong>18:00</strong>اليوم</div>
-<div class="teams"><div class="team"><div class="team-logo">🔴</div><span class="team-name">أرسنال</span></div><div class="team"><div class="team-logo">🔵</div><span class="team-name">تشيلسي</span></div></div><div class="score">—</div></div>
-</section>
-
-<section class="league">
-<div class="league-head"><div class="league-name"><div class="league-ball">🏆</div><div>دوري أبطال أوروبا<div class="league-country">UEFA Champions League</div></div></div><button class="league-star" onclick="toggleStar(this)">☆</button></div>
-<div class="match live" tabindex="0" onclick="openMatch('باريس سان جيرمان','بايرن ميونخ','2','2','دوري أبطال أوروبا','90+3')">
-<div class="match-time"><span class="live-label"><i></i>مباشر</span><strong>90+3</strong></div>
-<div class="teams"><div class="team"><div class="team-logo">🔵</div><span class="team-name">باريس سان جيرمان</span></div><div class="team"><div class="team-logo">🔴</div><span class="team-name">بايرن ميونخ</span></div></div><div class="score"><div>2</div><div>2</div></div></div>
-</section>
-
-<section class="league">
-<div class="league-head"><div class="league-name"><div class="league-ball">🇮🇶</div><div>الدوري العراقي<div class="league-country">Iraq Stars League</div></div></div><button class="league-star" onclick="toggleStar(this)">☆</button></div>
-<div class="match" tabindex="0" onclick="openMatch('الشرطة','الزوراء','—','—','الدوري العراقي','20:00')">
-<div class="match-time"><strong>20:00</strong>اليوم</div>
-<div class="teams"><div class="team"><div class="team-logo">🟢</div><span class="team-name">الشرطة</span></div><div class="team"><div class="team-logo">⚪</div><span class="team-name">الزوراء</span></div></div><div class="score">—</div></div>
-</section>
+<div class="section-head"><h2 id="pageTitle">مباريات اليوم</h2><span id="lastUpdate">جاري الاتصال...</span></div>
+<div id="matches"><div class="loading"><div class="spinner"></div>جاري تحميل النتائج...</div></div>
 </main>
 
-<aside class="right-panel">
-<div class="panel"><div class="panel-title"><h3>⭐ فرقي المفضلة</h3><span>إدارة</span></div>
-<div class="team-follow"><div class="team-follow-logo">🔵🔴</div><div class="team-follow-info"><div class="team-follow-name">برشلونة</div><div class="team-follow-meta">المباراة القادمة 21:00</div></div><div class="plus">›</div></div>
-<div class="team-follow"><div class="team-follow-logo">⚪</div><div class="team-follow-info"><div class="team-follow-name">ريال مدريد</div><div class="team-follow-meta">المباراة القادمة 21:30</div></div><div class="plus">›</div></div>
-<div class="team-follow"><div class="team-follow-logo">🔴</div><div class="team-follow-info"><div class="team-follow-name">ليفربول</div><div class="team-follow-meta">مباشر الآن</div></div><div class="plus">›</div></div>
+<aside class="right">
+<div class="right-card"><div class="right-title"><h3>⭐ الفرق المفضلة</h3><span>اختصارات</span></div>
+<div class="follow"><div class="follow-logo">🔵🔴</div><div class="follow-info"><b>برشلونة</b><small>تابع النتائج مباشرة</small></div>›</div>
+<div class="follow"><div class="follow-logo">⚪</div><div class="follow-info"><b>ريال مدريد</b><small>تابع النتائج مباشرة</small></div>›</div>
+<div class="follow"><div class="follow-logo">🔴</div><div class="follow-info"><b>ليفربول</b><small>تابع النتائج مباشرة</small></div>›</div>
 </div>
-<div class="panel"><div class="panel-title"><h3>📰 آخر الأخبار</h3><span>المزيد</span></div>
-<div class="news"><div class="news-img">⚽</div><div class="news-text"><h4>أخبار كرة القدم وآخر المستجدات حول الأندية</h4><span>منذ 10 دقائق</span></div></div>
-<div class="news"><div class="news-img">🏆</div><div class="news-text"><h4>استعدادات الفرق للجولة القادمة</h4><span>منذ 25 دقيقة</span></div></div>
-<div class="news"><div class="news-img">🔥</div><div class="news-text"><h4>أبرز نتائج مباريات اليوم</h4><span>منذ ساعة</span></div></div>
+<div class="right-card"><div class="right-title"><h3>📰 أخبار</h3><span>MQJ</span></div>
+<div class="news"><div class="news-img">⚽</div><div><h4>تابع نتائج المباريات لحظة بلحظة</h4><small>تحديث تلقائي</small></div></div>
+<div class="news"><div class="news-img">🏆</div><div><h4>جميع البطولات العالمية في واجهة واحدة</h4><small>مباشر</small></div></div>
 </div>
 </aside>
 </div>
 
-<nav class="bottom-nav"><div class="bottom-nav-inner">
-<button class="bottom-item active"><div>🏠</div>الرئيسية</button><button class="bottom-item"><div>🔴</div>مباشر</button><button class="bottom-item"><div>📅</div>المباريات</button><button class="bottom-item"><div>⭐</div>المفضلة</button><button class="bottom-item" onclick="openSearch()"><div>🔎</div>بحث</button>
-</div></nav>
+<nav class="bottom"><div><button class="active">🏠<b>الرئيسية</b></button><button onclick="showLive()">🔴<b>مباشر</b></button><button>📅<b>المباريات</b></button><button>⭐<b>المفضلة</b></button><button onclick="openSearch()">🔎<b>بحث</b></button></div></nav>
 
-<div id="matchModal" class="modal" onclick="if(event.target===this)closeMatch()"><div class="modal-box">
-<div class="modal-top"><strong>تفاصيل المباراة</strong><button class="close" onclick="closeMatch()">×</button></div>
-<div class="match-detail"><div id="detailLeague" class="detail-league">الدوري</div>
-<div class="detail-teams"><div class="detail-team"><div class="detail-logo">⚽</div><strong id="homeName">الفريق الأول</strong></div>
-<div><div id="detailScore" class="detail-score">0 - 0</div><div id="detailStatus" class="detail-status">مباشر</div></div>
-<div class="detail-team"><div class="detail-logo">⚽</div><strong id="awayName">الفريق الثاني</strong></div></div>
-<div class="stats">
-<div class="stat"><div class="stat-name">الاستحواذ</div><div class="stat-values"><strong>56%</strong><span>الاستحواذ</span><strong>44%</strong></div></div>
-<div class="stat"><div class="stat-name">التسديدات</div><div class="stat-values"><strong>12</strong><span>تسديدات</span><strong>8</strong></div></div>
-<div class="stat"><div class="stat-name">على المرمى</div><div class="stat-values"><strong>6</strong><span>تسديد</span><strong>3</strong></div></div>
-<div class="stat"><div class="stat-name">الركنيات</div><div class="stat-values"><strong>7</strong><span>ركنيات</span><strong>4</strong></div></div>
-</div></div></div></div>
-
-<div id="searchOverlay" class="search-overlay" onclick="if(event.target===this)closeSearch()"><div class="search-box">
-<input id="searchInput" class="search-input" type="search" placeholder="ابحث عن فريق أو بطولة..." autocomplete="off">
-<div id="searchResults" class="search-results"></div>
+<div id="settings" class="setup"><div class="box">
+<h2>⚙ ربط النتائج المباشرة</h2>
+<p>استخدم API Key من API-Football. المفتاح يحفظ في هذا المتصفح فقط. للموقع العام يفضّل وضع المفتاح في سيرفر/Backend وعدم كشفه داخل HTML.</p>
+<input id="apiKey" class="input" type="password" placeholder="ضع API Key هنا">
+<div class="btns"><button class="primary" onclick="saveKey()">حفظ وتشغيل</button><button class="secondary" onclick="closeSettings()">إلغاء</button></div>
+<p class="note">بعد الحفظ سيجلب الموقع المباريات ويحدث المباشر تلقائيًا كل 30 ثانية. API-Football يوفر endpoint للمباريات المباشرة والنتائج والأحداث والإحصائيات.</p>
 </div></div>
 
+<div id="matchModal" class="modal" onclick="if(event.target===this)closeMatch()"><div class="modal-box">
+<div class="modal-top"><b>تفاصيل المباراة</b><button class="close" onclick="closeMatch()">×</button></div>
+<div class="detail-league" id="dLeague">—</div>
+<div class="detail-teams"><div class="detail-team"><div class="detail-logo" id="dHomeLogo">⚽</div><b id="dHome">—</b></div>
+<div><div class="detail-score" id="dScore">0 - 0</div><div class="detail-status" id="dStatus">—</div></div>
+<div class="detail-team"><div class="detail-logo" id="dAwayLogo">⚽</div><b id="dAway">—</b></div></div>
+<div class="stat-grid" id="statGrid"></div>
+</div></div>
+
+<div id="search" class="search" onclick="if(event.target===this)closeSearch()"><div class="search-box">
+<input id="searchInput" class="search-input" placeholder="ابحث عن فريق..." oninput="searchTeams()">
+<div id="results" class="results"></div>
+</div></div>
+<div id="toast" class="toast"></div>
+
 <script>
-const teams=["🔵🔴 برشلونة","⚪ ريال مدريد","🔴 ليفربول","🔵 مانشستر سيتي","🔴 أرسنال","🔵 تشيلسي","🔴 بايرن ميونخ","🔵 باريس سان جيرمان","🟢 الشرطة العراقي","⚪ الزوراء العراقي","🏆 دوري أبطال أوروبا","🇪🇸 الدوري الإسباني","🏴 الدوري الإنجليزي","🇮🇶 الدوري العراقي"];
-function toggleStar(b){b.classList.toggle("active");b.textContent=b.classList.contains("active")?"★":"☆"}
-function openMatch(h,a,hs,as,l,s){homeName.textContent=h;awayName.textContent=a;detailLeague.textContent=l;detailScore.textContent=hs+" - "+as;detailStatus.textContent=s.includes(":")?"تبدأ الساعة "+s:s+" دقيقة";matchModal.classList.add("show");document.body.style.overflow="hidden"}
-function closeMatch(){matchModal.classList.remove("show");document.body.style.overflow=""}
-function openSearch(){searchOverlay.classList.add("show");document.body.style.overflow="hidden";renderSearch(teams);setTimeout(()=>searchInput.focus(),100)}
-function closeSearch(){searchOverlay.classList.remove("show");document.body.style.overflow=""}
-function renderSearch(arr){searchResults.innerHTML=arr.length?arr.map(x=>`<div class="search-result" onclick="closeSearch();alert('فتح: '+${JSON.stringify(x)})">${x}</div>`).join(""):'<div class="search-result">لا توجد نتائج</div>'}
-searchInput.addEventListener("input",()=>{let q=searchInput.value.trim().toLowerCase();renderSearch(q?teams.filter(x=>x.toLowerCase().includes(q)):teams)})
-document.querySelectorAll(".filter").forEach(b=>b.onclick=()=>{document.querySelectorAll(".filter").forEach(x=>x.classList.remove("active"));b.classList.add("active")});
-document.querySelectorAll(".date").forEach(b=>b.onclick=()=>{document.querySelectorAll(".date").forEach(x=>x.classList.remove("active"));b.classList.add("active")});
-document.querySelectorAll(".side-item").forEach(b=>b.onclick=()=>{document.querySelectorAll(".side-item").forEach(x=>x.classList.remove("active"));b.classList.add("active")});
-document.querySelectorAll(".bottom-item").forEach(b=>b.onclick=()=>{document.querySelectorAll(".bottom-item").forEach(x=>x.classList.remove("active"));b.classList.add("active")});
-let dark=true;
-function toggleTheme(){dark=!dark;document.documentElement.style.setProperty("--bg",dark?"#050a12":"#edf3f8");document.documentElement.style.setProperty("--panel",dark?"#0b1422":"#fff");document.documentElement.style.setProperty("--text",dark?"#e9f0f8":"#101923");document.documentElement.style.setProperty("--muted",dark?"#8c9bad":"#637386")}
-document.addEventListener("keydown",e=>{if(e.key==="Escape"){closeMatch();closeSearch()}});
+const API_BASE="https://v3.football.api-sports.io";
+let apiKey=localStorage.getItem("mqj_api_key")||"";
+let allMatches=[], filter="all", currentDate=new Date();
+const $=id=>document.getElementById(id);
+
+function fmtDate(d){return d.toISOString().slice(0,10)}
+function today(){let d=new Date();d.setHours(12,0,0,0);return d}
+function setDateFromOffset(n){let d=today();d.setDate(d.getDate()+n);return d}
+function logo(name){let n=(name||"").toLowerCase();if(n.includes("barcelona"))return"🔵🔴";if(n.includes("real madrid"))return"⚪";if(n.includes("liverpool"))return"🔴";if(n.includes("manchester city"))return"🔵";if(n.includes("arsenal"))return"🔴";if(n.includes("chelsea"))return"🔵";if(n.includes("bayern"))return"🔴";if(n.includes("psg")||n.includes("paris"))return"🔵";if(n.includes("iraq")||n.includes("شرطة"))return"🇮🇶";return"⚽"}
+function isLive(m){return ["1H","2H","HT","ET","P","BT"].includes(m.fixture?.status?.short)}
+function statusText(m){let s=m.fixture?.status?.short;let e=m.fixture?.status?.elapsed;if(isLive(m))return e?`مباشر ${e}'`:"مباشر";if(s==="FT"||s==="AET"||s==="PEN")return"انتهت";if(s==="NS")return new Date(m.fixture.date).toLocaleTimeString("ar-IQ",{hour:"2-digit",minute:"2-digit"});return m.fixture?.status?.long||s||"—"}
+function groupKey(m){return `${m.league?.id||0}-${m.league?.name||"بطولة"}`}
+function escapeHtml(s){return String(s??"").replace(/[&<>"']/g,c=>({"&":"&amp;","<":"&lt;",">":"&gt;",'"':"&quot;","'":"&#039;"}[c]))}
+
+async function api(path){
+ if(!apiKey) throw new Error("NO_KEY");
+ const r=await fetch(API_BASE+path,{headers:{"x-apisports-key":apiKey}});
+ if(!r.ok) throw new Error("HTTP "+r.status);
+ const j=await r.json();
+ if(j.errors && Object.keys(j.errors).length) throw new Error(Object.values(j.errors).join(", "));
+ return j.response||[];
+}
+async function loadDay(date=currentDate){
+ currentDate=date;
+ $("matches").innerHTML='<div class="loading"><div class="spinner"></div>جاري جلب النتائج...</div>';
+ $("lastUpdate").textContent="جارٍ التحديث";
+ if(!apiKey){$("matches").innerHTML='<div class="empty"><strong>🔐 اربط مصدر النتائج</strong>اضغط ⚙ وضع API Key حتى تظهر النتائج الحقيقية المباشرة.<br><button class="primary" style="margin-top:12px;padding:10px 18px;border-radius:12px;border:0" onclick="openSettings()">إضافة المفتاح</button></div>';return}
+ try{
+   let date=fmtDate(date);
+   allMatches=await api(`/fixtures?date=${date}&timezone=Asia%2FBaghdad`);
+   render();
+   $("lastUpdate").textContent="آخر تحديث "+new Date().toLocaleTimeString("ar-IQ",{hour:"2-digit",minute:"2-digit",second:"2-digit"});
+ }catch(e){
+   $("matches").innerHTML='<div class="empty"><strong>⚠ تعذر جلب النتائج</strong>'+escapeHtml(e.message)+"<br>تأكد من API Key والاتصال بالإنترنت.</div>";
+   $("lastUpdate").textContent="فشل الاتصال";
+ }
+}
+async function refreshLive(){
+ if(!apiKey)return;
+ try{
+   let live=await api("/fixtures?live=all");
+   if(currentDate.toDateString()===today().toDateString()){
+     const map=new Map(live.map(x=>[x.fixture.id,x]));
+     allMatches=allMatches.map(x=>map.has(x.fixture.id)?map.get(x):x);
+     const known=new Set(allMatches.map(x=>x.fixture.id));
+     live.forEach(x=>{if(!known.has(x.fixture.id))allMatches.push(x)});
+     render();
+     $("lastUpdate").textContent="مباشر • "+new Date().toLocaleTimeString("ar-IQ",{hour:"2-digit",minute:"2-digit",second:"2-digit"});
+   }
+ }catch(e){}
+}
+function render(){
+ let list=allMatches.filter(m=>{
+   if(filter==="live")return isLive(m);
+   if(filter==="finished")return ["FT","AET","PEN"].includes(m.fixture?.status?.short);
+   if(filter==="upcoming")return m.fixture?.status?.short==="NS";
+   return true;
+ });
+ $("liveCountText").textContent=`${allMatches.filter(isLive).length} مباراة مباشرة`;
+ if(!list.length){$("matches").innerHTML='<div class="empty"><strong>لا توجد مباريات</strong>لا توجد مباريات ضمن الفلتر المختار لهذا اليوم.</div>';return}
+ let groups={};list.forEach(m=>(groups[groupKey(m)]??=[]).push(m));
+ $("matches").innerHTML=Object.values(groups).map(arr=>{
+   let l=arr[0].league||{}, key=l.id||Math.random();
+   return `<section class="league"><div class="league-head"><div class="league-title"><i>${l.logo?`<img src="${escapeHtml(l.logo)}" style="width:23px;height:23px" onerror="this.replaceWith(document.createTextNode('🏆'))">`:"🏆"}</i><div>${escapeHtml(l.name||"بطولة")}<div class="country">${escapeHtml(l.country||"")}</div></div></div><button class="star" onclick="this.classList.toggle('on');this.textContent=this.classList.contains('on')?'★':'☆'">☆</button></div>${arr.map(matchCard).join("")}</section>`
+ }).join("");
+}
+function matchCard(m){
+ let live=isLive(m), h=m.teams?.home?.name||"الفريق الأول",a=m.teams?.away?.name||"الفريق الثاني";
+ let hs=m.goals?.home??0,as=m.goals?.away??0, st=m.fixture?.status?.short;
+ return `<div class="match ${live?"live":""}" tabindex="0" onclick="openMatch(${m.fixture.id})">
+ <div class="time">${live?`<span class="live-label">● ${escapeHtml(statusText(m))}</span>`:`<strong>${escapeHtml(statusText(m))}</strong>`}</div>
+ <div class="teams"><div class="team"><div class="badge">${logo(h)}</div><span class="team-name">${escapeHtml(h)}</span></div><div class="team"><div class="badge">${logo(a)}</div><span class="team-name">${escapeHtml(a)}</span></div></div>
+ <div class="scores"><div>${st==="NS"?"—":hs}</div><div>${st==="NS"?"—":as}</div></div></div>`
+}
+async function openMatch(id){
+ let m=allMatches.find(x=>x.fixture.id===id);if(!m)return;
+ $("dLeague").textContent=(m.league?.name||"بطولة")+" • "+(m.league?.country||"");
+ $("dHome").textContent=m.teams.home.name;$("dAway").textContent=m.teams.away.name;
+ $("dHomeLogo").textContent=logo(m.teams.home.name);$("dAwayLogo").textContent=logo(m.teams.away.name);
+ $("dScore").textContent=`${m.goals?.home??0} - ${m.goals?.away??0}`;$("dStatus").textContent=statusText(m);
+ $("statGrid").innerHTML='<div class="stat"><p>الحالة</p><div><span>المباراة</span><b>'+escapeHtml(m.fixture.status.long||"—")+'</b></div></div><div class="stat"><p>الملعب</p><div><span>المكان</span><b>'+escapeHtml(m.fixture.venue?.name||"غير متوفر")+'</b></div></div>';
+ $("matchModal").classList.add("show");document.body.style.overflow="hidden";
+ if(isLive(m)){
+   try{let s=await api(`/fixtures/statistics?fixture=${id}`);renderStats(s)}catch(e){}
+ }
+}
+function renderStats(s){
+ if(!s?.length)return;
+ let a=s[0]?.statistics||[],b=s[1]?.statistics||[];
+ const find=(arr,name)=>arr.find(x=>x.type===name)?.value??"—";
+ ["Ball Possession","Total Shots","Shots on Goal","Corner Kicks"].forEach((name,i)=>{
+   let ar=find(a,name),br=find(b,name);
+   let labels=["الاستحواذ","التسديدات","على المرمى","الركنيات"];
+   $("statGrid").innerHTML+=`<div class="stat"><p>${labels[i]}</p><div><b>${escapeHtml(ar)}</b><span> ${labels[i]} </span><b>${escapeHtml(br)}</b></div></div>`
+ })
+}
+function closeMatch(){$("matchModal").classList.remove("show");document.body.style.overflow=""}
+function openSettings(){$("apiKey").value=apiKey;$("settings").classList.add("show")}
+function closeSettings(){$("settings").classList.remove("show")}
+function saveKey(){let k=$("apiKey").value.trim();if(!k){toast("ضع API Key أولاً");return}localStorage.setItem("mqj_api_key",k);apiKey=k;closeSettings();toast("تم حفظ المفتاح وبدء تحميل النتائج");loadToday()}
+function loadToday(){filter="all";document.querySelectorAll(".filter").forEach((x,i)=>x.classList.toggle("active",i===0));loadDay(today())}
+function loadOffset(n){loadDay(setDateFromOffset(n))}
+function setFilter(f,b){filter=f;document.querySelectorAll(".filter").forEach(x=>x.classList.remove("active"));b.classList.add("active");render()}
+function showLive(){filter="live";document.querySelectorAll(".filter").forEach(x=>x.classList.remove("active"));document.querySelectorAll(".filter")[1].classList.add("active");render()}
+function openSearch(){$("search").classList.add("show");$("searchInput").focus();searchTeams()}
+function closeSearch(){$("search").classList.remove("show")}
+function searchTeams(){let q=$("searchInput").value.toLowerCase().trim();let set=new Map();allMatches.forEach(m=>{[m.teams?.home,m.teams?.away].forEach(t=>{if(t?.name&&!set.has(t.name))set.set(t.name,t)})});let arr=[...set.values()].filter(t=>!q||t.name.toLowerCase().includes(q));$("results").innerHTML=arr.slice(0,30).map(t=>`<div class="result">${logo(t.name)} &nbsp;${escapeHtml(t.name)}</div>`).join("")||'<div class="result">لا توجد نتائج</div>'}
+function toast(t){$("toast").textContent=t;$("toast").classList.add("show");setTimeout(()=>$("toast").classList.remove("show"),2500)}
+$("todayNum").textContent=new Date().getDate();
+setInterval(refreshLive,30000);
+document.addEventListener("keydown",e=>{if(e.key==="Escape"){closeMatch();closeSearch();closeSettings()}});
+loadToday();
 </script>
 </body>
-                                                                                                                                                                                                                   </html>
+</html>
