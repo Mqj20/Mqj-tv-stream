@@ -1,1520 +1,1190 @@
 <!DOCTYPE html>
 <html lang="ar" dir="rtl">
 <head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <meta name="theme-color" content="#070b14">
-
-    <title>Video Upload Center</title>
-
-    <style>
-        * {
-            box-sizing: border-box;
-            margin: 0;
-            padding: 0;
-        }
-
-        :root {
-            --bg: #070b14;
-            --card: #0d1422;
-            --card2: #111b2d;
-            --border: rgba(255,255,255,.08);
-            --text: #ffffff;
-            --muted: #8f9bb0;
-            --primary: #5b5cff;
-            --primary2: #8b5cf6;
-            --success: #22c55e;
-            --danger: #ef4444;
-        }
-
-        body {
-            min-height: 100vh;
-            background:
-                radial-gradient(circle at top right, rgba(91,92,255,.18), transparent 35%),
-                radial-gradient(circle at bottom left, rgba(139,92,246,.12), transparent 35%),
-                var(--bg);
-            color: var(--text);
-            font-family: Arial, "Tahoma", sans-serif;
-        }
-
-        button,
-        input,
-        textarea {
-            font: inherit;
-        }
-
-        .container {
-            width: min(1100px, calc(100% - 30px));
-            margin: auto;
-        }
-
-        header {
-            padding: 25px 0;
-            border-bottom: 1px solid var(--border);
-            background: rgba(7,11,20,.7);
-            backdrop-filter: blur(15px);
-            position: sticky;
-            top: 0;
-            z-index: 50;
-        }
-
-        .header-inner {
-            display: flex;
-            justify-content: space-between;
-            align-items: center;
-            gap: 15px;
-        }
-
-        .brand {
-            display: flex;
-            align-items: center;
-            gap: 12px;
-        }
-
-        .logo {
-            width: 48px;
-            height: 48px;
-            border-radius: 15px;
-            display: grid;
-            place-items: center;
-            background: linear-gradient(135deg, var(--primary), var(--primary2));
-            font-size: 23px;
-            box-shadow: 0 10px 30px rgba(91,92,255,.3);
-        }
-
-        .brand h1 {
-            font-size: 20px;
-        }
-
-        .brand p {
-            color: var(--muted);
-            font-size: 12px;
-            margin-top: 4px;
-        }
-
-        .status {
-            padding: 9px 13px;
-            border: 1px solid var(--border);
-            border-radius: 30px;
-            background: rgba(255,255,255,.04);
-            color: #b8c2d5;
-            font-size: 12px;
-        }
-
-        .status span {
-            display: inline-block;
-            width: 8px;
-            height: 8px;
-            border-radius: 50%;
-            background: var(--success);
-            margin-left: 6px;
-        }
-
-        main {
-            padding: 40px 0 70px;
-        }
-
-        .hero {
-            text-align: center;
-            margin-bottom: 30px;
-        }
-
-        .hero h2 {
-            font-size: clamp(28px, 6vw, 46px);
-            margin-bottom: 10px;
-        }
-
-        .hero h2 span {
-            background: linear-gradient(90deg, #7c83ff, #b58cff);
-            -webkit-background-clip: text;
-            background-clip: text;
-            color: transparent;
-        }
-
-        .hero p {
-            color: var(--muted);
-            line-height: 1.8;
-            max-width: 650px;
-            margin: auto;
-        }
-
-        .upload-card {
-            background: linear-gradient(145deg, rgba(17,27,45,.95), rgba(10,16,28,.95));
-            border: 1px solid var(--border);
-            border-radius: 24px;
-            padding: 22px;
-            box-shadow: 0 20px 70px rgba(0,0,0,.3);
-        }
-
-        .drop-zone {
-            border: 2px dashed rgba(139,92,246,.45);
-            border-radius: 20px;
-            min-height: 270px;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            text-align: center;
-            padding: 25px;
-            cursor: pointer;
-            transition: .25s;
-            background: rgba(91,92,255,.035);
-        }
-
-        .drop-zone:hover,
-        .drop-zone.dragover {
-            border-color: var(--primary);
-            background: rgba(91,92,255,.09);
-            transform: translateY(-2px);
-        }
-
-        .upload-icon {
-            width: 75px;
-            height: 75px;
-            border-radius: 22px;
-            display: grid;
-            place-items: center;
-            margin: 0 auto 18px;
-            background: linear-gradient(135deg, var(--primary), var(--primary2));
-            font-size: 35px;
-            box-shadow: 0 15px 40px rgba(91,92,255,.25);
-        }
-
-        .drop-zone h3 {
-            font-size: 21px;
-            margin-bottom: 8px;
-        }
-
-        .drop-zone p {
-            color: var(--muted);
-            font-size: 14px;
-            line-height: 1.8;
-        }
-
-        .browse {
-            display: inline-block;
-            color: #aeb2ff;
-            margin-top: 8px;
-        }
-
-        #videoInput {
-            display: none;
-        }
-
-        .preview-area {
-            display: none;
-            margin-top: 22px;
-        }
-
-        .preview-area.active {
-            display: block;
-        }
-
-        .preview-video {
-            width: 100%;
-            max-height: 500px;
-            border-radius: 18px;
-            background: #000;
-            display: block;
-        }
-
-        .file-info {
-            margin-top: 12px;
-            padding: 14px;
-            border: 1px solid var(--border);
-            border-radius: 14px;
-            background: rgba(255,255,255,.025);
-        }
-
-        .file-name {
-            font-weight: bold;
-            word-break: break-word;
-        }
-
-        .file-size {
-            color: var(--muted);
-            font-size: 12px;
-            margin-top: 5px;
-        }
-
-        .fields {
-            display: grid;
-            gap: 15px;
-            margin-top: 22px;
-        }
-
-        label {
-            color: #cbd3e3;
-            font-size: 13px;
-            margin-bottom: 7px;
-            display: block;
-        }
-
-        input[type="text"],
-        textarea {
-            width: 100%;
-            border: 1px solid var(--border);
-            background: #080e19;
-            color: white;
-            outline: none;
-            border-radius: 13px;
-            padding: 13px 15px;
-        }
-
-        input[type="text"]:focus,
-        textarea:focus {
-            border-color: rgba(91,92,255,.8);
-        }
-
-        textarea {
-            min-height: 100px;
-            resize: vertical;
-        }
-
-        .actions {
-            display: flex;
-            gap: 10px;
-            margin-top: 20px;
-        }
-
-        .btn {
-            border: 0;
-            border-radius: 13px;
-            padding: 13px 20px;
-            cursor: pointer;
-            transition: .2s;
-            font-weight: bold;
-        }
-
-        .btn-primary {
-            flex: 1;
-            color: white;
-            background: linear-gradient(135deg, var(--primary), var(--primary2));
-            box-shadow: 0 12px 30px rgba(91,92,255,.2);
-        }
-
-        .btn-primary:hover {
-            transform: translateY(-2px);
-        }
-
-        .btn-secondary {
-            background: rgba(255,255,255,.07);
-            color: white;
-            border: 1px solid var(--border);
-        }
-
-        .progress-box {
-            display: none;
-            margin-top: 20px;
-        }
-
-        .progress-box.active {
-            display: block;
-        }
-
-        .progress-top {
-            display: flex;
-            justify-content: space-between;
-            color: var(--muted);
-            font-size: 12px;
-            margin-bottom: 8px;
-        }
-
-        .progress {
-            height: 10px;
-            background: #080d17;
-            border-radius: 20px;
-            overflow: hidden;
-        }
-
-        .progress-bar {
-            height: 100%;
-            width: 0%;
-            background: linear-gradient(90deg, var(--primary), var(--primary2));
-            border-radius: inherit;
-            transition: width .15s;
-        }
-
-        .videos-section {
-            margin-top: 45px;
-        }
-
-        .section-title {
-            display: flex;
-            justify-content: space-between;
-            align-items: center;
-            gap: 15px;
-            margin-bottom: 18px;
-        }
-
-        .section-title h2 {
-            font-size: 22px;
-        }
-
-        .count {
-            color: var(--muted);
-            font-size: 13px;
-        }
-
-        .videos-grid {
-            display: grid;
-            grid-template-columns: repeat(3, 1fr);
-            gap: 18px;
-        }
-
-        .video-card {
-            overflow: hidden;
-            border-radius: 18px;
-            background: var(--card);
-            border: 1px solid var(--border);
-        }
-
-        .video-wrapper {
-            background: #000;
-            aspect-ratio: 16 / 9;
-        }
-
-        .video-wrapper video {
-            width: 100%;
-            height: 100%;
-            display: block;
-            object-fit: cover;
-        }
-
-        .video-content {
-            padding: 14px;
-        }
-
-        .video-title {
-            font-weight: bold;
-            margin-bottom: 7px;
-            white-space: nowrap;
-            overflow: hidden;
-            text-overflow: ellipsis;
-        }
-
-        .video-description {
-            color: var(--muted);
-            font-size: 12px;
-            line-height: 1.6;
-            min-height: 38px;
-        }
-
-        .video-actions {
-            display: flex;
-            gap: 8px;
-            margin-top: 13px;
-        }
-
-        .small-btn {
-            flex: 1;
-            border: 1px solid var(--border);
-            background: rgba(255,255,255,.05);
-            color: white;
-            padding: 9px;
-            border-radius: 10px;
-            cursor: pointer;
-            font-size: 12px;
-        }
-
-        .delete-btn {
-            background: rgba(239,68,68,.08);
-            color: #ff8a8a;
-        }
-
-        .empty {
-            grid-column: 1 / -1;
-            text-align: center;
-            padding: 55px 20px;
-            border: 1px dashed var(--border);
-            border-radius: 18px;
-            color: var(--muted);
-        }
-
-        .empty-icon {
-            font-size: 45px;
-            margin-bottom: 12px;
-        }
-
-        .toast {
-            position: fixed;
-            bottom: 25px;
-            left: 50%;
-            transform: translate(-50%, 100px);
-            background: #151e2d;
-            border: 1px solid var(--border);
-            padding: 13px 20px;
-            border-radius: 13px;
-            z-index: 999;
-            opacity: 0;
-            transition: .3s;
-            box-shadow: 0 15px 40px rgba(0,0,0,.4);
-            max-width: calc(100% - 30px);
-            text-align: center;
-        }
-
-        .toast.show {
-            opacity: 1;
-            transform: translate(-50%, 0);
-        }
-
-        .toast.success {
-            border-color: rgba(34,197,94,.35);
-        }
-
-        .toast.error {
-            border-color: rgba(239,68,68,.35);
-        }
-
-        footer {
-            text-align: center;
-            color: #59657a;
-            font-size: 12px;
-            padding: 25px 0;
-            border-top: 1px solid var(--border);
-        }
-
-        @media (max-width: 800px) {
-            .videos-grid {
-                grid-template-columns: repeat(2, 1fr);
-            }
-        }
-
-        @media (max-width: 600px) {
-            .container {
-                width: min(100% - 20px, 1100px);
-            }
-
-            header {
-                padding: 15px 0;
-            }
-
-            .status {
-                display: none;
-            }
-
-            main {
-                padding-top: 28px;
-            }
-
-            .upload-card {
-                padding: 12px;
-                border-radius: 19px;
-            }
-
-            .drop-zone {
-                min-height: 230px;
-            }
-
-            .videos-grid {
-                grid-template-columns: 1fr;
-            }
-
-            .actions {
-                flex-direction: column;
-            }
-
-            .btn {
-                width: 100%;
-            }
-        }
-    </style>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<meta name="theme-color" content="#070b14">
+<meta name="description" content="MQJ Internet Speed Test - قياس سرعة الإنترنت">
+<title>MQJ Speed Test | قياس سرعة الإنترنت</title>
+
+<style>
+*{
+    margin:0;
+    padding:0;
+    box-sizing:border-box;
+}
+
+:root{
+    --bg:#050812;
+    --card:#0c1220;
+    --card2:#101829;
+    --text:#ffffff;
+    --muted:#8e9bb3;
+    --blue:#1687ff;
+    --cyan:#00d9ff;
+    --green:#00e676;
+    --red:#ff3860;
+    --border:rgba(255,255,255,.08);
+}
+
+body{
+    min-height:100vh;
+    font-family:Arial,"Tahoma",sans-serif;
+    color:var(--text);
+    background:
+        radial-gradient(circle at 50% 0%,rgba(0,140,255,.18),transparent 35%),
+        radial-gradient(circle at 10% 80%,rgba(0,220,255,.08),transparent 30%),
+        var(--bg);
+    overflow-x:hidden;
+}
+
+header{
+    height:72px;
+    display:flex;
+    align-items:center;
+    justify-content:space-between;
+    padding:0 7%;
+    border-bottom:1px solid var(--border);
+    background:rgba(5,8,18,.75);
+    backdrop-filter:blur(15px);
+    position:sticky;
+    top:0;
+    z-index:10;
+}
+
+.logo{
+    font-size:24px;
+    font-weight:900;
+    letter-spacing:1px;
+}
+
+.logo span{
+    color:var(--cyan);
+}
+
+.status{
+    display:flex;
+    align-items:center;
+    gap:8px;
+    color:var(--muted);
+    font-size:13px;
+}
+
+.status-dot{
+    width:9px;
+    height:9px;
+    border-radius:50%;
+    background:var(--green);
+    box-shadow:0 0 12px var(--green);
+}
+
+main{
+    width:min(1000px,92%);
+    margin:auto;
+    padding:45px 0 70px;
+}
+
+.hero{
+    text-align:center;
+    margin-bottom:35px;
+}
+
+.hero h1{
+    font-size:clamp(30px,6vw,54px);
+    margin-bottom:12px;
+    background:linear-gradient(90deg,#fff,var(--cyan),var(--blue));
+    -webkit-background-clip:text;
+    color:transparent;
+}
+
+.hero p{
+    color:var(--muted);
+    font-size:15px;
+}
+
+.speed-card{
+    background:linear-gradient(145deg,rgba(18,28,48,.96),rgba(7,12,24,.98));
+    border:1px solid var(--border);
+    border-radius:30px;
+    padding:35px 25px;
+    box-shadow:0 25px 80px rgba(0,0,0,.35);
+}
+
+.gauge{
+    width:min(350px,80vw);
+    height:min(350px,80vw);
+    margin:10px auto 35px;
+    border-radius:50%;
+    position:relative;
+    display:flex;
+    align-items:center;
+    justify-content:center;
+    background:
+        radial-gradient(circle,#0b1220 62%,transparent 63%),
+        conic-gradient(
+            from 220deg,
+            var(--blue) 0deg,
+            var(--cyan) 90deg,
+            #142034 180deg,
+            #142034 360deg
+        );
+    box-shadow:
+        0 0 50px rgba(0,170,255,.12),
+        inset 0 0 40px rgba(0,0,0,.5);
+}
+
+.gauge::before{
+    content:"";
+    position:absolute;
+    inset:12px;
+    border-radius:50%;
+    border:1px solid rgba(255,255,255,.08);
+}
+
+.gauge-inner{
+    position:relative;
+    z-index:2;
+    text-align:center;
+}
+
+.speed-number{
+    font-size:clamp(55px,13vw,85px);
+    font-weight:900;
+    line-height:1;
+    font-variant-numeric:tabular-nums;
+}
+
+.speed-unit{
+    color:var(--muted);
+    font-size:16px;
+    margin-top:10px;
+}
+
+.test-type{
+    color:var(--cyan);
+    font-size:13px;
+    margin-top:12px;
+    min-height:18px;
+}
+
+button{
+    width:100%;
+    max-width:360px;
+    display:block;
+    margin:0 auto;
+    border:none;
+    cursor:pointer;
+    color:white;
+    font-size:18px;
+    font-weight:800;
+    padding:17px 25px;
+    border-radius:16px;
+    background:linear-gradient(135deg,var(--blue),var(--cyan));
+    box-shadow:0 12px 30px rgba(0,150,255,.22);
+    transition:.25s;
+}
+
+button:hover{
+    transform:translateY(-2px);
+    box-shadow:0 16px 40px rgba(0,180,255,.3);
+}
+
+button:disabled{
+    opacity:.6;
+    cursor:not-allowed;
+    transform:none;
+}
+
+.results{
+    display:grid;
+    grid-template-columns:repeat(3,1fr);
+    gap:15px;
+    margin-top:30px;
+}
+
+.result{
+    background:rgba(255,255,255,.035);
+    border:1px solid var(--border);
+    border-radius:20px;
+    padding:22px 15px;
+    text-align:center;
+}
+
+.result-icon{
+    font-size:25px;
+    margin-bottom:10px;
+}
+
+.result-title{
+    color:var(--muted);
+    font-size:13px;
+    margin-bottom:8px;
+}
+
+.result-value{
+    font-size:28px;
+    font-weight:900;
+    font-variant-numeric:tabular-nums;
+}
+
+.result-unit{
+    color:var(--muted);
+    font-size:12px;
+    margin-top:4px;
+}
+
+.progress-box{
+    margin-top:25px;
+    display:none;
+}
+
+.progress-label{
+    display:flex;
+    justify-content:space-between;
+    color:var(--muted);
+    font-size:12px;
+    margin-bottom:8px;
+}
+
+.progress{
+    height:8px;
+    border-radius:20px;
+    background:#172033;
+    overflow:hidden;
+}
+
+.progress-bar{
+    width:0%;
+    height:100%;
+    border-radius:20px;
+    background:linear-gradient(90deg,var(--blue),var(--cyan));
+    transition:width .2s;
+}
+
+.info-grid{
+    display:grid;
+    grid-template-columns:repeat(2,1fr);
+    gap:15px;
+    margin-top:20px;
+}
+
+.info{
+    background:rgba(255,255,255,.025);
+    border:1px solid var(--border);
+    border-radius:18px;
+    padding:18px;
+}
+
+.info-title{
+    color:var(--muted);
+    font-size:12px;
+    margin-bottom:7px;
+}
+
+.info-value{
+    font-size:15px;
+    font-weight:bold;
+    word-break:break-word;
+}
+
+.history{
+    margin-top:30px;
+}
+
+.history h2{
+    font-size:20px;
+    margin-bottom:15px;
+}
+
+.history-list{
+    display:flex;
+    flex-direction:column;
+    gap:10px;
+}
+
+.history-item{
+    display:grid;
+    grid-template-columns:1fr 1fr 1fr 1fr;
+    align-items:center;
+    background:rgba(255,255,255,.025);
+    border:1px solid var(--border);
+    border-radius:14px;
+    padding:14px;
+    font-size:13px;
+}
+
+.history-item span{
+    color:var(--muted);
+}
+
+.empty{
+    color:var(--muted);
+    text-align:center;
+    padding:20px;
+    border:1px dashed var(--border);
+    border-radius:15px;
+}
+
+footer{
+    text-align:center;
+    color:#66738a;
+    font-size:12px;
+    padding:20px;
+}
+
+@media(max-width:650px){
+    header{
+        padding:0 5%;
+    }
+
+    .speed-card{
+        padding:25px 15px;
+        border-radius:23px;
+    }
+
+    .results{
+        grid-template-columns:1fr;
+    }
+
+    .info-grid{
+        grid-template-columns:1fr;
+    }
+
+    .history-item{
+        grid-template-columns:1fr 1fr;
+        gap:10px;
+    }
+}
+</style>
 </head>
 
 <body>
 
 <header>
-    <div class="container header-inner">
+    <div class="logo">MQJ <span>SPEED</span></div>
 
-        <div class="brand">
-            <div class="logo">🎬</div>
-
-            <div>
-                <h1>Video Center</h1>
-                <p>منصة رفع وإدارة الفيديوهات</p>
-            </div>
-        </div>
-
-        <div class="status">
-            <span></span>
-            السيرفر متصل
-        </div>
-
+    <div class="status">
+        <span class="status-dot"></span>
+        <span>الاتصال نشط</span>
     </div>
 </header>
 
 <main>
 
-    <div class="container">
+    <section class="hero">
+        <h1>اختبر سرعة الإنترنت</h1>
+        <p>اعرف سرعة التحميل والرفع وزمن الاستجابة خلال ثوانٍ</p>
+    </section>
 
-        <section class="hero">
-            <h2>ارفع <span>فيديوهاتك</span></h2>
-            <p>
-                اختر الفيديو من جهازك، أضف العنوان والوصف، ثم ارفعه مباشرة
-                إلى السيرفر الخاص بك.
-            </p>
-        </section>
+    <section class="speed-card">
 
+        <div class="gauge">
 
-        <section class="upload-card">
+            <div class="gauge-inner">
 
-            <div
-                class="drop-zone"
-                id="dropZone"
-            >
+                <div id="speedNumber" class="speed-number">0</div>
 
-                <div>
+                <div class="speed-unit">Mbps</div>
 
-                    <div class="upload-icon">
-                        ⬆
-                    </div>
-
-                    <h3>
-                        اسحب الفيديو هنا
-                    </h3>
-
-                    <p>
-                        أو اضغط لاختيار فيديو من جهازك
-                    </p>
-
-                    <span class="browse">
-                        اختيار فيديو
-                    </span>
-
-                    <p style="margin-top:10px;font-size:11px;">
-                        MP4 / WebM / MOV
-                    </p>
-
-                </div>
-
-                <input
-                    type="file"
-                    id="videoInput"
-                    accept="video/*"
-                >
-
-            </div>
-
-
-            <div
-                class="preview-area"
-                id="previewArea"
-            >
-
-                <video
-                    id="previewVideo"
-                    class="preview-video"
-                    controls
-                    playsinline
-                ></video>
-
-                <div class="file-info">
-
-                    <div
-                        class="file-name"
-                        id="fileName"
-                    >
-                        —
-                    </div>
-
-                    <div
-                        class="file-size"
-                        id="fileSize"
-                    >
-                        —
-                    </div>
-
-                </div>
-
-
-                <div class="fields">
-
-                    <div>
-                        <label for="videoTitle">
-                            عنوان الفيديو
-                        </label>
-
-                        <input
-                            id="videoTitle"
-                            type="text"
-                            placeholder="اكتب عنوان الفيديو..."
-                        >
-                    </div>
-
-
-                    <div>
-                        <label for="videoDescription">
-                            وصف الفيديو
-                        </label>
-
-                        <textarea
-                            id="videoDescription"
-                            placeholder="اكتب وصفًا للفيديو..."
-                        ></textarea>
-                    </div>
-
-                </div>
-
-
-                <div class="actions">
-
-                    <button
-                        class="btn btn-primary"
-                        id="uploadBtn"
-                    >
-                        📤 رفع الفيديو
-                    </button>
-
-                    <button
-                        class="btn btn-secondary"
-                        id="cancelBtn"
-                    >
-                        إلغاء
-                    </button>
-
-                </div>
-
-
-                <div
-                    class="progress-box"
-                    id="progressBox"
-                >
-
-                    <div class="progress-top">
-
-                        <span id="progressText">
-                            جاري الرفع...
-                        </span>
-
-                        <span id="progressPercent">
-                            0%
-                        </span>
-
-                    </div>
-
-                    <div class="progress">
-
-                        <div
-                            class="progress-bar"
-                            id="progressBar"
-                        ></div>
-
-                    </div>
-
+                <div id="testType" class="test-type">
+                    جاهز للاختبار
                 </div>
 
             </div>
 
-        </section>
+        </div>
 
+        <button id="startBtn">
+            🚀 ابدأ اختبار السرعة
+        </button>
 
-        <section class="videos-section">
+        <div class="progress-box" id="progressBox">
 
-            <div class="section-title">
-
-                <h2>
-                    🎞️ الفيديوهات
-                </h2>
-
-                <span
-                    class="count"
-                    id="videoCount"
-                >
-                    0 فيديو
-                </span>
-
+            <div class="progress-label">
+                <span id="progressText">جاري الاختبار...</span>
+                <span id="progressPercent">0%</span>
             </div>
 
+            <div class="progress">
+                <div id="progressBar" class="progress-bar"></div>
+            </div>
 
-            <div
-                class="videos-grid"
-                id="videosGrid"
-            >
+        </div>
 
-                <div class="empty">
+        <div class="results">
 
-                    <div class="empty-icon">
-                        🎬
-                    </div>
+            <div class="result">
 
-                    <div>
-                        لا توجد فيديوهات مرفوعة حتى الآن
-                    </div>
+                <div class="result-icon">⬇️</div>
 
+                <div class="result-title">
+                    سرعة التحميل
+                </div>
+
+                <div id="downloadResult" class="result-value">
+                    —
+                </div>
+
+                <div class="result-unit">
+                    Mbps
                 </div>
 
             </div>
 
-        </section>
 
-    </div>
+            <div class="result">
+
+                <div class="result-icon">⬆️</div>
+
+                <div class="result-title">
+                    سرعة الرفع
+                </div>
+
+                <div id="uploadResult" class="result-value">
+                    —
+                </div>
+
+                <div class="result-unit">
+                    Mbps
+                </div>
+
+            </div>
+
+
+            <div class="result">
+
+                <div class="result-icon">⚡</div>
+
+                <div class="result-title">
+                    Ping
+                </div>
+
+                <div id="pingResult" class="result-value">
+                    —
+                </div>
+
+                <div class="result-unit">
+                    ms
+                </div>
+
+            </div>
+
+        </div>
+
+
+        <div class="info-grid">
+
+            <div class="info">
+                <div class="info-title">نوع الاتصال</div>
+                <div id="connectionType" class="info-value">جارٍ الكشف...</div>
+            </div>
+
+            <div class="info">
+                <div class="info-title">المتصفح</div>
+                <div id="browser" class="info-value">جارٍ الكشف...</div>
+            </div>
+
+            <div class="info">
+                <div class="info-title">الشبكة</div>
+                <div id="networkInfo" class="info-value">جارٍ الكشف...</div>
+            </div>
+
+            <div class="info">
+                <div class="info-title">الوقت</div>
+                <div id="testTime" class="info-value">—</div>
+            </div>
+
+        </div>
+
+    </section>
+
+
+    <section class="history">
+
+        <h2>📊 آخر الاختبارات</h2>
+
+        <div id="historyList" class="history-list">
+            <div class="empty">
+                لا توجد اختبارات سابقة
+            </div>
+        </div>
+
+    </section>
 
 </main>
 
-
 <footer>
-    Video Center © 2026
+    MQJ Speed Test © 2026 — جميع الحقوق محفوظة
 </footer>
-
-
-<div
-    class="toast"
-    id="toast"
-></div>
 
 
 <script>
 
-    /*
-     * ============================================================
-     * إعدادات الموقع
-     * ============================================================
-     *
-     * إذا كان index.html والسيرفر على نفس الدومين:
-     *
-     * /api/upload
-     * /api/videos
-     * /api/videos/:id
-     *
-     * لا تحتاج إلى تغيير شيء هنا.
-     */
+/* =========================
+   العناصر
+========================= */
 
-    const API = "/api";
+const startBtn = document.getElementById("startBtn");
 
+const speedNumber = document.getElementById("speedNumber");
+const testType = document.getElementById("testType");
 
-    const videoInput = document.getElementById("videoInput");
-    const dropZone = document.getElementById("dropZone");
+const downloadResult = document.getElementById("downloadResult");
+const uploadResult = document.getElementById("uploadResult");
+const pingResult = document.getElementById("pingResult");
 
-    const previewArea = document.getElementById("previewArea");
-    const previewVideo = document.getElementById("previewVideo");
+const progressBox = document.getElementById("progressBox");
+const progressBar = document.getElementById("progressBar");
+const progressPercent = document.getElementById("progressPercent");
+const progressText = document.getElementById("progressText");
 
-    const fileName = document.getElementById("fileName");
-    const fileSize = document.getElementById("fileSize");
+const connectionType = document.getElementById("connectionType");
+const browser = document.getElementById("browser");
+const networkInfo = document.getElementById("networkInfo");
+const testTime = document.getElementById("testTime");
 
-    const videoTitle = document.getElementById("videoTitle");
-    const videoDescription = document.getElementById("videoDescription");
-
-    const uploadBtn = document.getElementById("uploadBtn");
-    const cancelBtn = document.getElementById("cancelBtn");
-
-    const progressBox = document.getElementById("progressBox");
-    const progressBar = document.getElementById("progressBar");
-    const progressText = document.getElementById("progressText");
-    const progressPercent = document.getElementById("progressPercent");
-
-    const videosGrid = document.getElementById("videosGrid");
-    const videoCount = document.getElementById("videoCount");
-
-    const toast = document.getElementById("toast");
+const historyList = document.getElementById("historyList");
 
 
-    let selectedFile = null;
+/* =========================
+   معلومات الجهاز
+========================= */
 
+function getConnectionInfo(){
 
-    /*
-     * ============================================================
-     * اختيار الفيديو
-     * ============================================================
-     */
+    const connection =
+        navigator.connection ||
+        navigator.mozConnection ||
+        navigator.webkitConnection;
 
-    dropZone.addEventListener("click", function () {
-        videoInput.click();
-    });
+    if(connection){
 
+        let type = connection.effectiveType || "غير معروف";
 
-    videoInput.addEventListener("change", function () {
+        let text = type.toUpperCase();
 
-        if (!this.files || !this.files.length) {
-            return;
+        if(connection.downlink){
+            text += " • " + connection.downlink + " Mbps";
         }
 
-        selectVideo(this.files[0]);
+        connectionType.textContent = text;
 
-    });
+        networkInfo.textContent =
+            connection.type ||
+            "شبكة الهاتف / Wi-Fi";
+    }
+    else{
 
+        connectionType.textContent =
+            "غير متوفر";
 
-    /*
-     * ============================================================
-     * Drag & Drop
-     * ============================================================
-     */
-
-    ["dragenter", "dragover"].forEach(eventName => {
-
-        dropZone.addEventListener(eventName, function (e) {
-
-            e.preventDefault();
-            e.stopPropagation();
-
-            dropZone.classList.add("dragover");
-
-        });
-
-    });
-
-
-    ["dragleave", "drop"].forEach(eventName => {
-
-        dropZone.addEventListener(eventName, function (e) {
-
-            e.preventDefault();
-            e.stopPropagation();
-
-            dropZone.classList.remove("dragover");
-
-        });
-
-    });
-
-
-    dropZone.addEventListener("drop", function (e) {
-
-        const files = e.dataTransfer.files;
-
-        if (!files || !files.length) {
-            return;
-        }
-
-        const file = files[0];
-
-        if (!file.type.startsWith("video/")) {
-
-            showToast(
-                "الملف الذي اخترته ليس فيديو",
-                "error"
-            );
-
-            return;
-        }
-
-        selectVideo(file);
-
-    });
-
-
-    /*
-     * ============================================================
-     * عرض الفيديو قبل الرفع
-     * ============================================================
-     */
-
-    function selectVideo(file) {
-
-        selectedFile = file;
-
-        fileName.textContent = file.name;
-
-        fileSize.textContent = formatBytes(file.size);
-
-        const url = URL.createObjectURL(file);
-
-        previewVideo.src = url;
-
-        previewArea.classList.add("active");
-
-        videoTitle.value =
-            file.name.replace(/\.[^/.]+$/, "");
-
-        videoDescription.value = "";
-
-        window.scrollTo({
-            top: previewArea.offsetTop - 100,
-            behavior: "smooth"
-        });
-
+        networkInfo.textContent =
+            navigator.onLine ? "متصل" : "غير متصل";
     }
 
+    browser.textContent =
+        navigator.userAgent
+            .replace(/\([^)]*\)/g,"")
+            .split(" ")
+            .slice(-2)
+            .join(" ");
+
+}
+
+getConnectionInfo();
+
+
+/* =========================
+   أدوات
+========================= */
+
+function sleep(ms){
+    return new Promise(resolve => setTimeout(resolve,ms));
+}
+
+
+function setProgress(value,text){
+
+    value = Math.max(0,Math.min(100,value));
+
+    progressBar.style.width = value + "%";
+
+    progressPercent.textContent =
+        Math.round(value) + "%";
+
+    if(text){
+        progressText.textContent = text;
+    }
+}
+
+
+function animateNumber(element,start,end,duration){
+
+    return new Promise(resolve => {
+
+        const startTime = performance.now();
+
+        function frame(now){
+
+            const progress =
+                Math.min((now-startTime)/duration,1);
+
+            const value =
+                start + (end-start)*progress;
+
+            element.textContent =
+                value.toFixed(1);
+
+            if(progress < 1){
+                requestAnimationFrame(frame);
+            }
+            else{
+                resolve();
+            }
+        }
+
+        requestAnimationFrame(frame);
+    });
+}
+
+
+/* =========================
+   Ping
+========================= */
+
+async function measurePing(){
+
+    testType.textContent = "⚡ قياس Ping";
+
+    let times = [];
 
     /*
-     * ============================================================
-     * إلغاء اختيار الفيديو
-     * ============================================================
-     */
+      نستخدم صورة صغيرة جداً من Google.
+      المتصفح قد يمنع بعض القياسات بسبب CORS،
+      لذلك نستعمل no-cors.
+    */
 
-    cancelBtn.addEventListener("click", resetUpload);
+    const url =
+        "https://www.google.com/images/branding/googlelogo/1x/googlelogo_color_272x92dp.png";
 
+    for(let i=0;i<4;i++){
 
-    function resetUpload() {
+        try{
 
-        selectedFile = null;
+            const start = performance.now();
 
-        videoInput.value = "";
+            await fetch(
+                url + "?t=" + Date.now(),
+                {
+                    mode:"no-cors",
+                    cache:"no-store"
+                }
+            );
 
-        previewVideo.pause();
+            const end = performance.now();
 
-        previewVideo.removeAttribute("src");
+            times.push(end-start);
 
-        previewVideo.load();
+        }
+        catch(e){}
 
-        previewArea.classList.remove("active");
+        setProgress(
+            5 + i*5,
+            "قياس زمن الاستجابة..."
+        );
 
-        progressBox.classList.remove("active");
-
-        progressBar.style.width = "0%";
-
-        progressPercent.textContent = "0%";
-
-        progressText.textContent = "جاري الرفع...";
-
-        videoTitle.value = "";
-
-        videoDescription.value = "";
-
+        await sleep(100);
     }
 
+    if(times.length){
+
+        times.sort((a,b)=>a-b);
+
+        const middle =
+            times[Math.floor(times.length/2)];
+
+        return Math.round(middle);
+    }
+
+    return null;
+}
+
+
+/* =========================
+   Download
+========================= */
+
+async function measureDownload(){
+
+    testType.textContent =
+        "⬇️ قياس سرعة التحميل";
 
     /*
-     * ============================================================
-     * رفع الفيديو
-     * ============================================================
-     */
+      ملف اختبار عام.
+      يمكن تغييره لاحقاً إلى سيرفرك الخاص
+      للحصول على نتائج أفضل.
+    */
 
-    uploadBtn.addEventListener("click", uploadVideo);
+    const testURL =
+        "https://speed.cloudflare.com/__down?bytes=10000000";
 
+    const start = performance.now();
 
-    function uploadVideo() {
+    let received = 0;
 
-        if (!selectedFile) {
+    try{
 
-            showToast(
-                "اختر فيديو أولاً",
-                "error"
-            );
+        const response = await fetch(
+            testURL + "&t=" + Date.now(),
+            {
+                cache:"no-store"
+            }
+        );
 
-            return;
+        if(!response.body){
+            throw new Error("Streaming unavailable");
         }
 
+        const reader =
+            response.body.getReader();
 
-        if (!videoTitle.value.trim()) {
+        while(true){
 
-            showToast(
-                "اكتب عنوان الفيديو",
-                "error"
+            const {done,value} =
+                await reader.read();
+
+            if(done) break;
+
+            received += value.length;
+
+            const elapsed =
+                (performance.now()-start)/1000;
+
+            if(elapsed > 0){
+
+                const mbps =
+                    (received * 8) /
+                    elapsed /
+                    1000000;
+
+                speedNumber.textContent =
+                    mbps.toFixed(1);
+            }
+
+            const progress =
+                Math.min(
+                    (received/10000000)*100,
+                    100
+                );
+
+            setProgress(
+                20 + progress*0.55,
+                "جاري قياس التحميل..."
             );
-
-            videoTitle.focus();
-
-            return;
         }
 
+        const seconds =
+            (performance.now()-start)/1000;
 
-        const formData = new FormData();
+        const mbps =
+            (received*8) /
+            seconds /
+            1000000;
 
-        formData.append(
-            "video",
-            selectedFile
-        );
+        return mbps;
 
-        formData.append(
-            "title",
-            videoTitle.value.trim()
-        );
+    }
+    catch(error){
 
-        formData.append(
-            "description",
-            videoDescription.value.trim()
-        );
-
-
-        const xhr = new XMLHttpRequest();
-
-
-        xhr.open(
-            "POST",
-            API + "/upload",
-            true
-        );
-
+        console.error(error);
 
         /*
-         * نسبة الرفع
-         */
+          محاولة ثانية بطريقة Blob
+        */
 
-        xhr.upload.addEventListener(
-            "progress",
-            function (event) {
+        try{
 
-                if (!event.lengthComputable) {
-                    return;
-                }
-
-                const percent =
-                    Math.round(
-                        (event.loaded / event.total) * 100
-                    );
-
-                progressBox.classList.add("active");
-
-                progressBar.style.width =
-                    percent + "%";
-
-                progressPercent.textContent =
-                    percent + "%";
-
-                if (percent >= 100) {
-
-                    progressText.textContent =
-                        "جاري معالجة الفيديو...";
-
-                } else {
-
-                    progressText.textContent =
-                        "جاري رفع الفيديو...";
-
-                }
-
-            }
-        );
-
-
-        xhr.onload = function () {
-
-            uploadBtn.disabled = false;
-
-            uploadBtn.textContent =
-                "📤 رفع الفيديو";
-
-
-            if (
-                xhr.status >= 200 &&
-                xhr.status < 300
-            ) {
-
-                progressBar.style.width = "100%";
-
-                progressPercent.textContent = "100%";
-
-                progressText.textContent =
-                    "تم رفع الفيديو بنجاح ✓";
-
-
-                showToast(
-                    "تم رفع الفيديو بنجاح",
-                    "success"
-                );
-
-
-                setTimeout(function () {
-
-                    resetUpload();
-
-                    loadVideos();
-
-                }, 1000);
-
-
-            } else {
-
-                let message =
-                    "حدث خطأ أثناء رفع الفيديو";
-
-
-                try {
-
-                    const response =
-                        JSON.parse(xhr.responseText);
-
-                    if (response.message) {
-                        message = response.message;
-                    }
-
-                } catch (e) {}
-
-
-                showToast(
-                    message,
-                    "error"
-                );
-
-            }
-
-        };
-
-
-        xhr.onerror = function () {
-
-            uploadBtn.disabled = false;
-
-            uploadBtn.textContent =
-                "📤 رفع الفيديو";
-
-            showToast(
-                "تعذر الاتصال بالسيرفر",
-                "error"
-            );
-
-        };
-
-
-        xhr.onabort = function () {
-
-            uploadBtn.disabled = false;
-
-            uploadBtn.textContent =
-                "📤 رفع الفيديو";
-
-        };
-
-
-        uploadBtn.disabled = true;
-
-        uploadBtn.textContent =
-            "⏳ جاري الرفع...";
-
-
-        progressBox.classList.add("active");
-
-
-        xhr.send(formData);
-
-    }
-
-
-    /*
-     * ============================================================
-     * تحميل الفيديوهات الموجودة على السيرفر
-     * ============================================================
-     */
-
-    async function loadVideos() {
-
-        try {
+            const start2 =
+                performance.now();
 
             const response =
                 await fetch(
-                    API + "/videos"
+                    testURL + "&t=" + Date.now(),
+                    {cache:"no-store"}
                 );
 
+            const blob =
+                await response.blob();
 
-            if (!response.ok) {
-                throw new Error();
-            }
+            const seconds =
+                (performance.now()-start2)/1000;
 
+            const mbps =
+                (blob.size*8) /
+                seconds /
+                1000000;
 
-            const data =
-                await response.json();
-
-
-            renderVideos(data);
-
-        } catch (error) {
-
-            console.log(
-                "تعذر تحميل الفيديوهات:",
-                error
-            );
-
-            renderVideos([]);
+            return mbps;
 
         }
+        catch(e){
 
+            return null;
+        }
     }
+}
 
+
+/* =========================
+   Upload
+========================= */
+
+async function measureUpload(){
+
+    testType.textContent =
+        "⬆️ قياس سرعة الرفع";
 
     /*
-     * ============================================================
-     * عرض الفيديوهات
-     * ============================================================
-     */
+      الرفع يحتاج endpoint يسمح بـ POST.
+      نستخدم httpbin كخادم اختبار.
+    */
 
-    function renderVideos(videos) {
+    const size =
+        2 * 1024 * 1024;
 
-        videosGrid.innerHTML = "";
+    const data =
+        new Uint8Array(size);
+
+    crypto.getRandomValues(
+        data.subarray(0,65536)
+    );
+
+    /*
+      نملأ بقية البيانات بطريقة خفيفة
+    */
+
+    for(let i=65536;i<size;i++){
+        data[i] =
+            data[i % 65536];
+    }
+
+    const start =
+        performance.now();
+
+    try{
+
+        const response =
+            await fetch(
+                "https://httpbin.org/post?t="+Date.now(),
+                {
+                    method:"POST",
+                    body:data,
+                    cache:"no-store"
+                }
+            );
+
+        await response.text();
+
+        const seconds =
+            (performance.now()-start)/1000;
+
+        if(seconds <= 0){
+            return null;
+        }
+
+        const mbps =
+            (size*8) /
+            seconds /
+            1000000;
+
+        setProgress(
+            95,
+            "إنهاء الاختبار..."
+        );
+
+        return mbps;
+
+    }
+    catch(error){
+
+        console.error(error);
+
+        return null;
+    }
+}
 
 
-        if (!Array.isArray(videos) || videos.length === 0) {
+/* =========================
+   حفظ النتائج
+========================= */
 
-            videosGrid.innerHTML = `
+function saveHistory(download,upload,ping){
 
-                <div class="empty">
+    let history =
+        JSON.parse(
+            localStorage.getItem("mqjSpeedHistory") ||
+            "[]"
+        );
 
-                    <div class="empty-icon">
-                        🎬
-                    </div>
+    const item = {
 
-                    <div>
-                        لا توجد فيديوهات مرفوعة حتى الآن
-                    </div>
+        download:
+            download ?
+            download.toFixed(1) :
+            "—",
 
+        upload:
+            upload ?
+            upload.toFixed(1) :
+            "—",
+
+        ping:
+            ping ?
+            Math.round(ping) :
+            "—",
+
+        time:
+            new Date().toLocaleString("ar-IQ")
+    };
+
+    history.unshift(item);
+
+    history =
+        history.slice(0,10);
+
+    localStorage.setItem(
+        "mqjSpeedHistory",
+        JSON.stringify(history)
+    );
+
+    renderHistory();
+}
+
+
+function renderHistory(){
+
+    let history =
+        JSON.parse(
+            localStorage.getItem("mqjSpeedHistory") ||
+            "[]"
+        );
+
+    if(!history.length){
+
+        historyList.innerHTML =
+            `<div class="empty">
+                لا توجد اختبارات سابقة
+            </div>`;
+
+        return;
+    }
+
+    historyList.innerHTML =
+        history.map(item => `
+
+            <div class="history-item">
+
+                <div>
+                    <span>⬇️ تحميل</span><br>
+                    <b>${item.download} Mbps</b>
                 </div>
 
-            `;
+                <div>
+                    <span>⬆️ رفع</span><br>
+                    <b>${item.upload} Mbps</b>
+                </div>
 
-            videoCount.textContent =
-                "0 فيديو";
+                <div>
+                    <span>⚡ Ping</span><br>
+                    <b>${item.ping} ms</b>
+                </div>
 
-            return;
+                <div>
+                    <span>🕒 الوقت</span><br>
+                    <b>${item.time}</b>
+                </div>
 
-        }
+            </div>
 
-
-        videoCount.textContent =
-            videos.length + " فيديو";
-
-
-        videos.forEach(video => {
-
-            const card =
-                document.createElement("article");
-
-            card.className =
-                "video-card";
+        `).join("");
+}
 
 
-            const wrapper =
-                document.createElement("div");
-
-            wrapper.className =
-                "video-wrapper";
+renderHistory();
 
 
-            const player =
-                document.createElement("video");
+/* =========================
+   الاختبار الرئيسي
+========================= */
 
-            player.controls = true;
+async function startTest(){
 
-            player.playsInline = true;
+    if(!navigator.onLine){
 
-            player.preload = "metadata";
+        alert("تأكد من اتصال جهازك بالإنترنت.");
 
-            player.src =
-                video.url;
+        return;
+    }
 
+    startBtn.disabled = true;
 
-            wrapper.appendChild(player);
+    startBtn.textContent =
+        "⏳ جاري الاختبار...";
 
+    progressBox.style.display =
+        "block";
 
-            const content =
-                document.createElement("div");
+    setProgress(
+        0,
+        "بدء الاختبار..."
+    );
 
-            content.className =
-                "video-content";
+    speedNumber.textContent =
+        "0";
 
+    downloadResult.textContent =
+        "—";
 
-            const title =
-                document.createElement("div");
+    uploadResult.textContent =
+        "—";
 
-            title.className =
-                "video-title";
-
-            title.textContent =
-                video.title || "بدون عنوان";
-
-
-            const description =
-                document.createElement("div");
-
-            description.className =
-                "video-description";
-
-            description.textContent =
-                video.description || "";
+    pingResult.textContent =
+        "—";
 
 
-            const actions =
-                document.createElement("div");
+    /* Ping */
 
-            actions.className =
-                "video-actions";
+    const ping =
+        await measurePing();
 
+    if(ping !== null){
 
-            const openBtn =
-                document.createElement("button");
-
-            openBtn.className =
-                "small-btn";
-
-            openBtn.textContent =
-                "🔗 فتح";
-
-
-            openBtn.onclick = function () {
-
-                window.open(
-                    video.url,
-                    "_blank"
-                );
-
-            };
-
-
-            const deleteBtn =
-                document.createElement("button");
-
-            deleteBtn.className =
-                "small-btn delete-btn";
-
-            deleteBtn.textContent =
-                "🗑 حذف";
-
-
-            deleteBtn.onclick = function () {
-
-                deleteVideo(video.id);
-
-            };
-
-
-            actions.appendChild(openBtn);
-
-            actions.appendChild(deleteBtn);
-
-
-            content.appendChild(title);
-
-            content.appendChild(description);
-
-            content.appendChild(actions);
-
-
-            card.appendChild(wrapper);
-
-            card.appendChild(content);
-
-
-            videosGrid.appendChild(card);
-
-        });
+        pingResult.textContent =
+            ping;
 
     }
 
 
-    /*
-     * ============================================================
-     * حذف فيديو
-     * ============================================================
-     */
+    /* Download */
 
-    async function deleteVideo(id) {
+    setProgress(
+        20,
+        "جاري قياس التحميل..."
+    );
 
-        const confirmed =
-            confirm(
-                "هل أنت متأكد من حذف هذا الفيديو؟"
-            );
+    const download =
+        await measureDownload();
 
+    if(download !== null){
 
-        if (!confirmed) {
-            return;
-        }
-
-
-        try {
-
-            const response =
-                await fetch(
-                    API + "/videos/" +
-                    encodeURIComponent(id),
-                    {
-                        method: "DELETE"
-                    }
-                );
-
-
-            if (!response.ok) {
-                throw new Error();
-            }
-
-
-            showToast(
-                "تم حذف الفيديو",
-                "success"
-            );
-
-
-            loadVideos();
-
-
-        } catch (error) {
-
-            showToast(
-                "تعذر حذف الفيديو",
-                "error"
-            );
-
-        }
-
-    }
-
-
-    /*
-     * ============================================================
-     * تنسيق حجم الملف
-     * ============================================================
-     */
-
-    function formatBytes(bytes) {
-
-        if (!bytes) {
-            return "0 B";
-        }
-
-
-        const units = [
-            "B",
-            "KB",
-            "MB",
-            "GB",
-            "TB"
-        ];
-
-
-        const index =
-            Math.floor(
-                Math.log(bytes) /
-                Math.log(1024)
-            );
-
-
-        return (
-            (bytes /
-                Math.pow(1024, index)
-            ).toFixed(index === 0 ? 0 : 2)
-            + " "
-            + units[index]
+        await animateNumber(
+            speedNumber,
+            parseFloat(speedNumber.textContent) || 0,
+            download,
+            500
         );
 
+        downloadResult.textContent =
+            download.toFixed(1);
+    }
+    else{
+
+        downloadResult.textContent =
+            "—";
     }
 
 
-    /*
-     * ============================================================
-     * رسائل التنبيه
-     * ============================================================
-     */
+    /* Upload */
 
-    let toastTimer;
+    setProgress(
+        80,
+        "جاري قياس الرفع..."
+    );
 
+    const upload =
+        await measureUpload();
 
-    function showToast(message, type = "") {
+    if(upload !== null){
 
-        clearTimeout(toastTimer);
+        uploadResult.textContent =
+            upload.toFixed(1);
 
+    }
+    else{
 
-        toast.textContent =
-            message;
-
-
-        toast.className =
-            "toast show " + type;
-
-
-        toastTimer =
-            setTimeout(function () {
-
-                toast.className =
-                    "toast";
-
-            }, 3500);
-
+        uploadResult.textContent =
+            "—";
     }
 
 
-    /*
-     * ============================================================
-     * تشغيل الموقع
-     * ============================================================
-     */
+    /* النهاية */
 
-    loadVideos();
+    setProgress(
+        100,
+        "اكتمل الاختبار ✅"
+    );
+
+    testType.textContent =
+        "✅ اكتمل الاختبار";
+
+    if(download !== null){
+
+        speedNumber.textContent =
+            download.toFixed(1);
+    }
+
+    testTime.textContent =
+        new Date().toLocaleString("ar-IQ");
+
+    saveHistory(
+        download,
+        upload,
+        ping
+    );
+
+
+    startBtn.disabled = false;
+
+    startBtn.textContent =
+        "🔄 إعادة الاختبار";
+
+}
+
+
+startBtn.addEventListener(
+    "click",
+    startTest
+);
+
+
+/* =========================
+   تحديث حالة الإنترنت
+========================= */
+
+window.addEventListener(
+    "online",
+    () => {
+
+        document.querySelector(".status").innerHTML =
+            `<span class="status-dot"></span>
+             <span>الاتصال نشط</span>`;
+
+    }
+);
+
+
+window.addEventListener(
+    "offline",
+    () => {
+
+        document.querySelector(".status").innerHTML =
+            `<span class="status-dot"
+                   style="background:#ff3860;box-shadow:0 0 12px #ff3860">
+             </span>
+             <span>لا يوجد اتصال</span>`;
+
+    }
+);
 
 </script>
 
