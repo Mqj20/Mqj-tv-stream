@@ -2,1191 +2,169 @@
 <html lang="ar" dir="rtl">
 <head>
 <meta charset="UTF-8">
-<meta name="viewport" content="width=device-width, initial-scale=1.0">
-<meta name="theme-color" content="#070b14">
-<meta name="description" content="MQJ Internet Speed Test - قياس سرعة الإنترنت">
-<title>MQJ Speed Test | قياس سرعة الإنترنت</title>
-
+<meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+<meta name="theme-color" content="#07101c">
+<meta name="apple-mobile-web-app-capable" content="yes">
+<title>MQJ Football</title>
 <style>
-*{
-    margin:0;
-    padding:0;
-    box-sizing:border-box;
-}
-
-:root{
-    --bg:#050812;
-    --card:#0c1220;
-    --card2:#101829;
-    --text:#ffffff;
-    --muted:#8e9bb3;
-    --blue:#1687ff;
-    --cyan:#00d9ff;
-    --green:#00e676;
-    --red:#ff3860;
-    --border:rgba(255,255,255,.08);
-}
-
-body{
-    min-height:100vh;
-    font-family:Arial,"Tahoma",sans-serif;
-    color:var(--text);
-    background:
-        radial-gradient(circle at 50% 0%,rgba(0,140,255,.18),transparent 35%),
-        radial-gradient(circle at 10% 80%,rgba(0,220,255,.08),transparent 30%),
-        var(--bg);
-    overflow-x:hidden;
-}
-
-header{
-    height:72px;
-    display:flex;
-    align-items:center;
-    justify-content:space-between;
-    padding:0 7%;
-    border-bottom:1px solid var(--border);
-    background:rgba(5,8,18,.75);
-    backdrop-filter:blur(15px);
-    position:sticky;
-    top:0;
-    z-index:10;
-}
-
-.logo{
-    font-size:24px;
-    font-weight:900;
-    letter-spacing:1px;
-}
-
-.logo span{
-    color:var(--cyan);
-}
-
-.status{
-    display:flex;
-    align-items:center;
-    gap:8px;
-    color:var(--muted);
-    font-size:13px;
-}
-
-.status-dot{
-    width:9px;
-    height:9px;
-    border-radius:50%;
-    background:var(--green);
-    box-shadow:0 0 12px var(--green);
-}
-
-main{
-    width:min(1000px,92%);
-    margin:auto;
-    padding:45px 0 70px;
-}
-
-.hero{
-    text-align:center;
-    margin-bottom:35px;
-}
-
-.hero h1{
-    font-size:clamp(30px,6vw,54px);
-    margin-bottom:12px;
-    background:linear-gradient(90deg,#fff,var(--cyan),var(--blue));
-    -webkit-background-clip:text;
-    color:transparent;
-}
-
-.hero p{
-    color:var(--muted);
-    font-size:15px;
-}
-
-.speed-card{
-    background:linear-gradient(145deg,rgba(18,28,48,.96),rgba(7,12,24,.98));
-    border:1px solid var(--border);
-    border-radius:30px;
-    padding:35px 25px;
-    box-shadow:0 25px 80px rgba(0,0,0,.35);
-}
-
-.gauge{
-    width:min(350px,80vw);
-    height:min(350px,80vw);
-    margin:10px auto 35px;
-    border-radius:50%;
-    position:relative;
-    display:flex;
-    align-items:center;
-    justify-content:center;
-    background:
-        radial-gradient(circle,#0b1220 62%,transparent 63%),
-        conic-gradient(
-            from 220deg,
-            var(--blue) 0deg,
-            var(--cyan) 90deg,
-            #142034 180deg,
-            #142034 360deg
-        );
-    box-shadow:
-        0 0 50px rgba(0,170,255,.12),
-        inset 0 0 40px rgba(0,0,0,.5);
-}
-
-.gauge::before{
-    content:"";
-    position:absolute;
-    inset:12px;
-    border-radius:50%;
-    border:1px solid rgba(255,255,255,.08);
-}
-
-.gauge-inner{
-    position:relative;
-    z-index:2;
-    text-align:center;
-}
-
-.speed-number{
-    font-size:clamp(55px,13vw,85px);
-    font-weight:900;
-    line-height:1;
-    font-variant-numeric:tabular-nums;
-}
-
-.speed-unit{
-    color:var(--muted);
-    font-size:16px;
-    margin-top:10px;
-}
-
-.test-type{
-    color:var(--cyan);
-    font-size:13px;
-    margin-top:12px;
-    min-height:18px;
-}
-
-button{
-    width:100%;
-    max-width:360px;
-    display:block;
-    margin:0 auto;
-    border:none;
-    cursor:pointer;
-    color:white;
-    font-size:18px;
-    font-weight:800;
-    padding:17px 25px;
-    border-radius:16px;
-    background:linear-gradient(135deg,var(--blue),var(--cyan));
-    box-shadow:0 12px 30px rgba(0,150,255,.22);
-    transition:.25s;
-}
-
-button:hover{
-    transform:translateY(-2px);
-    box-shadow:0 16px 40px rgba(0,180,255,.3);
-}
-
-button:disabled{
-    opacity:.6;
-    cursor:not-allowed;
-    transform:none;
-}
-
-.results{
-    display:grid;
-    grid-template-columns:repeat(3,1fr);
-    gap:15px;
-    margin-top:30px;
-}
-
-.result{
-    background:rgba(255,255,255,.035);
-    border:1px solid var(--border);
-    border-radius:20px;
-    padding:22px 15px;
-    text-align:center;
-}
-
-.result-icon{
-    font-size:25px;
-    margin-bottom:10px;
-}
-
-.result-title{
-    color:var(--muted);
-    font-size:13px;
-    margin-bottom:8px;
-}
-
-.result-value{
-    font-size:28px;
-    font-weight:900;
-    font-variant-numeric:tabular-nums;
-}
-
-.result-unit{
-    color:var(--muted);
-    font-size:12px;
-    margin-top:4px;
-}
-
-.progress-box{
-    margin-top:25px;
-    display:none;
-}
-
-.progress-label{
-    display:flex;
-    justify-content:space-between;
-    color:var(--muted);
-    font-size:12px;
-    margin-bottom:8px;
-}
-
-.progress{
-    height:8px;
-    border-radius:20px;
-    background:#172033;
-    overflow:hidden;
-}
-
-.progress-bar{
-    width:0%;
-    height:100%;
-    border-radius:20px;
-    background:linear-gradient(90deg,var(--blue),var(--cyan));
-    transition:width .2s;
-}
-
-.info-grid{
-    display:grid;
-    grid-template-columns:repeat(2,1fr);
-    gap:15px;
-    margin-top:20px;
-}
-
-.info{
-    background:rgba(255,255,255,.025);
-    border:1px solid var(--border);
-    border-radius:18px;
-    padding:18px;
-}
-
-.info-title{
-    color:var(--muted);
-    font-size:12px;
-    margin-bottom:7px;
-}
-
-.info-value{
-    font-size:15px;
-    font-weight:bold;
-    word-break:break-word;
-}
-
-.history{
-    margin-top:30px;
-}
-
-.history h2{
-    font-size:20px;
-    margin-bottom:15px;
-}
-
-.history-list{
-    display:flex;
-    flex-direction:column;
-    gap:10px;
-}
-
-.history-item{
-    display:grid;
-    grid-template-columns:1fr 1fr 1fr 1fr;
-    align-items:center;
-    background:rgba(255,255,255,.025);
-    border:1px solid var(--border);
-    border-radius:14px;
-    padding:14px;
-    font-size:13px;
-}
-
-.history-item span{
-    color:var(--muted);
-}
-
-.empty{
-    color:var(--muted);
-    text-align:center;
-    padding:20px;
-    border:1px dashed var(--border);
-    border-radius:15px;
-}
-
-footer{
-    text-align:center;
-    color:#66738a;
-    font-size:12px;
-    padding:20px;
-}
-
-@media(max-width:650px){
-    header{
-        padding:0 5%;
-    }
-
-    .speed-card{
-        padding:25px 15px;
-        border-radius:23px;
-    }
-
-    .results{
-        grid-template-columns:1fr;
-    }
-
-    .info-grid{
-        grid-template-columns:1fr;
-    }
-
-    .history-item{
-        grid-template-columns:1fr 1fr;
-        gap:10px;
-    }
-}
+:root{--bg:#050a12;--panel:#0b1422;--panel2:#101c2c;--text:#e9f0f8;--muted:#8c9bad;--blue:#087cff;--cyan:#00e5ff;--green:#12d98b;--red:#ff4267;--yellow:#ffc857;--border:rgba(255,255,255,.075)}
+*{box-sizing:border-box;margin:0;padding:0;-webkit-tap-highlight-color:transparent}
+html,body{background:var(--bg);color:var(--text);font-family:Arial,Tahoma,sans-serif}
+body{min-height:100vh;background:radial-gradient(circle at 50% -10%,rgba(0,128,255,.16),transparent 35%),linear-gradient(180deg,#050a12,#07101b);overflow-x:hidden}
+button{font:inherit}
+.header{height:74px;position:sticky;top:0;z-index:100;border-bottom:1px solid var(--border);background:rgba(5,10,18,.9);backdrop-filter:blur(20px)}
+.header-inner{width:min(1500px,94%);height:100%;margin:auto;display:flex;align-items:center;justify-content:space-between;gap:20px}
+.logo{display:flex;align-items:center;gap:10px;font-size:24px;font-weight:900;white-space:nowrap}.logo-icon{width:40px;height:40px;display:grid;place-items:center;border-radius:13px;background:linear-gradient(135deg,var(--blue),var(--cyan));box-shadow:0 8px 25px rgba(0,150,255,.25)}.logo span{color:var(--cyan)}
+.top-nav{display:flex;gap:5px;overflow:auto}.top-nav button,.icon-btn,.side-item,.league-star,.star-match,.bottom-item{border:0;background:transparent;color:var(--muted);cursor:pointer}.top-nav button{padding:11px 15px;border-radius:12px;font-size:14px;font-weight:700;white-space:nowrap}.top-nav button.active,.top-nav button:hover{color:#fff;background:rgba(255,255,255,.07)}
+.top-actions{display:flex;gap:8px}.icon-btn{width:42px;height:42px;border:1px solid var(--border);border-radius:13px;background:rgba(255,255,255,.035);color:#fff;font-size:18px}
+.app{width:min(1500px,94%);margin:auto;padding:25px 0 90px;display:grid;grid-template-columns:245px minmax(0,1fr) 285px;gap:20px}
+.sidebar{position:sticky;top:95px;height:max-content;background:rgba(10,19,32,.75);border:1px solid var(--border);border-radius:26px;padding:15px}.sidebar-title{color:#647286;font-size:11px;font-weight:900;margin:10px}.side-item{width:100%;display:flex;align-items:center;gap:11px;padding:13px 12px;border-radius:13px;text-align:right;font-size:14px;font-weight:700}.side-item:hover,.side-item.active{background:linear-gradient(90deg,rgba(0,126,255,.18),rgba(0,126,255,.04));color:#fff}.side-icon{width:27px;text-align:center;font-size:17px}.league-mini{display:flex;align-items:center;gap:10px;padding:10px;border-radius:12px;color:var(--muted);cursor:pointer}.league-mini:hover{background:rgba(255,255,255,.05);color:#fff}.league-logo{width:30px;height:30px;display:grid;place-items:center;border-radius:9px;background:#17263a}
+.hero{min-height:190px;position:relative;overflow:hidden;border:1px solid rgba(0,190,255,.12);border-radius:25px;padding:28px;display:flex;align-items:center;background:radial-gradient(circle at 80% 50%,rgba(0,208,255,.18),transparent 35%),radial-gradient(circle at 20% 0%,rgba(0,91,255,.18),transparent 45%),#091524;box-shadow:0 20px 60px rgba(0,0,0,.35)}.hero:after{content:"⚽";position:absolute;left:5%;bottom:-60px;font-size:220px;opacity:.035}.hero-content{position:relative;z-index:2}.hero-badge{display:inline-flex;align-items:center;gap:7px;color:#b9f5ff;background:rgba(0,204,255,.09);border:1px solid rgba(0,204,255,.16);padding:7px 11px;border-radius:30px;font-size:11px;margin-bottom:13px}.live-dot{width:7px;height:7px;border-radius:50%;background:var(--red);box-shadow:0 0 12px var(--red)}.hero h1{font-size:clamp(30px,4vw,50px);line-height:1.05;margin-bottom:10px}.hero p{color:var(--muted);font-size:14px;max-width:620px;line-height:1.8}
+.date-nav,.filters{display:flex;gap:8px;overflow:auto;scrollbar-width:none}.date-nav{margin:20px 0}.date-nav::-webkit-scrollbar,.filters::-webkit-scrollbar{display:none}.date{min-width:90px;border:1px solid var(--border);background:rgba(255,255,255,.025);color:var(--muted);border-radius:15px;padding:11px 12px;text-align:center;cursor:pointer}.date.active{color:#fff;background:linear-gradient(135deg,#087cff,#0060d4);border-color:transparent}.date-day{font-size:11px;margin-bottom:4px}.date-number{font-size:18px;font-weight:900}
+.section-head{display:flex;align-items:center;justify-content:space-between;margin:25px 0 12px}.section-head h2{font-size:20px}.section-head span{color:var(--muted);font-size:12px}.filter{flex:none;border:1px solid var(--border);background:rgba(255,255,255,.035);color:var(--muted);border-radius:30px;padding:9px 15px;cursor:pointer;font-size:12px;font-weight:700}.filter.active{color:#fff;background:rgba(0,130,255,.18);border-color:rgba(0,160,255,.3)}
+.league{overflow:hidden;border:1px solid var(--border);border-radius:18px;background:rgba(10,19,31,.85);margin-bottom:13px}.league-head{min-height:50px;display:flex;align-items:center;justify-content:space-between;padding:10px 15px;background:rgba(255,255,255,.025);border-bottom:1px solid var(--border)}.league-name{display:flex;align-items:center;gap:9px;font-size:13px;font-weight:900}.league-ball{width:30px;height:30px;display:grid;place-items:center;border-radius:9px;background:#182b42}.league-country{color:var(--muted);font-size:11px}.league-star,.star-match{font-size:18px}.league-star.active,.star-match.active{color:var(--yellow)}
+.match{display:grid;grid-template-columns:75px minmax(0,1fr) 45px;align-items:center;min-height:92px;padding:13px 15px;border-bottom:1px solid var(--border);cursor:pointer;outline:none}.match:last-child{border-bottom:0}.match:hover,.match:focus{background:rgba(0,130,255,.06)}.match.live{background:linear-gradient(90deg,rgba(0,220,145,.045),transparent)}.match-time{text-align:center;font-size:12px;color:var(--muted);line-height:1.5}.match-time strong{display:block;color:#fff;font-size:13px}.live-label{display:inline-flex;align-items:center;gap:5px;color:var(--green);font-size:10px;font-weight:900}.live-label i{width:5px;height:5px;background:var(--green);border-radius:50%;box-shadow:0 0 8px var(--green)}.teams{display:flex;flex-direction:column;gap:9px}.team{display:flex;align-items:center;gap:9px;min-width:0}.team-logo{width:31px;height:31px;flex:none;display:grid;place-items:center;border-radius:9px;background:linear-gradient(135deg,#182a40,#0d1725);font-size:17px}.team-name{overflow:hidden;white-space:nowrap;text-overflow:ellipsis;font-size:13px;font-weight:700}.score{text-align:center;font-size:17px;font-weight:950;line-height:1.8}
+.right-panel{position:sticky;top:95px;height:max-content}.panel{background:rgba(10,19,31,.78);border:1px solid var(--border);border-radius:26px;padding:16px;margin-bottom:15px;box-shadow:0 20px 60px rgba(0,0,0,.2)}.panel-title{display:flex;justify-content:space-between;align-items:center;margin-bottom:15px}.panel-title h3{font-size:15px}.panel-title span{color:var(--muted);font-size:11px}.team-follow{display:flex;align-items:center;gap:11px;padding:10px;border-radius:13px}.team-follow:hover{background:rgba(255,255,255,.05)}.team-follow-logo{width:38px;height:38px;display:grid;place-items:center;border-radius:11px;background:#15263b;font-size:20px}.team-follow-info{flex:1;min-width:0}.team-follow-name{font-size:12px;font-weight:800}.team-follow-meta{color:var(--muted);font-size:10px;margin-top:3px}.plus{color:var(--cyan)}.news{display:flex;gap:10px;padding:10px 0;border-bottom:1px solid var(--border)}.news:last-child{border:0}.news-img{width:72px;height:55px;flex:none;border-radius:10px;display:grid;place-items:center;background:linear-gradient(135deg,#172c44,#0b1726);font-size:22px}.news-text h4{font-size:11px;line-height:1.55;margin-bottom:5px}.news-text span{color:#647286;font-size:9px}
+.bottom-nav{display:none;position:fixed;left:0;right:0;bottom:0;z-index:200;padding:8px 8px calc(8px + env(safe-area-inset-bottom));background:rgba(5,10,18,.94);border-top:1px solid var(--border);backdrop-filter:blur(20px)}.bottom-nav-inner{display:grid;grid-template-columns:repeat(5,1fr)}.bottom-item{padding:7px 3px;border-radius:12px;font-size:10px;font-weight:700}.bottom-item div{font-size:18px;margin-bottom:3px}.bottom-item.active{color:var(--cyan);background:rgba(0,180,255,.07)}
+.modal,.search-overlay{position:fixed;inset:0;z-index:500;display:none;background:rgba(0,0,0,.72);backdrop-filter:blur(12px)}.modal.show,.search-overlay.show{display:flex}.modal{align-items:center;justify-content:center;padding:20px}.modal-box{width:min(850px,100%);max-height:90vh;overflow:auto;background:linear-gradient(145deg,#101d2e,#07101c);border:1px solid var(--border);border-radius:28px;box-shadow:0 40px 120px rgba(0,0,0,.6);padding:25px}.modal-top{display:flex;justify-content:space-between;align-items:center;margin-bottom:20px}.close{width:38px;height:38px;border:0;background:rgba(255,255,255,.06);color:#fff;border-radius:11px;cursor:pointer;font-size:18px}.match-detail{text-align:center}.detail-league{color:var(--muted);font-size:12px;margin-bottom:20px}.detail-teams{display:grid;grid-template-columns:1fr 140px 1fr;align-items:center;gap:20px}.detail-team{display:flex;flex-direction:column;align-items:center;gap:10px}.detail-logo{width:75px;height:75px;display:grid;place-items:center;border-radius:22px;background:#14263b;font-size:40px}.detail-team strong{font-size:15px}.detail-score{font-size:42px;font-weight:950}.detail-status{color:var(--green);font-size:11px;margin-top:7px}.stats{display:grid;grid-template-columns:1fr 1fr;gap:10px}.stat{background:rgba(255,255,255,.035);border:1px solid var(--border);border-radius:15px;padding:14px}.stat-name{color:var(--muted);font-size:10px;text-align:center;margin-bottom:10px}.stat-values{display:grid;grid-template-columns:1fr 1fr 1fr;text-align:center;align-items:center}.stat-values strong{font-size:15px}.stat-values span{color:#647286;font-size:10px}
+.search-overlay{align-items:flex-start;padding:100px 20px}.search-box{width:min(700px,100%);margin:auto}.search-input{width:100%;height:60px;border:1px solid rgba(0,190,255,.3);outline:none;border-radius:17px;background:#0e1a2a;color:#fff;padding:0 20px;font-size:17px}.search-results{margin-top:12px;background:#0c1624;border:1px solid var(--border);border-radius:17px;overflow:hidden}.search-result{padding:15px;border-bottom:1px solid var(--border);cursor:pointer}.search-result:hover{background:rgba(0,140,255,.08)}
+@media(min-width:1600px){.app{width:min(1750px,90%);grid-template-columns:300px minmax(0,1fr) 340px;gap:30px}.header-inner{width:min(1750px,90%)}.header{height:82px}.hero{min-height:240px;padding:40px}.hero h1{font-size:55px}.match{min-height:110px;padding:17px 20px}.team-name{font-size:16px}.score{font-size:21px}.side-item{font-size:16px;padding:15px}}
+@media(max-width:1100px){.app{grid-template-columns:190px minmax(0,1fr)}.right-panel{display:none}}
+@media(max-width:700px){.header{height:64px}.header-inner{width:94%}.top-nav{display:none}.logo{font-size:20px}.logo-icon{width:36px;height:36px}.app{display:block;width:94%;padding:14px 0 90px}.sidebar{display:none}.hero{min-height:170px;border-radius:21px;padding:23px 20px}.hero h1{font-size:31px}.hero p{font-size:12px}.date{min-width:78px}.match{grid-template-columns:58px minmax(0,1fr) 35px;min-height:82px;padding:10px 9px}.team-logo{width:28px;height:28px}.team-name{font-size:12px}.score{font-size:15px}.match-time{font-size:10px}.match-time strong{font-size:11px}.bottom-nav{display:block}.modal{padding:8px;align-items:flex-end}.modal-box{max-height:94vh;border-radius:25px 25px 0 0;padding:20px}.detail-teams{grid-template-columns:1fr 90px 1fr;gap:8px}.detail-logo{width:58px;height:58px;font-size:30px}.detail-team strong{font-size:12px}.detail-score{font-size:30px}.stats{grid-template-columns:1fr}}
+@media(max-width:390px){.hero h1{font-size:27px}.match{grid-template-columns:50px minmax(0,1fr) 31px}.team-name{font-size:11px}}
+@media(min-width:1200px){button:focus-visible,.match:focus-visible,.side-item:focus-visible,.date:focus-visible,.filter:focus-visible{outline:3px solid rgba(0,210,255,.75);outline-offset:3px}}
 </style>
 </head>
-
 <body>
+<header class="header"><div class="header-inner">
+<div class="logo"><div class="logo-icon">⚽</div><div>MQJ <span>Football</span></div></div>
+<nav class="top-nav"><button class="active">المباريات</button><button>الأخبار</button><button>البطولات</button><button>الانتقالات</button></nav>
+<div class="top-actions"><button class="icon-btn" onclick="openSearch()">🔎</button><button class="icon-btn" onclick="toggleTheme()">◐</button></div>
+</div></header>
 
-<header>
-    <div class="logo">MQJ <span>SPEED</span></div>
+<div class="app">
+<aside class="sidebar">
+<div class="sidebar-title">القائمة</div>
+<button class="side-item active"><span class="side-icon">🏠</span>الرئيسية</button>
+<button class="side-item"><span class="side-icon">🔴</span>مباشر</button>
+<button class="side-item"><span class="side-icon">⭐</span>المفضلة</button>
+<button class="side-item"><span class="side-icon">🏆</span>البطولات</button>
+<button class="side-item" onclick="openSearch()"><span class="side-icon">🔎</span>البحث</button>
+<div class="sidebar-title">البطولات</div>
+<div class="league-mini"><div class="league-logo">🇪🇸</div>الدوري الإسباني</div>
+<div class="league-mini"><div class="league-logo">🏴</div>الدوري الإنجليزي</div>
+<div class="league-mini"><div class="league-logo">🇮🇹</div>الدوري الإيطالي</div>
+<div class="league-mini"><div class="league-logo">🇩🇪</div>الدوري الألماني</div>
+<div class="league-mini"><div class="league-logo">🏆</div>دوري الأبطال</div>
+<div class="league-mini"><div class="league-logo">🇮🇶</div>الدوري العراقي</div>
+</aside>
 
-    <div class="status">
-        <span class="status-dot"></span>
-        <span>الاتصال نشط</span>
-    </div>
-</header>
+<main class="main">
+<section class="hero"><div class="hero-content">
+<div class="hero-badge"><span class="live-dot"></span>متابعة كرة القدم مباشرة</div>
+<h1>كل المباريات<br>في مكان واحد</h1>
+<p>تابع النتائج والمباريات المباشرة والبطولات والفرق المفضلة لديك من الهاتف أو الشاشة الكبيرة.</p>
+</div></section>
 
-<main>
+<div class="date-nav">
+<div class="date"><div class="date-day">أمس</div><div class="date-number">29</div></div>
+<div class="date active"><div class="date-day">اليوم</div><div class="date-number">30</div></div>
+<div class="date"><div class="date-day">غداً</div><div class="date-number">31</div></div>
+<div class="date"><div class="date-day">الثلاثاء</div><div class="date-number">1</div></div>
+<div class="date"><div class="date-day">الأربعاء</div><div class="date-number">2</div></div>
+</div>
 
-    <section class="hero">
-        <h1>اختبر سرعة الإنترنت</h1>
-        <p>اعرف سرعة التحميل والرفع وزمن الاستجابة خلال ثوانٍ</p>
-    </section>
+<div class="section-head"><h2>مباريات اليوم</h2><span>الأحد 30 أغسطس</span></div>
+<div class="filters"><button class="filter active">الكل</button><button class="filter">🔴 مباشر</button><button class="filter">⭐ المفضلة</button><button class="filter">🏆 البطولات الكبرى</button><button class="filter">🇮🇶 العراق</button></div>
 
-    <section class="speed-card">
+<section class="league">
+<div class="league-head"><div class="league-name"><div class="league-ball">🇪🇸</div><div>الدوري الإسباني<div class="league-country">LaLiga</div></div></div><button class="league-star" onclick="toggleStar(this)">☆</button></div>
+<div class="match live" tabindex="0" onclick="openMatch('برشلونة','ريال مدريد','2','1','الدوري الإسباني','78')">
+<div class="match-time"><span class="live-label"><i></i>مباشر</span><strong>78'</strong></div>
+<div class="teams"><div class="team"><div class="team-logo">🔵🔴</div><span class="team-name">برشلونة</span></div><div class="team"><div class="team-logo">⚪</div><span class="team-name">ريال مدريد</span></div></div>
+<div class="score"><div>2</div><div>1</div></div></div>
+<div class="match" tabindex="0" onclick="openMatch('أتلتيكو مدريد','إشبيلية','—','—','الدوري الإسباني','21:30')">
+<div class="match-time"><strong>21:30</strong>اليوم</div>
+<div class="teams"><div class="team"><div class="team-logo">🔴⚪</div><span class="team-name">أتلتيكو مدريد</span></div><div class="team"><div class="team-logo">🔴</div><span class="team-name">إشبيلية</span></div></div><div class="score">—</div></div>
+</section>
 
-        <div class="gauge">
+<section class="league">
+<div class="league-head"><div class="league-name"><div class="league-ball">🏴</div><div>الدوري الإنجليزي<div class="league-country">Premier League</div></div></div><button class="league-star" onclick="toggleStar(this)">☆</button></div>
+<div class="match live" tabindex="0" onclick="openMatch('ليفربول','مانشستر سيتي','1','1','الدوري الإنجليزي','65')">
+<div class="match-time"><span class="live-label"><i></i>مباشر</span><strong>65'</strong></div>
+<div class="teams"><div class="team"><div class="team-logo">🔴</div><span class="team-name">ليفربول</span></div><div class="team"><div class="team-logo">🔵</div><span class="team-name">مانشستر سيتي</span></div></div><div class="score"><div>1</div><div>1</div></div></div>
+<div class="match" tabindex="0" onclick="openMatch('أرسنال','تشيلسي','—','—','الدوري الإنجليزي','18:00')">
+<div class="match-time"><strong>18:00</strong>اليوم</div>
+<div class="teams"><div class="team"><div class="team-logo">🔴</div><span class="team-name">أرسنال</span></div><div class="team"><div class="team-logo">🔵</div><span class="team-name">تشيلسي</span></div></div><div class="score">—</div></div>
+</section>
 
-            <div class="gauge-inner">
+<section class="league">
+<div class="league-head"><div class="league-name"><div class="league-ball">🏆</div><div>دوري أبطال أوروبا<div class="league-country">UEFA Champions League</div></div></div><button class="league-star" onclick="toggleStar(this)">☆</button></div>
+<div class="match live" tabindex="0" onclick="openMatch('باريس سان جيرمان','بايرن ميونخ','2','2','دوري أبطال أوروبا','90+3')">
+<div class="match-time"><span class="live-label"><i></i>مباشر</span><strong>90+3</strong></div>
+<div class="teams"><div class="team"><div class="team-logo">🔵</div><span class="team-name">باريس سان جيرمان</span></div><div class="team"><div class="team-logo">🔴</div><span class="team-name">بايرن ميونخ</span></div></div><div class="score"><div>2</div><div>2</div></div></div>
+</section>
 
-                <div id="speedNumber" class="speed-number">0</div>
-
-                <div class="speed-unit">Mbps</div>
-
-                <div id="testType" class="test-type">
-                    جاهز للاختبار
-                </div>
-
-            </div>
-
-        </div>
-
-        <button id="startBtn">
-            🚀 ابدأ اختبار السرعة
-        </button>
-
-        <div class="progress-box" id="progressBox">
-
-            <div class="progress-label">
-                <span id="progressText">جاري الاختبار...</span>
-                <span id="progressPercent">0%</span>
-            </div>
-
-            <div class="progress">
-                <div id="progressBar" class="progress-bar"></div>
-            </div>
-
-        </div>
-
-        <div class="results">
-
-            <div class="result">
-
-                <div class="result-icon">⬇️</div>
-
-                <div class="result-title">
-                    سرعة التحميل
-                </div>
-
-                <div id="downloadResult" class="result-value">
-                    —
-                </div>
-
-                <div class="result-unit">
-                    Mbps
-                </div>
-
-            </div>
-
-
-            <div class="result">
-
-                <div class="result-icon">⬆️</div>
-
-                <div class="result-title">
-                    سرعة الرفع
-                </div>
-
-                <div id="uploadResult" class="result-value">
-                    —
-                </div>
-
-                <div class="result-unit">
-                    Mbps
-                </div>
-
-            </div>
-
-
-            <div class="result">
-
-                <div class="result-icon">⚡</div>
-
-                <div class="result-title">
-                    Ping
-                </div>
-
-                <div id="pingResult" class="result-value">
-                    —
-                </div>
-
-                <div class="result-unit">
-                    ms
-                </div>
-
-            </div>
-
-        </div>
-
-
-        <div class="info-grid">
-
-            <div class="info">
-                <div class="info-title">نوع الاتصال</div>
-                <div id="connectionType" class="info-value">جارٍ الكشف...</div>
-            </div>
-
-            <div class="info">
-                <div class="info-title">المتصفح</div>
-                <div id="browser" class="info-value">جارٍ الكشف...</div>
-            </div>
-
-            <div class="info">
-                <div class="info-title">الشبكة</div>
-                <div id="networkInfo" class="info-value">جارٍ الكشف...</div>
-            </div>
-
-            <div class="info">
-                <div class="info-title">الوقت</div>
-                <div id="testTime" class="info-value">—</div>
-            </div>
-
-        </div>
-
-    </section>
-
-
-    <section class="history">
-
-        <h2>📊 آخر الاختبارات</h2>
-
-        <div id="historyList" class="history-list">
-            <div class="empty">
-                لا توجد اختبارات سابقة
-            </div>
-        </div>
-
-    </section>
-
+<section class="league">
+<div class="league-head"><div class="league-name"><div class="league-ball">🇮🇶</div><div>الدوري العراقي<div class="league-country">Iraq Stars League</div></div></div><button class="league-star" onclick="toggleStar(this)">☆</button></div>
+<div class="match" tabindex="0" onclick="openMatch('الشرطة','الزوراء','—','—','الدوري العراقي','20:00')">
+<div class="match-time"><strong>20:00</strong>اليوم</div>
+<div class="teams"><div class="team"><div class="team-logo">🟢</div><span class="team-name">الشرطة</span></div><div class="team"><div class="team-logo">⚪</div><span class="team-name">الزوراء</span></div></div><div class="score">—</div></div>
+</section>
 </main>
 
-<footer>
-    MQJ Speed Test © 2026 — جميع الحقوق محفوظة
-</footer>
+<aside class="right-panel">
+<div class="panel"><div class="panel-title"><h3>⭐ فرقي المفضلة</h3><span>إدارة</span></div>
+<div class="team-follow"><div class="team-follow-logo">🔵🔴</div><div class="team-follow-info"><div class="team-follow-name">برشلونة</div><div class="team-follow-meta">المباراة القادمة 21:00</div></div><div class="plus">›</div></div>
+<div class="team-follow"><div class="team-follow-logo">⚪</div><div class="team-follow-info"><div class="team-follow-name">ريال مدريد</div><div class="team-follow-meta">المباراة القادمة 21:30</div></div><div class="plus">›</div></div>
+<div class="team-follow"><div class="team-follow-logo">🔴</div><div class="team-follow-info"><div class="team-follow-name">ليفربول</div><div class="team-follow-meta">مباشر الآن</div></div><div class="plus">›</div></div>
+</div>
+<div class="panel"><div class="panel-title"><h3>📰 آخر الأخبار</h3><span>المزيد</span></div>
+<div class="news"><div class="news-img">⚽</div><div class="news-text"><h4>أخبار كرة القدم وآخر المستجدات حول الأندية</h4><span>منذ 10 دقائق</span></div></div>
+<div class="news"><div class="news-img">🏆</div><div class="news-text"><h4>استعدادات الفرق للجولة القادمة</h4><span>منذ 25 دقيقة</span></div></div>
+<div class="news"><div class="news-img">🔥</div><div class="news-text"><h4>أبرز نتائج مباريات اليوم</h4><span>منذ ساعة</span></div></div>
+</div>
+</aside>
+</div>
 
+<nav class="bottom-nav"><div class="bottom-nav-inner">
+<button class="bottom-item active"><div>🏠</div>الرئيسية</button><button class="bottom-item"><div>🔴</div>مباشر</button><button class="bottom-item"><div>📅</div>المباريات</button><button class="bottom-item"><div>⭐</div>المفضلة</button><button class="bottom-item" onclick="openSearch()"><div>🔎</div>بحث</button>
+</div></nav>
+
+<div id="matchModal" class="modal" onclick="if(event.target===this)closeMatch()"><div class="modal-box">
+<div class="modal-top"><strong>تفاصيل المباراة</strong><button class="close" onclick="closeMatch()">×</button></div>
+<div class="match-detail"><div id="detailLeague" class="detail-league">الدوري</div>
+<div class="detail-teams"><div class="detail-team"><div class="detail-logo">⚽</div><strong id="homeName">الفريق الأول</strong></div>
+<div><div id="detailScore" class="detail-score">0 - 0</div><div id="detailStatus" class="detail-status">مباشر</div></div>
+<div class="detail-team"><div class="detail-logo">⚽</div><strong id="awayName">الفريق الثاني</strong></div></div>
+<div class="stats">
+<div class="stat"><div class="stat-name">الاستحواذ</div><div class="stat-values"><strong>56%</strong><span>الاستحواذ</span><strong>44%</strong></div></div>
+<div class="stat"><div class="stat-name">التسديدات</div><div class="stat-values"><strong>12</strong><span>تسديدات</span><strong>8</strong></div></div>
+<div class="stat"><div class="stat-name">على المرمى</div><div class="stat-values"><strong>6</strong><span>تسديد</span><strong>3</strong></div></div>
+<div class="stat"><div class="stat-name">الركنيات</div><div class="stat-values"><strong>7</strong><span>ركنيات</span><strong>4</strong></div></div>
+</div></div></div></div>
+
+<div id="searchOverlay" class="search-overlay" onclick="if(event.target===this)closeSearch()"><div class="search-box">
+<input id="searchInput" class="search-input" type="search" placeholder="ابحث عن فريق أو بطولة..." autocomplete="off">
+<div id="searchResults" class="search-results"></div>
+</div></div>
 
 <script>
-
-/* =========================
-   العناصر
-========================= */
-
-const startBtn = document.getElementById("startBtn");
-
-const speedNumber = document.getElementById("speedNumber");
-const testType = document.getElementById("testType");
-
-const downloadResult = document.getElementById("downloadResult");
-const uploadResult = document.getElementById("uploadResult");
-const pingResult = document.getElementById("pingResult");
-
-const progressBox = document.getElementById("progressBox");
-const progressBar = document.getElementById("progressBar");
-const progressPercent = document.getElementById("progressPercent");
-const progressText = document.getElementById("progressText");
-
-const connectionType = document.getElementById("connectionType");
-const browser = document.getElementById("browser");
-const networkInfo = document.getElementById("networkInfo");
-const testTime = document.getElementById("testTime");
-
-const historyList = document.getElementById("historyList");
-
-
-/* =========================
-   معلومات الجهاز
-========================= */
-
-function getConnectionInfo(){
-
-    const connection =
-        navigator.connection ||
-        navigator.mozConnection ||
-        navigator.webkitConnection;
-
-    if(connection){
-
-        let type = connection.effectiveType || "غير معروف";
-
-        let text = type.toUpperCase();
-
-        if(connection.downlink){
-            text += " • " + connection.downlink + " Mbps";
-        }
-
-        connectionType.textContent = text;
-
-        networkInfo.textContent =
-            connection.type ||
-            "شبكة الهاتف / Wi-Fi";
-    }
-    else{
-
-        connectionType.textContent =
-            "غير متوفر";
-
-        networkInfo.textContent =
-            navigator.onLine ? "متصل" : "غير متصل";
-    }
-
-    browser.textContent =
-        navigator.userAgent
-            .replace(/\([^)]*\)/g,"")
-            .split(" ")
-            .slice(-2)
-            .join(" ");
-
-}
-
-getConnectionInfo();
-
-
-/* =========================
-   أدوات
-========================= */
-
-function sleep(ms){
-    return new Promise(resolve => setTimeout(resolve,ms));
-}
-
-
-function setProgress(value,text){
-
-    value = Math.max(0,Math.min(100,value));
-
-    progressBar.style.width = value + "%";
-
-    progressPercent.textContent =
-        Math.round(value) + "%";
-
-    if(text){
-        progressText.textContent = text;
-    }
-}
-
-
-function animateNumber(element,start,end,duration){
-
-    return new Promise(resolve => {
-
-        const startTime = performance.now();
-
-        function frame(now){
-
-            const progress =
-                Math.min((now-startTime)/duration,1);
-
-            const value =
-                start + (end-start)*progress;
-
-            element.textContent =
-                value.toFixed(1);
-
-            if(progress < 1){
-                requestAnimationFrame(frame);
-            }
-            else{
-                resolve();
-            }
-        }
-
-        requestAnimationFrame(frame);
-    });
-}
-
-
-/* =========================
-   Ping
-========================= */
-
-async function measurePing(){
-
-    testType.textContent = "⚡ قياس Ping";
-
-    let times = [];
-
-    /*
-      نستخدم صورة صغيرة جداً من Google.
-      المتصفح قد يمنع بعض القياسات بسبب CORS،
-      لذلك نستعمل no-cors.
-    */
-
-    const url =
-        "https://www.google.com/images/branding/googlelogo/1x/googlelogo_color_272x92dp.png";
-
-    for(let i=0;i<4;i++){
-
-        try{
-
-            const start = performance.now();
-
-            await fetch(
-                url + "?t=" + Date.now(),
-                {
-                    mode:"no-cors",
-                    cache:"no-store"
-                }
-            );
-
-            const end = performance.now();
-
-            times.push(end-start);
-
-        }
-        catch(e){}
-
-        setProgress(
-            5 + i*5,
-            "قياس زمن الاستجابة..."
-        );
-
-        await sleep(100);
-    }
-
-    if(times.length){
-
-        times.sort((a,b)=>a-b);
-
-        const middle =
-            times[Math.floor(times.length/2)];
-
-        return Math.round(middle);
-    }
-
-    return null;
-}
-
-
-/* =========================
-   Download
-========================= */
-
-async function measureDownload(){
-
-    testType.textContent =
-        "⬇️ قياس سرعة التحميل";
-
-    /*
-      ملف اختبار عام.
-      يمكن تغييره لاحقاً إلى سيرفرك الخاص
-      للحصول على نتائج أفضل.
-    */
-
-    const testURL =
-        "https://speed.cloudflare.com/__down?bytes=10000000";
-
-    const start = performance.now();
-
-    let received = 0;
-
-    try{
-
-        const response = await fetch(
-            testURL + "&t=" + Date.now(),
-            {
-                cache:"no-store"
-            }
-        );
-
-        if(!response.body){
-            throw new Error("Streaming unavailable");
-        }
-
-        const reader =
-            response.body.getReader();
-
-        while(true){
-
-            const {done,value} =
-                await reader.read();
-
-            if(done) break;
-
-            received += value.length;
-
-            const elapsed =
-                (performance.now()-start)/1000;
-
-            if(elapsed > 0){
-
-                const mbps =
-                    (received * 8) /
-                    elapsed /
-                    1000000;
-
-                speedNumber.textContent =
-                    mbps.toFixed(1);
-            }
-
-            const progress =
-                Math.min(
-                    (received/10000000)*100,
-                    100
-                );
-
-            setProgress(
-                20 + progress*0.55,
-                "جاري قياس التحميل..."
-            );
-        }
-
-        const seconds =
-            (performance.now()-start)/1000;
-
-        const mbps =
-            (received*8) /
-            seconds /
-            1000000;
-
-        return mbps;
-
-    }
-    catch(error){
-
-        console.error(error);
-
-        /*
-          محاولة ثانية بطريقة Blob
-        */
-
-        try{
-
-            const start2 =
-                performance.now();
-
-            const response =
-                await fetch(
-                    testURL + "&t=" + Date.now(),
-                    {cache:"no-store"}
-                );
-
-            const blob =
-                await response.blob();
-
-            const seconds =
-                (performance.now()-start2)/1000;
-
-            const mbps =
-                (blob.size*8) /
-                seconds /
-                1000000;
-
-            return mbps;
-
-        }
-        catch(e){
-
-            return null;
-        }
-    }
-}
-
-
-/* =========================
-   Upload
-========================= */
-
-async function measureUpload(){
-
-    testType.textContent =
-        "⬆️ قياس سرعة الرفع";
-
-    /*
-      الرفع يحتاج endpoint يسمح بـ POST.
-      نستخدم httpbin كخادم اختبار.
-    */
-
-    const size =
-        2 * 1024 * 1024;
-
-    const data =
-        new Uint8Array(size);
-
-    crypto.getRandomValues(
-        data.subarray(0,65536)
-    );
-
-    /*
-      نملأ بقية البيانات بطريقة خفيفة
-    */
-
-    for(let i=65536;i<size;i++){
-        data[i] =
-            data[i % 65536];
-    }
-
-    const start =
-        performance.now();
-
-    try{
-
-        const response =
-            await fetch(
-                "https://httpbin.org/post?t="+Date.now(),
-                {
-                    method:"POST",
-                    body:data,
-                    cache:"no-store"
-                }
-            );
-
-        await response.text();
-
-        const seconds =
-            (performance.now()-start)/1000;
-
-        if(seconds <= 0){
-            return null;
-        }
-
-        const mbps =
-            (size*8) /
-            seconds /
-            1000000;
-
-        setProgress(
-            95,
-            "إنهاء الاختبار..."
-        );
-
-        return mbps;
-
-    }
-    catch(error){
-
-        console.error(error);
-
-        return null;
-    }
-}
-
-
-/* =========================
-   حفظ النتائج
-========================= */
-
-function saveHistory(download,upload,ping){
-
-    let history =
-        JSON.parse(
-            localStorage.getItem("mqjSpeedHistory") ||
-            "[]"
-        );
-
-    const item = {
-
-        download:
-            download ?
-            download.toFixed(1) :
-            "—",
-
-        upload:
-            upload ?
-            upload.toFixed(1) :
-            "—",
-
-        ping:
-            ping ?
-            Math.round(ping) :
-            "—",
-
-        time:
-            new Date().toLocaleString("ar-IQ")
-    };
-
-    history.unshift(item);
-
-    history =
-        history.slice(0,10);
-
-    localStorage.setItem(
-        "mqjSpeedHistory",
-        JSON.stringify(history)
-    );
-
-    renderHistory();
-}
-
-
-function renderHistory(){
-
-    let history =
-        JSON.parse(
-            localStorage.getItem("mqjSpeedHistory") ||
-            "[]"
-        );
-
-    if(!history.length){
-
-        historyList.innerHTML =
-            `<div class="empty">
-                لا توجد اختبارات سابقة
-            </div>`;
-
-        return;
-    }
-
-    historyList.innerHTML =
-        history.map(item => `
-
-            <div class="history-item">
-
-                <div>
-                    <span>⬇️ تحميل</span><br>
-                    <b>${item.download} Mbps</b>
-                </div>
-
-                <div>
-                    <span>⬆️ رفع</span><br>
-                    <b>${item.upload} Mbps</b>
-                </div>
-
-                <div>
-                    <span>⚡ Ping</span><br>
-                    <b>${item.ping} ms</b>
-                </div>
-
-                <div>
-                    <span>🕒 الوقت</span><br>
-                    <b>${item.time}</b>
-                </div>
-
-            </div>
-
-        `).join("");
-}
-
-
-renderHistory();
-
-
-/* =========================
-   الاختبار الرئيسي
-========================= */
-
-async function startTest(){
-
-    if(!navigator.onLine){
-
-        alert("تأكد من اتصال جهازك بالإنترنت.");
-
-        return;
-    }
-
-    startBtn.disabled = true;
-
-    startBtn.textContent =
-        "⏳ جاري الاختبار...";
-
-    progressBox.style.display =
-        "block";
-
-    setProgress(
-        0,
-        "بدء الاختبار..."
-    );
-
-    speedNumber.textContent =
-        "0";
-
-    downloadResult.textContent =
-        "—";
-
-    uploadResult.textContent =
-        "—";
-
-    pingResult.textContent =
-        "—";
-
-
-    /* Ping */
-
-    const ping =
-        await measurePing();
-
-    if(ping !== null){
-
-        pingResult.textContent =
-            ping;
-
-    }
-
-
-    /* Download */
-
-    setProgress(
-        20,
-        "جاري قياس التحميل..."
-    );
-
-    const download =
-        await measureDownload();
-
-    if(download !== null){
-
-        await animateNumber(
-            speedNumber,
-            parseFloat(speedNumber.textContent) || 0,
-            download,
-            500
-        );
-
-        downloadResult.textContent =
-            download.toFixed(1);
-    }
-    else{
-
-        downloadResult.textContent =
-            "—";
-    }
-
-
-    /* Upload */
-
-    setProgress(
-        80,
-        "جاري قياس الرفع..."
-    );
-
-    const upload =
-        await measureUpload();
-
-    if(upload !== null){
-
-        uploadResult.textContent =
-            upload.toFixed(1);
-
-    }
-    else{
-
-        uploadResult.textContent =
-            "—";
-    }
-
-
-    /* النهاية */
-
-    setProgress(
-        100,
-        "اكتمل الاختبار ✅"
-    );
-
-    testType.textContent =
-        "✅ اكتمل الاختبار";
-
-    if(download !== null){
-
-        speedNumber.textContent =
-            download.toFixed(1);
-    }
-
-    testTime.textContent =
-        new Date().toLocaleString("ar-IQ");
-
-    saveHistory(
-        download,
-        upload,
-        ping
-    );
-
-
-    startBtn.disabled = false;
-
-    startBtn.textContent =
-        "🔄 إعادة الاختبار";
-
-}
-
-
-startBtn.addEventListener(
-    "click",
-    startTest
-);
-
-
-/* =========================
-   تحديث حالة الإنترنت
-========================= */
-
-window.addEventListener(
-    "online",
-    () => {
-
-        document.querySelector(".status").innerHTML =
-            `<span class="status-dot"></span>
-             <span>الاتصال نشط</span>`;
-
-    }
-);
-
-
-window.addEventListener(
-    "offline",
-    () => {
-
-        document.querySelector(".status").innerHTML =
-            `<span class="status-dot"
-                   style="background:#ff3860;box-shadow:0 0 12px #ff3860">
-             </span>
-             <span>لا يوجد اتصال</span>`;
-
-    }
-);
-
+const teams=["🔵🔴 برشلونة","⚪ ريال مدريد","🔴 ليفربول","🔵 مانشستر سيتي","🔴 أرسنال","🔵 تشيلسي","🔴 بايرن ميونخ","🔵 باريس سان جيرمان","🟢 الشرطة العراقي","⚪ الزوراء العراقي","🏆 دوري أبطال أوروبا","🇪🇸 الدوري الإسباني","🏴 الدوري الإنجليزي","🇮🇶 الدوري العراقي"];
+function toggleStar(b){b.classList.toggle("active");b.textContent=b.classList.contains("active")?"★":"☆"}
+function openMatch(h,a,hs,as,l,s){homeName.textContent=h;awayName.textContent=a;detailLeague.textContent=l;detailScore.textContent=hs+" - "+as;detailStatus.textContent=s.includes(":")?"تبدأ الساعة "+s:s+" دقيقة";matchModal.classList.add("show");document.body.style.overflow="hidden"}
+function closeMatch(){matchModal.classList.remove("show");document.body.style.overflow=""}
+function openSearch(){searchOverlay.classList.add("show");document.body.style.overflow="hidden";renderSearch(teams);setTimeout(()=>searchInput.focus(),100)}
+function closeSearch(){searchOverlay.classList.remove("show");document.body.style.overflow=""}
+function renderSearch(arr){searchResults.innerHTML=arr.length?arr.map(x=>`<div class="search-result" onclick="closeSearch();alert('فتح: '+${JSON.stringify(x)})">${x}</div>`).join(""):'<div class="search-result">لا توجد نتائج</div>'}
+searchInput.addEventListener("input",()=>{let q=searchInput.value.trim().toLowerCase();renderSearch(q?teams.filter(x=>x.toLowerCase().includes(q)):teams)})
+document.querySelectorAll(".filter").forEach(b=>b.onclick=()=>{document.querySelectorAll(".filter").forEach(x=>x.classList.remove("active"));b.classList.add("active")});
+document.querySelectorAll(".date").forEach(b=>b.onclick=()=>{document.querySelectorAll(".date").forEach(x=>x.classList.remove("active"));b.classList.add("active")});
+document.querySelectorAll(".side-item").forEach(b=>b.onclick=()=>{document.querySelectorAll(".side-item").forEach(x=>x.classList.remove("active"));b.classList.add("active")});
+document.querySelectorAll(".bottom-item").forEach(b=>b.onclick=()=>{document.querySelectorAll(".bottom-item").forEach(x=>x.classList.remove("active"));b.classList.add("active")});
+let dark=true;
+function toggleTheme(){dark=!dark;document.documentElement.style.setProperty("--bg",dark?"#050a12":"#edf3f8");document.documentElement.style.setProperty("--panel",dark?"#0b1422":"#fff");document.documentElement.style.setProperty("--text",dark?"#e9f0f8":"#101923");document.documentElement.style.setProperty("--muted",dark?"#8c9bad":"#637386")}
+document.addEventListener("keydown",e=>{if(e.key==="Escape"){closeMatch();closeSearch()}});
 </script>
-
 </body>
-    </html>
+                                                                                                                                                                                                                   </html>
